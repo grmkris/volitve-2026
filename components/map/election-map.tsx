@@ -1,17 +1,12 @@
 "use client"
 
-import { useCallback, useEffect, useMemo, useState } from "react"
-import type { FeatureCollection, Geometry } from "geojson"
+import { useCallback, useMemo, useState } from "react"
+import { useQuery } from "@tanstack/react-query"
+import type { ExpressionSpecification } from "maplibre-gl"
 import { Map, MapControls } from "@/components/ui/map"
 import { MapGeoJSONLayer } from "./map-geojson-layer"
 import { loadTopoJSON } from "@/lib/geo/loader"
-import type { EnotaResult, OkrajResult } from "@/lib/data/types"
-import { formatPercent } from "@/lib/data/format"
-
-interface PartyInfo {
-  color: string
-  abbrev: string
-}
+import type { EnotaResult, OkrajResult, PartyInfo } from "@/lib/data/types"
 
 export interface SelectedRegion {
   type: "enota" | "okraj"
@@ -37,24 +32,20 @@ export function ElectionMap({
   onRegionSelect,
   className,
 }: ElectionMapProps) {
-  const [enoteGeo, setEnoteGeo] = useState<FeatureCollection<Geometry> | null>(
-    null
-  )
-  const [okrajiGeo, setOkrajiGeo] =
-    useState<FeatureCollection<Geometry> | null>(null)
   const [zoom, setZoom] = useState(7.5)
 
-  // Load enote TopoJSON on mount
-  useEffect(() => {
-    loadTopoJSON("/geo/enote.topojson").then(setEnoteGeo)
-  }, [])
+  const { data: enoteGeo } = useQuery({
+    queryKey: ["geo", "enote"],
+    queryFn: () => loadTopoJSON("/geo/enote.topojson"),
+    staleTime: Infinity,
+  })
 
-  // Load okraji when zoomed in
-  useEffect(() => {
-    if (zoom >= 7.5 && !okrajiGeo) {
-      loadTopoJSON("/geo/okraji.topojson").then(setOkrajiGeo)
-    }
-  }, [zoom, okrajiGeo])
+  const { data: okrajiGeo } = useQuery({
+    queryKey: ["geo", "okraji"],
+    queryFn: () => loadTopoJSON("/geo/okraji.topojson"),
+    enabled: zoom >= 7.5,
+    staleTime: Infinity,
+  })
 
   // Build okraj lookup: rpeid → OkrajResult
   const okrajLookup = useMemo(() => {
@@ -68,8 +59,7 @@ export function ElectionMap({
   }, [enote])
 
   // Build color expression for enote layer
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const enoteColorExpr = useMemo((): any => {
+  const enoteColorExpr = useMemo((): ExpressionSpecification => {
     const entries: (string | number)[] = []
     for (const enota of enote) {
       const party = partyMap[enota.winnerId]
@@ -77,12 +67,11 @@ export function ElectionMap({
         entries.push(Number(enota.rpeid), party.color)
       }
     }
-    return ["match", ["get", "VDV_ID"], ...entries, "#cccccc"]
+    return ["match", ["get", "VDV_ID"], ...entries, "#cccccc"] as unknown as ExpressionSpecification
   }, [enote, partyMap])
 
   // Build color expression for okraji layer
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const okrajiColorExpr = useMemo((): any => {
+  const okrajiColorExpr = useMemo((): ExpressionSpecification => {
     const entries: (string | number)[] = []
     for (const enota of enote) {
       for (const okraj of enota.okraji) {
@@ -92,7 +81,7 @@ export function ElectionMap({
         }
       }
     }
-    return ["match", ["get", "VDV_ID"], ...entries, "#cccccc"]
+    return ["match", ["get", "VDV_ID"], ...entries, "#cccccc"] as unknown as ExpressionSpecification
   }, [enote, partyMap])
 
   const showOkraji = zoom >= 8

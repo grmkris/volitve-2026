@@ -109,24 +109,28 @@ export function MapGeoJSONLayer({
     const handleMouseMove = (e: maplibregl.MapMouseEvent & { features?: maplibregl.MapGeoJSONFeature[] }) => {
       const feat = e.features?.[0]
       if (feat) {
-        map.getCanvas().style.cursor = "pointer"
-        if (hoveredId !== null) {
-          map.setFeatureState({ source: sourceId, id: hoveredId }, { hover: false })
-        }
-        hoveredId = feat.id ?? null
-        if (hoveredId !== null) {
-          map.setFeatureState({ source: sourceId, id: hoveredId }, { hover: true })
-        }
+        try {
+          map.getCanvas().style.cursor = "pointer"
+          if (hoveredId !== null) {
+            map.setFeatureState({ source: sourceId, id: hoveredId }, { hover: false })
+          }
+          hoveredId = feat.id ?? null
+          if (hoveredId !== null) {
+            map.setFeatureState({ source: sourceId, id: hoveredId }, { hover: true })
+          }
+        } catch { /* map destroyed during navigation */ }
         onHoverRef.current?.(feat as unknown as GeoJSON.Feature)
       }
     }
 
     const handleMouseLeave = () => {
-      map.getCanvas().style.cursor = ""
-      if (hoveredId !== null) {
-        map.setFeatureState({ source: sourceId, id: hoveredId }, { hover: false })
-        hoveredId = null
-      }
+      try {
+        map.getCanvas().style.cursor = ""
+        if (hoveredId !== null) {
+          map.setFeatureState({ source: sourceId, id: hoveredId }, { hover: false })
+          hoveredId = null
+        }
+      } catch { /* map destroyed during navigation */ }
       onHoverRef.current?.(null)
     }
 
@@ -137,12 +141,14 @@ export function MapGeoJSONLayer({
     addedRef.current = true
 
     return () => {
-      map.off("click", fillLayerId, handleClick)
-      map.off("mousemove", fillLayerId, handleMouseMove)
-      map.off("mouseleave", fillLayerId, handleMouseLeave)
-      if (map.getLayer(lineLayerId)) map.removeLayer(lineLayerId)
-      if (map.getLayer(fillLayerId)) map.removeLayer(fillLayerId)
-      if (map.getSource(sourceId)) map.removeSource(sourceId)
+      try {
+        map.off("click", fillLayerId, handleClick)
+        map.off("mousemove", fillLayerId, handleMouseMove)
+        map.off("mouseleave", fillLayerId, handleMouseLeave)
+        if (map.getLayer(lineLayerId)) map.removeLayer(lineLayerId)
+        if (map.getLayer(fillLayerId)) map.removeLayer(fillLayerId)
+        if (map.getSource(sourceId)) map.removeSource(sourceId)
+      } catch { /* map destroyed during navigation */ }
       addedRef.current = false
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -151,28 +157,34 @@ export function MapGeoJSONLayer({
   // Update data
   useEffect(() => {
     if (!map || !addedRef.current) return
-    const source = map.getSource(sourceId) as maplibregl.GeoJSONSource | undefined
-    if (source) source.setData(data)
+    try {
+      const source = map.getSource(sourceId) as maplibregl.GeoJSONSource | undefined
+      if (source) source.setData(data)
+    } catch { /* map destroyed */ }
   }, [map, data, sourceId])
 
   // Update fill color
   useEffect(() => {
     if (!map || !addedRef.current) return
-    if (map.getLayer(fillLayerId)) {
-      map.setPaintProperty(fillLayerId, "fill-color", fillColor)
-    }
+    try {
+      if (map.getLayer(fillLayerId)) {
+        map.setPaintProperty(fillLayerId, "fill-color", fillColor)
+      }
+    } catch { /* map destroyed */ }
   }, [map, fillColor, fillLayerId])
 
   // Update visibility
   useEffect(() => {
     if (!map || !addedRef.current) return
-    const vis = visible ? "visible" : "none"
-    if (map.getLayer(fillLayerId)) {
-      map.setLayoutProperty(fillLayerId, "visibility", vis)
-    }
-    if (map.getLayer(lineLayerId)) {
-      map.setLayoutProperty(lineLayerId, "visibility", vis)
-    }
+    try {
+      const vis = visible ? "visible" : "none"
+      if (map.getLayer(fillLayerId)) {
+        map.setLayoutProperty(fillLayerId, "visibility", vis)
+      }
+      if (map.getLayer(lineLayerId)) {
+        map.setLayoutProperty(lineLayerId, "visibility", vis)
+      }
+    } catch { /* map destroyed */ }
   }, [map, visible, fillLayerId, lineLayerId])
 
   return null

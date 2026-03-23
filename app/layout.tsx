@@ -3,6 +3,7 @@ import { Geist_Mono, Inter, Roboto_Slab } from "next/font/google"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
+import { QueryProvider } from "@/components/query-provider"
 import { SiteHeader } from "@/components/layout/site-header"
 import { SiteFooter } from "@/components/layout/site-footer"
 import { BottomNav } from "@/components/layout/bottom-nav"
@@ -45,10 +46,12 @@ export default function RootLayout({
     >
       <body>
         <ThemeProvider>
-          <SiteHeader />
-          <main className="min-h-svh pb-14 md:pb-0">{children}</main>
-          <SiteFooter />
-          <BottomNav />
+          <QueryProvider>
+            <SiteHeader />
+            <main className="min-h-svh pb-14 md:pb-0">{children}</main>
+            <SiteFooter />
+            <BottomNav />
+          </QueryProvider>
         </ThemeProvider>
       </body>
     </html>
