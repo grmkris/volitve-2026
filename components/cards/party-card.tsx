@@ -26,7 +26,7 @@ export function PartyCard({ party }: PartyCardProps) {
           <p className="truncate font-heading text-sm font-semibold">
             {party.abbrev}
           </p>
-          <p className="mt-0.5 truncate text-xs text-muted-foreground">
+          <p className="mt-0.5 text-xs leading-tight text-muted-foreground line-clamp-2">
             {party.name}
           </p>
         </div>

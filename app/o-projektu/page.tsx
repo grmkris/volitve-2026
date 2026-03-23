@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { PageHeader } from "@/components/layout/page-header"
 
 export default function OProjektuPage() {
@@ -7,6 +8,7 @@ export default function OProjektuPage() {
 
       <div className="prose prose-sm prose-neutral dark:prose-invert max-w-none space-y-6 text-sm leading-relaxed">
         <section>
+          <div className="rounded-lg bg-card p-5 ring-1 ring-foreground/10">
           <h2 className="font-heading text-base font-semibold">
             Kaj je to?
           </h2>
@@ -16,9 +18,11 @@ export default function OProjektuPage() {
             volilnih enotah, okrajih in posameznih voliščih, ter analizo
             volilne udeležbe.
           </p>
+          </div>
         </section>
 
         <section>
+          <div className="rounded-lg bg-card p-5 ring-1 ring-foreground/10">
           <h2 className="font-heading text-base font-semibold">
             Viri podatkov
           </h2>
@@ -49,9 +53,11 @@ export default function OProjektuPage() {
               uprava RS)
             </li>
           </ul>
+          </div>
         </section>
 
         <section>
+          <div className="rounded-lg bg-card p-5 ring-1 ring-foreground/10">
           <h2 className="font-heading text-base font-semibold">
             Volilni sistem
           </h2>
@@ -62,18 +68,22 @@ export default function OProjektuPage() {
             veljavnih glasov na nacionalni ravni. Skupaj se voli 88 poslancev
             plus 2 predstavnika narodnih manjšin (italijanske in madžarske).
           </p>
+          </div>
         </section>
 
         <section>
+          <div className="rounded-lg bg-card p-5 ring-1 ring-foreground/10">
           <h2 className="font-heading text-base font-semibold">Tehnologija</h2>
           <p>
             Stran je zgrajena z Next.js, React, TypeScript in Tailwind CSS.
             Zemljevid uporablja MapLibre GL JS. Vsi podatki so statično generirani
             ob gradnji (SSG) za hitro nalaganje.
           </p>
+          </div>
         </section>
 
         <section>
+          <div className="rounded-lg bg-card p-5 ring-1 ring-foreground/10">
           <h2 className="font-heading text-base font-semibold">Opombe</h2>
           <p>
             Ta stran ni uradni vir rezultatov. Za uradne rezultate obiščite{" "}
@@ -87,8 +97,11 @@ export default function OProjektuPage() {
             </a>
             . Podatki se lahko razlikujejo od končnih uradnih rezultatov.
           </p>
+          </div>
         </section>
       </div>
+
+      <Link href="/" className="mt-8 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">← Nazaj na pregled</Link>
     </div>
   )
 }

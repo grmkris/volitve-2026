@@ -2,6 +2,7 @@ import { getNationalResults } from "@/lib/data/fetchers"
 import { formatNumber, formatPercent } from "@/lib/data/format"
 import { PageHeader } from "@/components/layout/page-header"
 import { TurnoutGauge } from "@/components/charts/turnout-gauge"
+import { OkrajiTurnoutTable } from "@/components/tables/okraji-turnout-table"
 import { StatCard } from "@/components/cards/stat-card"
 
 export default async function UdelezbaPage() {
@@ -66,6 +67,7 @@ export default async function UdelezbaPage() {
         <div className="space-y-2">
           {enoteByTurnout.map((enota, i) => {
             const pct = enota.turnout.percentage
+            const barHue = Math.round(Math.min(140, Math.max(40, 40 + (pct - 0.60) * 600)))
             return (
               <div key={enota.rpeid} className="flex items-center gap-3">
                 <span className="w-6 shrink-0 text-right text-xs text-muted-foreground">
@@ -76,8 +78,8 @@ export default async function UdelezbaPage() {
                 </span>
                 <div className="relative h-5 flex-1">
                   <div
-                    className="absolute inset-y-0 left-0 rounded-r-sm bg-primary/70"
-                    style={{ width: `${pct * 100}%` }}
+                    className="absolute inset-y-0 left-0 rounded-r-sm"
+                    style={{ width: `${pct * 100}%`, backgroundColor: `hsl(${barHue}, 60%, 45%)` }}
                   />
                 </div>
                 <span className="w-16 shrink-0 text-right font-mono text-xs tabular-nums">
@@ -97,49 +99,7 @@ export default async function UdelezbaPage() {
         <p className="mb-3 text-xs text-muted-foreground">
           Vseh {okrajiByTurnout.length} okrajev, razvrščenih po udeležbi
         </p>
-        <div className="overflow-x-auto">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="border-b border-border/50 text-left text-muted-foreground">
-                <th className="pb-2 pr-4 font-medium">#</th>
-                <th className="pb-2 pr-4 font-medium">Okraj</th>
-                <th className="pb-2 pr-4 font-medium">Enota</th>
-                <th className="pb-2 pr-4 text-right font-medium">
-                  Glasovalo
-                </th>
-                <th className="pb-2 pr-4 text-right font-medium">
-                  Vpisanih
-                </th>
-                <th className="pb-2 text-right font-medium">Udeležba</th>
-              </tr>
-            </thead>
-            <tbody>
-              {okrajiByTurnout.map((okraj, i) => (
-                <tr
-                  key={okraj.rpeid}
-                  className="border-b border-border/30 last:border-0"
-                >
-                  <td className="py-1.5 pr-4 text-muted-foreground">
-                    {i + 1}
-                  </td>
-                  <td className="py-1.5 pr-4 font-medium">{okraj.name}</td>
-                  <td className="py-1.5 pr-4 text-muted-foreground">
-                    {okraj.enotaName}
-                  </td>
-                  <td className="py-1.5 pr-4 text-right font-mono tabular-nums">
-                    {formatNumber(okraj.turnout.voted)}
-                  </td>
-                  <td className="py-1.5 pr-4 text-right font-mono tabular-nums text-muted-foreground">
-                    {formatNumber(okraj.turnout.registered)}
-                  </td>
-                  <td className="py-1.5 text-right font-mono tabular-nums font-medium">
-                    {formatPercent(okraj.turnout.percentage)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <OkrajiTurnoutTable okraji={okrajiByTurnout} />
       </section>
     </div>
   )

@@ -54,7 +54,13 @@ export function TurnoutGauge({
           y={size / 2}
           textAnchor="middle"
           dominantBaseline="central"
-          className="fill-foreground font-heading text-2xl font-bold"
+          className="text-foreground"
+          style={{
+            fontFamily: "var(--font-heading), serif",
+            fontSize: "1.5rem",
+            fontWeight: 700,
+            fill: "currentColor",
+          }}
         >
           {formatPercent(percentage)}
         </text>

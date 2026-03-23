@@ -108,7 +108,7 @@ export default async function StrankaPage({
               {enotaBreakdown.map((eb) => (
                 <tr
                   key={eb.enotaSt}
-                  className="border-b border-border/30 last:border-0"
+                  className="border-b border-border/30 last:border-0 hover:bg-muted/30 transition-colors"
                 >
                   <td className="py-2 pr-4 font-medium">{eb.enotaName}</td>
                   <td className="py-2 pr-4 text-right font-mono tabular-nums">
@@ -116,8 +116,8 @@ export default async function StrankaPage({
                   </td>
                   <td className="py-2 pr-4 text-right font-mono tabular-nums">
                     <div className="flex items-center justify-end gap-2">
-                      <div className="hidden w-16 md:block">
-                        <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
+                      <div className="hidden w-20 md:block">
+                        <div className="h-3 w-full overflow-hidden rounded-full bg-muted">
                           <div
                             className="h-full rounded-full"
                             style={{
@@ -162,7 +162,7 @@ export default async function StrankaPage({
                 {elected.map((c) => (
                   <tr
                     key={c.id}
-                    className="border-b border-border/30 last:border-0"
+                    className="border-b border-border/30 last:border-0 hover:bg-muted/30 transition-colors"
                   >
                     <td className="py-2 pr-4 font-medium">{c.name}</td>
                     <td className="py-2 pr-4 text-muted-foreground">

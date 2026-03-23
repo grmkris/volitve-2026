@@ -34,7 +34,7 @@ export function MapGeoJSONLayer({
   onClick,
   onHover,
 }: MapGeoJSONLayerProps) {
-  const { map, isLoaded } = useMap()
+  const { map } = useMap()
   const addedRef = useRef(false)
   const onClickRef = useRef(onClick)
   const onHoverRef = useRef(onHover)
@@ -45,114 +45,120 @@ export function MapGeoJSONLayer({
   const fillLayerId = `${id}-fill`
   const lineLayerId = `${id}-line`
 
-  // Add source + layers
+  // Add source + layers — decoupled from context isLoaded to avoid
+  // infinite spinner when Carto basemap style takes long to load
   useEffect(() => {
-    if (!map || !isLoaded || addedRef.current) return
+    if (!map || addedRef.current) return
 
-    // Add source
-    if (!map.getSource(sourceId)) {
-      map.addSource(sourceId, {
-        type: "geojson",
-        data,
-        promoteId: "VDV_ID",
-      })
-    }
-
-    // Add fill layer
-    if (!map.getLayer(fillLayerId)) {
-      map.addLayer({
-        id: fillLayerId,
-        type: "fill",
-        source: sourceId,
-        paint: {
-          "fill-color": fillColor as string,
-          "fill-opacity": fillOpacity,
-        },
-        ...(minZoom != null ? { minzoom: minZoom } : {}),
-        ...(maxZoom != null ? { maxzoom: maxZoom } : {}),
-        layout: {
-          visibility: visible ? "visible" : "none",
-        },
-      })
-    }
-
-    // Add line layer
-    if (!map.getLayer(lineLayerId)) {
-      map.addLayer({
-        id: lineLayerId,
-        type: "line",
-        source: sourceId,
-        paint: {
-          "line-color": lineColor,
-          "line-width": lineWidth,
-          "line-opacity": lineOpacity,
-        },
-        ...(minZoom != null ? { minzoom: minZoom } : {}),
-        ...(maxZoom != null ? { maxzoom: maxZoom } : {}),
-        layout: {
-          visibility: visible ? "visible" : "none",
-        },
-      })
-    }
-
-    // Click handler
-    const handleClick = (e: maplibregl.MapMouseEvent & { features?: maplibregl.MapGeoJSONFeature[] }) => {
-      const feat = e.features?.[0]
-      if (feat) {
-        onClickRef.current?.(feat as unknown as GeoJSON.Feature)
-      }
-    }
-
-    // Hover handlers
     let hoveredId: string | number | null = null
+    const cleanupFns: (() => void)[] = []
 
-    const handleMouseMove = (e: maplibregl.MapMouseEvent & { features?: maplibregl.MapGeoJSONFeature[] }) => {
-      const feat = e.features?.[0]
-      if (feat) {
-        try {
-          map.getCanvas().style.cursor = "pointer"
-          if (hoveredId !== null) {
-            map.setFeatureState({ source: sourceId, id: hoveredId }, { hover: false })
-          }
-          hoveredId = feat.id ?? null
-          if (hoveredId !== null) {
-            map.setFeatureState({ source: sourceId, id: hoveredId }, { hover: true })
-          }
-        } catch { /* map destroyed during navigation */ }
-        onHoverRef.current?.(feat as unknown as GeoJSON.Feature)
-      }
-    }
-
-    const handleMouseLeave = () => {
+    function addLayers() {
+      if (!map || addedRef.current) return
       try {
-        map.getCanvas().style.cursor = ""
-        if (hoveredId !== null) {
-          map.setFeatureState({ source: sourceId, id: hoveredId }, { hover: false })
-          hoveredId = null
+        if (!map.getSource(sourceId)) {
+          map.addSource(sourceId, {
+            type: "geojson",
+            data,
+            promoteId: "VDV_ID",
+          })
         }
-      } catch { /* map destroyed during navigation */ }
-      onHoverRef.current?.(null)
+        if (!map.getLayer(fillLayerId)) {
+          map.addLayer({
+            id: fillLayerId,
+            type: "fill",
+            source: sourceId,
+            paint: {
+              "fill-color": fillColor as string,
+              "fill-opacity": fillOpacity,
+            },
+            ...(minZoom != null ? { minzoom: minZoom } : {}),
+            ...(maxZoom != null ? { maxzoom: maxZoom } : {}),
+            layout: { visibility: visible ? "visible" : "none" },
+          })
+        }
+        if (!map.getLayer(lineLayerId)) {
+          map.addLayer({
+            id: lineLayerId,
+            type: "line",
+            source: sourceId,
+            paint: {
+              "line-color": lineColor,
+              "line-width": lineWidth,
+              "line-opacity": lineOpacity,
+            },
+            ...(minZoom != null ? { minzoom: minZoom } : {}),
+            ...(maxZoom != null ? { maxzoom: maxZoom } : {}),
+            layout: { visibility: visible ? "visible" : "none" },
+          })
+        }
+
+        const handleClick = (e: maplibregl.MapMouseEvent & { features?: maplibregl.MapGeoJSONFeature[] }) => {
+          const feat = e.features?.[0]
+          if (feat) onClickRef.current?.(feat as unknown as GeoJSON.Feature)
+        }
+        const handleMouseMove = (e: maplibregl.MapMouseEvent & { features?: maplibregl.MapGeoJSONFeature[] }) => {
+          const feat = e.features?.[0]
+          if (feat) {
+            try {
+              map.getCanvas().style.cursor = "pointer"
+              if (hoveredId !== null) map.setFeatureState({ source: sourceId, id: hoveredId }, { hover: false })
+              hoveredId = feat.id ?? null
+              if (hoveredId !== null) map.setFeatureState({ source: sourceId, id: hoveredId }, { hover: true })
+            } catch { /* map destroyed */ }
+            onHoverRef.current?.(feat as unknown as GeoJSON.Feature)
+          }
+        }
+        const handleMouseLeave = () => {
+          try {
+            map.getCanvas().style.cursor = ""
+            if (hoveredId !== null) {
+              map.setFeatureState({ source: sourceId, id: hoveredId }, { hover: false })
+              hoveredId = null
+            }
+          } catch { /* map destroyed */ }
+          onHoverRef.current?.(null)
+        }
+
+        map.on("click", fillLayerId, handleClick)
+        map.on("mousemove", fillLayerId, handleMouseMove)
+        map.on("mouseleave", fillLayerId, handleMouseLeave)
+
+        addedRef.current = true
+
+        cleanupFns.push(() => {
+          try {
+            map.off("click", fillLayerId, handleClick)
+            map.off("mousemove", fillLayerId, handleMouseMove)
+            map.off("mouseleave", fillLayerId, handleMouseLeave)
+            if (map.getLayer(lineLayerId)) map.removeLayer(lineLayerId)
+            if (map.getLayer(fillLayerId)) map.removeLayer(fillLayerId)
+            if (map.getSource(sourceId)) map.removeSource(sourceId)
+          } catch { /* map destroyed */ }
+          addedRef.current = false
+        })
+      } catch { /* style not ready yet */ }
     }
 
-    map.on("click", fillLayerId, handleClick)
-    map.on("mousemove", fillLayerId, handleMouseMove)
-    map.on("mouseleave", fillLayerId, handleMouseLeave)
-
-    addedRef.current = true
-
-    return () => {
-      try {
-        map.off("click", fillLayerId, handleClick)
-        map.off("mousemove", fillLayerId, handleMouseMove)
-        map.off("mouseleave", fillLayerId, handleMouseLeave)
-        if (map.getLayer(lineLayerId)) map.removeLayer(lineLayerId)
-        if (map.getLayer(fillLayerId)) map.removeLayer(fillLayerId)
-        if (map.getSource(sourceId)) map.removeSource(sourceId)
-      } catch { /* map destroyed during navigation */ }
-      addedRef.current = false
+    // Try immediately if style is ready, otherwise wait for styledata event
+    if (map.isStyleLoaded()) {
+      addLayers()
+    } else {
+      const onStyleReady = () => { if (!addedRef.current) addLayers() }
+      map.once("styledata", onStyleReady)
+      // Fallback: retry after delay
+      const timer = setTimeout(() => {
+        if (!addedRef.current) addLayers()
+      }, 3000)
+      cleanupFns.push(() => {
+        map.off("styledata", onStyleReady)
+        clearTimeout(timer)
+      })
     }
+
+    return () => { cleanupFns.forEach((fn) => fn()) }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [map, isLoaded])
+  }, [map])
 
   // Update data
   useEffect(() => {

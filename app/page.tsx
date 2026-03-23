@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { getNationalResults } from "@/lib/data/fetchers"
 import { formatNumber, formatPercent, formatDate } from "@/lib/data/format"
 import { TOTAL_SEATS } from "@/lib/data/constants"
@@ -5,6 +6,7 @@ import { WinnerBanner } from "@/components/cards/winner-banner"
 import { ParliamentChart } from "@/components/parliament/parliament-chart"
 import { PartyBarChart } from "@/components/charts/party-bar-chart"
 import { StatCard } from "@/components/cards/stat-card"
+import { CandidatesPreview } from "@/components/cards/candidates-preview"
 
 export default async function HomePage() {
   const data = await getNationalResults()
@@ -16,13 +18,16 @@ export default async function HomePage() {
       <WinnerBanner winner={winner} totalSeats={TOTAL_SEATS} />
 
       {/* Parliament + Stats */}
-      <div className="mt-8 grid gap-8 md:grid-cols-[1fr_280px]">
+      <div className="mt-10 grid gap-8 md:mt-12 md:grid-cols-[1fr_280px]">
         {/* Parliament chart */}
         <section>
           <h2 className="mb-4 font-heading text-lg font-semibold">
             Državni zbor
           </h2>
-          <ParliamentChart parties={data.parliamentaryParties} totalSeats={TOTAL_SEATS} />
+          <ParliamentChart
+            parties={data.parliamentaryParties}
+            totalSeats={TOTAL_SEATS}
+          />
         </section>
 
         {/* Key stats */}
@@ -50,16 +55,20 @@ export default async function HomePage() {
         </aside>
       </div>
 
+      <hr className="my-12 border-border/30" />
+
       {/* Party Results */}
-      <section className="mt-10">
+      <section>
         <h2 className="mb-4 font-heading text-lg font-semibold">
           Rezultati po strankah
         </h2>
-        <PartyBarChart parties={data.parties} />
+        <PartyBarChart parties={data.parties} collapsible />
       </section>
 
+      <hr className="my-12 border-border/30" />
+
       {/* Enote overview */}
-      <section className="mt-10">
+      <section>
         <h2 className="mb-4 font-heading text-lg font-semibold">
           Rezultati po volilnih enotah
         </h2>
@@ -67,9 +76,10 @@ export default async function HomePage() {
           {data.enote.map((enota) => {
             const winnerParty = data.partyMap.get(enota.winnerId)
             return (
-              <div
+              <Link
                 key={enota.rpeid}
-                className="relative overflow-hidden rounded-lg bg-card p-4 ring-1 ring-foreground/10"
+                href={`/enota/${enota.st}`}
+                className="relative overflow-hidden rounded-lg bg-card p-4 ring-1 ring-foreground/10 transition-all hover:shadow-md hover:ring-foreground/20"
               >
                 <div
                   className="absolute inset-y-0 left-0 w-1"
@@ -96,14 +106,16 @@ export default async function HomePage() {
                     {formatPercent(enota.turnout.percentage)}
                   </span>
                 </div>
-              </div>
+              </Link>
             )
           })}
         </div>
       </section>
 
+      <hr className="my-12 border-border/30" />
+
       {/* Elected candidates preview */}
-      <section className="mt-10">
+      <section>
         <h2 className="mb-4 font-heading text-lg font-semibold">
           Izvoljeni poslanci
         </h2>
@@ -111,55 +123,21 @@ export default async function HomePage() {
           {data.electedCandidates.length} izvoljenih poslancev, razvrščenih po
           številu glasov
         </p>
-        <div className="overflow-x-auto">
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="border-b border-border/50 text-left text-muted-foreground">
-                <th className="pb-2 pr-4 font-medium">Poslanec</th>
-                <th className="pb-2 pr-4 font-medium">Stranka</th>
-                <th className="pb-2 pr-4 text-right font-medium">Glasovi</th>
-                <th className="pb-2 text-right font-medium">Delež</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.electedCandidates.slice(0, 20).map((c) => {
-                const party = data.partyMap.get(c.partyId)
-                return (
-                  <tr
-                    key={c.id}
-                    className="border-b border-border/30 last:border-0"
-                  >
-                    <td className="py-2 pr-4 font-medium">{c.name}</td>
-                    <td className="py-2 pr-4">
-                      <span className="flex items-center gap-1.5">
-                        <span
-                          className="inline-block size-2 rounded-full"
-                          style={{
-                            backgroundColor: party?.color ?? "#888",
-                          }}
-                        />
-                        <span className="text-muted-foreground">
-                          {party?.abbrev}
-                        </span>
-                      </span>
-                    </td>
-                    <td className="py-2 pr-4 text-right font-mono tabular-nums">
-                      {formatNumber(c.votes)}
-                    </td>
-                    <td className="py-2 text-right font-mono tabular-nums text-muted-foreground">
-                      {formatPercent(c.percentage)}
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
-        {data.electedCandidates.length > 20 && (
-          <p className="mt-2 text-xs text-muted-foreground">
-            Prikazanih prvih 20 od {data.electedCandidates.length} poslancev.
-          </p>
-        )}
+        <CandidatesPreview
+          candidates={data.electedCandidates.map((c) => ({
+            id: c.id,
+            name: c.name,
+            partyId: c.partyId,
+            votes: c.votes,
+            percentage: c.percentage,
+          }))}
+          partyMap={Object.fromEntries(
+            Array.from(data.partyMap.entries()).map(([id, p]) => [
+              id,
+              { color: p.color, abbrev: p.abbrev },
+            ])
+          )}
+        />
       </section>
     </div>
   )

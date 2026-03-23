@@ -7,6 +7,7 @@ import { Map, MapControls } from "@/components/ui/map"
 import { MapGeoJSONLayer } from "./map-geojson-layer"
 import { loadTopoJSON } from "@/lib/geo/loader"
 import type { EnotaResult, OkrajResult, PartyInfo } from "@/lib/data/types"
+import { cn } from "@/lib/utils"
 
 export interface SelectedRegion {
   type: "enota" | "okraj"
@@ -34,10 +35,11 @@ export function ElectionMap({
 }: ElectionMapProps) {
   const [zoom, setZoom] = useState(7.5)
 
-  const { data: enoteGeo } = useQuery({
+  const { data: enoteGeo, error: enoteError } = useQuery({
     queryKey: ["geo", "enote"],
     queryFn: () => loadTopoJSON("/geo/enote.topojson"),
     staleTime: Infinity,
+    retry: 2,
   })
 
   const { data: okrajiGeo } = useQuery({
@@ -45,11 +47,15 @@ export function ElectionMap({
     queryFn: () => loadTopoJSON("/geo/okraji.topojson"),
     enabled: zoom >= 7.5,
     staleTime: Infinity,
+    retry: 2,
   })
 
   // Build okraj lookup: rpeid → OkrajResult
   const okrajLookup = useMemo(() => {
-    const lookup = new globalThis.Map<string, OkrajResult & { enotaSt: number }>()
+    const lookup = new globalThis.Map<
+      string,
+      OkrajResult & { enotaSt: number }
+    >()
     for (const enota of enote) {
       for (const okraj of enota.okraji) {
         lookup.set(okraj.rpeid, { ...okraj, enotaSt: enota.st })
@@ -67,7 +73,12 @@ export function ElectionMap({
         entries.push(Number(enota.rpeid), party.color)
       }
     }
-    return ["match", ["get", "VDV_ID"], ...entries, "#cccccc"] as unknown as ExpressionSpecification
+    return [
+      "match",
+      ["get", "VDV_ID"],
+      ...entries,
+      "#cccccc",
+    ] as unknown as ExpressionSpecification
   }, [enote, partyMap])
 
   // Build color expression for okraji layer
@@ -81,7 +92,12 @@ export function ElectionMap({
         }
       }
     }
-    return ["match", ["get", "VDV_ID"], ...entries, "#cccccc"] as unknown as ExpressionSpecification
+    return [
+      "match",
+      ["get", "VDV_ID"],
+      ...entries,
+      "#cccccc",
+    ] as unknown as ExpressionSpecification
   }, [enote, partyMap])
 
   const showOkraji = zoom >= 8
@@ -136,6 +152,23 @@ export function ElectionMap({
     },
     [okrajLookup, onRegionSelect]
   )
+
+  // Error state — rendered after all hooks
+  if (enoteError) {
+    return (
+      <div
+        className={cn(
+          "flex items-center justify-center bg-card",
+          className
+        )}
+      >
+        <div className="text-center text-sm text-muted-foreground">
+          <p>Zemljevid ni na voljo.</p>
+          <p className="mt-1 text-xs">Napaka pri nalaganju podatkov.</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <Map

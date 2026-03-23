@@ -51,6 +51,7 @@ export default async function EnotaPage({
         <StatCard
           label="Zmagovalec"
           value={winnerParty?.abbrev ?? "–"}
+          accentColor={winnerParty?.color}
         />
         <StatCard
           label="Udeležba"
@@ -99,7 +100,7 @@ export default async function EnotaPage({
                 return (
                   <tr
                     key={okraj.rpeid}
-                    className="border-b border-border/30 last:border-0"
+                    className="border-b border-border/30 last:border-0 hover:bg-muted/30 transition-colors"
                   >
                     <td className="py-2 pr-4 text-muted-foreground">
                       {okraj.st}
@@ -160,7 +161,7 @@ export default async function EnotaPage({
                   return (
                     <tr
                       key={c.id}
-                      className="border-b border-border/30 last:border-0"
+                      className="border-b border-border/30 last:border-0 hover:bg-muted/30 transition-colors"
                     >
                       <td className="py-2 pr-4 font-medium">{c.name}</td>
                       <td className="py-2 pr-4">

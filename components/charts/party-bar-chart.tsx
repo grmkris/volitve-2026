@@ -1,31 +1,65 @@
+"use client"
+
+import { useState } from "react"
 import type { Party } from "@/lib/data/types"
 import { formatPercent } from "@/lib/data/format"
 import { cn } from "@/lib/utils"
+
+/** Returns dark or light text class based on background color luminance */
+function getContrastText(hex: string): string {
+  const c = hex.replace("#", "")
+  const r = parseInt(c.slice(0, 2), 16)
+  const g = parseInt(c.slice(2, 4), 16)
+  const b = parseInt(c.slice(4, 6), 16)
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255
+  return luminance > 0.55 ? "text-gray-900" : "text-white"
+}
 
 interface PartyBarChartProps {
   parties: Party[]
   /** Only show parties with seats in parliament */
   parliamentaryOnly?: boolean
+  /** Allow collapsing non-parliamentary parties */
+  collapsible?: boolean
   className?: string
 }
 
 export function PartyBarChart({
   parties,
   parliamentaryOnly = false,
+  collapsible = false,
   className,
 }: PartyBarChartProps) {
-  const filtered = parliamentaryOnly
-    ? parties.filter((p) => p.seats > 0)
-    : parties
+  const [expanded, setExpanded] = useState(false)
 
-  const sorted = [...filtered].sort((a, b) => b.votes - a.votes)
+  const sorted = [...parties].sort((a, b) => b.votes - a.votes)
+  const parliamentary = sorted.filter((p) => p.seats > 0)
+  const nonParliamentary = sorted.filter((p) => p.seats === 0)
+
+  const visible = parliamentaryOnly
+    ? parliamentary
+    : collapsible && !expanded
+      ? parliamentary
+      : sorted
+
   const maxPrc = sorted[0]?.percentage ?? 1
 
   return (
     <div className={cn("space-y-2", className)}>
-      {sorted.map((party) => (
+      {visible.map((party) => (
         <PartyBar key={party.id} party={party} maxPrc={maxPrc} />
       ))}
+      {collapsible && !parliamentaryOnly && nonParliamentary.length > 0 && (
+        <button
+          type="button"
+          onClick={() => setExpanded((v) => !v)}
+          className="mt-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
+        >
+          {expanded
+            ? "Skrij stranke pod pragom"
+            : `Pokaži vse stranke (+${nonParliamentary.length} pod pragom)`}
+        </button>
+      )}
     </div>
   )
 }
@@ -33,6 +67,7 @@ export function PartyBarChart({
 function PartyBar({ party, maxPrc }: { party: Party; maxPrc: number }) {
   const widthPct = (party.percentage / maxPrc) * 100
   const isParliamentary = party.seats > 0
+  const textClass = getContrastText(party.color)
 
   return (
     <div
@@ -66,7 +101,12 @@ function PartyBar({ party, maxPrc }: { party: Party; maxPrc: number }) {
         <div className="relative flex w-full items-center justify-between px-2">
           {/* Seats badge inside bar */}
           {party.seats > 0 && (
-            <span className="font-heading text-xs font-bold text-white drop-shadow-sm">
+            <span
+              className={cn(
+                "font-heading text-xs font-bold drop-shadow-sm",
+                textClass
+              )}
+            >
               {party.seats}
             </span>
           )}

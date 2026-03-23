@@ -8,7 +8,7 @@ interface WinnerBannerProps {
 
 export function WinnerBanner({ winner, totalSeats }: WinnerBannerProps) {
   return (
-    <div className="relative overflow-hidden rounded-xl p-6 md:p-8">
+    <div className="relative overflow-hidden rounded-xl bg-card p-6 ring-1 ring-foreground/10 md:p-8">
       {/* Accent bar */}
       <div
         className="absolute inset-y-0 left-0 w-1.5"

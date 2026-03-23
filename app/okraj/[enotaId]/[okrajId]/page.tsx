@@ -72,7 +72,7 @@ export default async function OkrajPage({
 
       {/* Summary */}
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-        <StatCard label="Zmagovalec" value={winnerParty?.abbrev ?? "–"} />
+        <StatCard label="Zmagovalec" value={winnerParty?.abbrev ?? "–"} accentColor={winnerParty?.color} />
         <StatCard
           label="Razlika"
           value={`+${formatPercent(okraj.margin)}`}
@@ -146,7 +146,7 @@ export default async function OkrajPage({
                 return (
                   <tr
                     key={c.id}
-                    className={`border-b border-border/30 last:border-0 ${c.elected ? "bg-primary/5" : ""}`}
+                    className={`border-b border-border/30 last:border-0 hover:bg-muted/30 transition-colors ${c.elected ? "bg-primary/5" : ""}`}
                   >
                     <td className="py-2 pr-4 font-medium">
                       {c.name}
@@ -205,7 +205,7 @@ export default async function OkrajPage({
                 {stations.map((s) => (
                   <tr
                     key={s.st}
-                    className="border-b border-border/30 last:border-0"
+                    className="border-b border-border/30 last:border-0 hover:bg-muted/30 transition-colors"
                   >
                     <td className="py-2 pr-4 text-muted-foreground">{s.st}</td>
                     <td className="py-2 pr-4">{s.naz}</td>
