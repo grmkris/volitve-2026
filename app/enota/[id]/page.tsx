@@ -1,17 +1,14 @@
 import Link from "next/link"
-import {
-  fetchRezultati,
-  fetchUdelezba,
-  fetchKandidati,
-} from "@/lib/data/fetchers"
-import { buildNationalResults } from "@/lib/data/transforms"
+import { getNationalResults } from "@/lib/data/fetchers"
+import { toPartyList } from "@/lib/data/transforms"
 import { formatNumber, formatPercent } from "@/lib/data/format"
+import { NUM_ENOTE } from "@/lib/data/constants"
 import { PageHeader } from "@/components/layout/page-header"
 import { PartyBarChart } from "@/components/charts/party-bar-chart"
 import { StatCard } from "@/components/cards/stat-card"
 
 export async function generateStaticParams() {
-  return Array.from({ length: 8 }, (_, i) => ({ id: String(i + 1) }))
+  return Array.from({ length: NUM_ENOTE }, (_, i) => ({ id: String(i + 1) }))
 }
 
 export default async function EnotaPage({
@@ -22,13 +19,7 @@ export default async function EnotaPage({
   const { id } = await params
   const enotaSt = Number(id)
 
-  const [rezultati, udelezba, kandidati] = await Promise.all([
-    fetchRezultati(),
-    fetchUdelezba(),
-    fetchKandidati(),
-  ])
-
-  const data = buildNationalResults(rezultati, udelezba, kandidati)
+  const data = await getNationalResults()
   const enota = data.enote.find((e) => e.st === enotaSt)
 
   if (!enota) {
@@ -38,29 +29,10 @@ export default async function EnotaPage({
   const winnerParty = data.partyMap.get(enota.winnerId)
 
   // Build Party objects for bar chart from enota results
-  const enotaParties = enota.parties
-    .map((rp) => {
-      const p = data.partyMap.get(rp.partyId)
-      if (!p) return null
-      return {
-        id: rp.partyId,
-        name: p.name,
-        abbrev: p.abbrev,
-        color: p.color,
-        votes: rp.votes,
-        percentage: rp.percentage,
-        seats: rp.seats,
-      }
-    })
-    .filter(Boolean) as {
-    id: number
-    name: string
-    abbrev: string
-    color: string
-    votes: number
-    percentage: number
-    seats: number
-  }[]
+  const enotaParties = toPartyList({
+    regionParties: enota.parties,
+    partyMap: data.partyMap,
+  })
 
   const electedHere = data.electedCandidates.filter(
     (c) => c.enotaSt === enotaSt

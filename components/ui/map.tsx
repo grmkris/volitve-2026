@@ -589,7 +589,7 @@ function MarkerPopup({
           type="button"
           onClick={handleClose}
           className="ring-offset-background focus:ring-ring absolute top-1 right-1 z-10 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-none"
-          aria-label="Close popup"
+          aria-label="Zapri"
         >
           <X className="h-4 w-4" />
           <span className="sr-only">Close</span>
@@ -837,10 +837,10 @@ function MapControls({
     >
       {showZoom && (
         <ControlGroup>
-          <ControlButton onClick={handleZoomIn} label="Zoom in">
+          <ControlButton onClick={handleZoomIn} label="Povečaj">
             <Plus className="size-4" />
           </ControlButton>
-          <ControlButton onClick={handleZoomOut} label="Zoom out">
+          <ControlButton onClick={handleZoomOut} label="Pomanjšaj">
             <Minus className="size-4" />
           </ControlButton>
         </ControlGroup>
@@ -854,7 +854,7 @@ function MapControls({
         <ControlGroup>
           <ControlButton
             onClick={handleLocate}
-            label="Find my location"
+            label="Moja lokacija"
             disabled={waitingForLocation}
           >
             {waitingForLocation ? (
@@ -867,7 +867,7 @@ function MapControls({
       )}
       {showFullscreen && (
         <ControlGroup>
-          <ControlButton onClick={handleFullscreen} label="Toggle fullscreen">
+          <ControlButton onClick={handleFullscreen} label="Celozaslonski način">
             <CornersOut className="size-4" />
           </ControlButton>
         </ControlGroup>
@@ -902,7 +902,7 @@ function CompassButton({ onClick }: { onClick: () => void }) {
   }, [map]);
 
   return (
-    <ControlButton onClick={onClick} label="Reset bearing to north">
+    <ControlButton onClick={onClick} label="Ponastavi sever">
       <svg
         ref={compassRef}
         viewBox="0 0 24 24"
@@ -1015,7 +1015,7 @@ function MapPopup({
           type="button"
           onClick={handleClose}
           className="ring-offset-background focus:ring-ring absolute top-1 right-1 z-10 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-none"
-          aria-label="Close popup"
+          aria-label="Zapri"
         >
           <X className="h-4 w-4" />
           <span className="sr-only">Close</span>

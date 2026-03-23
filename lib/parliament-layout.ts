@@ -33,21 +33,18 @@ function distributeSeats(totalSeats: number, numRows: number): number[] {
   return rows
 }
 
-/**
- * Generate seat positions for a hemicycle.
- *
- * @param totalSeats Total number of seats (e.g., 90)
- * @param numRows Number of concentric arcs (default: 5)
- * @param innerRadius Inner arc radius (default: 100)
- * @param outerRadius Outer arc radius (default: 200)
- * @param seatRadius Radius of each seat dot (default: 8)
- */
+interface HemicycleOptions {
+  numRows?: number
+  innerRadius?: number
+  outerRadius?: number
+}
+
+/** Generate seat positions for a hemicycle (semicircle) layout. */
 export function computeHemicycleLayout(
   totalSeats: number,
-  numRows = 5,
-  innerRadius = 100,
-  outerRadius = 200,
+  options?: HemicycleOptions,
 ): SeatPosition[] {
+  const { numRows = 5, innerRadius = 100, outerRadius = 200 } = options ?? {}
   const seats: SeatPosition[] = []
   const rowDistribution = distributeSeats(totalSeats, numRows)
   const radiusStep =

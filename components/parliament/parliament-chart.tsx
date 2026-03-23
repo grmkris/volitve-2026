@@ -7,34 +7,23 @@ import {
   type AssignedSeat,
 } from "@/lib/parliament-layout"
 import type { Party } from "@/lib/data/types"
+import { SPECTRUM_ORDER, TOTAL_SEATS } from "@/lib/data/constants"
 
 interface ParliamentChartProps {
   parties: Party[]
-  /** Total seats in parliament */
   totalSeats?: number
   className?: string
 }
 
-/** Political spectrum order for seat assignment (left → right) */
-const SPECTRUM_ORDER: Record<number, number> = {
-  107760: 1, // LEVICA IN VESNA
-  107753: 2, // SD
-  107754: 3, // SVOBODA
-  107755: 4, // DEMOKRATI
-  107752: 5, // RESNI.CA
-  107749: 6, // NSi, SLS, FOKUS
-  107757: 7, // SDS
-}
-
 export function ParliamentChart({
   parties,
-  totalSeats = 90,
+  totalSeats = TOTAL_SEATS,
   className,
 }: ParliamentChartProps) {
   const [hoveredParty, setHoveredParty] = useState<number | null>(null)
 
   const seats = useMemo(() => {
-    const layout = computeHemicycleLayout(totalSeats, 5, 100, 200)
+    const layout = computeHemicycleLayout(totalSeats)
 
     // Sort parties by political spectrum for seat assignment
     const parliamentary = parties

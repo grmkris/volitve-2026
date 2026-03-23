@@ -1,5 +1,4 @@
-import { fetchRezultati, fetchUdelezba, fetchKandidati } from "@/lib/data/fetchers"
-import { buildNationalResults } from "@/lib/data/transforms"
+import { fetchRezultati, getNationalResults } from "@/lib/data/fetchers"
 import { formatNumber, formatPercent } from "@/lib/data/format"
 import { partySlug } from "@/lib/data/constants"
 import { PageHeader } from "@/components/layout/page-header"
@@ -19,13 +18,7 @@ export default async function StrankaPage({
 }) {
   const { slug } = await params
 
-  const [rezultati, udelezba, kandidati] = await Promise.all([
-    fetchRezultati(),
-    fetchUdelezba(),
-    fetchKandidati(),
-  ])
-
-  const data = buildNationalResults(rezultati, udelezba, kandidati)
+  const data = await getNationalResults()
   const party = data.parties.find((p) => partySlug(p.abbrev) === slug)
 
   if (!party) {

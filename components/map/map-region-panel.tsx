@@ -3,13 +3,9 @@
 import Link from "next/link"
 import { X, ArrowRight } from "@phosphor-icons/react"
 import type { SelectedRegion } from "./election-map"
+import type { PartyInfo } from "@/lib/data/types"
 import { formatPercent, formatNumber } from "@/lib/data/format"
 import { cn } from "@/lib/utils"
-
-interface PartyInfo {
-  color: string
-  abbrev: string
-}
 
 interface MapRegionPanelProps {
   region: SelectedRegion | null

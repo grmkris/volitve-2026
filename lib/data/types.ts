@@ -234,6 +234,12 @@ export interface CandidateResult {
   okrajRpeids: string[]
 }
 
+/** Lightweight party reference for map/panel components */
+export interface PartyInfo {
+  color: string
+  abbrev: string
+}
+
 export interface NationalResults {
   timestamp: Date
   parties: Party[] // sorted by votes desc

@@ -1,40 +1,19 @@
-import {
-  fetchRezultati,
-  fetchUdelezba,
-  fetchKandidati,
-} from "@/lib/data/fetchers"
-import { buildNationalResults } from "@/lib/data/transforms"
+import { getNationalResults } from "@/lib/data/fetchers"
 import { formatNumber, formatPercent, formatDate } from "@/lib/data/format"
+import { TOTAL_SEATS } from "@/lib/data/constants"
 import { WinnerBanner } from "@/components/cards/winner-banner"
 import { ParliamentChart } from "@/components/parliament/parliament-chart"
 import { PartyBarChart } from "@/components/charts/party-bar-chart"
 import { StatCard } from "@/components/cards/stat-card"
 
 export default async function HomePage() {
-  const [rezultati, udelezba, kandidati] = await Promise.all([
-    fetchRezultati(),
-    fetchUdelezba(),
-    fetchKandidati(),
-  ])
-
-  const data = buildNationalResults(rezultati, udelezba, kandidati)
+  const data = await getNationalResults()
   const winner = data.parties[0]
-
-  // Serialize parties for client components (Map can't be serialized)
-  const partiesForClient = data.parliamentaryParties.map((p) => ({
-    id: p.id,
-    name: p.name,
-    abbrev: p.abbrev,
-    color: p.color,
-    votes: p.votes,
-    percentage: p.percentage,
-    seats: p.seats,
-  }))
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 md:py-10">
       {/* Winner Banner */}
-      <WinnerBanner winner={winner} totalSeats={90} />
+      <WinnerBanner winner={winner} totalSeats={TOTAL_SEATS} />
 
       {/* Parliament + Stats */}
       <div className="mt-8 grid gap-8 md:grid-cols-[1fr_280px]">
@@ -43,7 +22,7 @@ export default async function HomePage() {
           <h2 className="mb-4 font-heading text-lg font-semibold">
             Državni zbor
           </h2>
-          <ParliamentChart parties={partiesForClient} totalSeats={90} />
+          <ParliamentChart parties={data.parliamentaryParties} totalSeats={TOTAL_SEATS} />
         </section>
 
         {/* Key stats */}

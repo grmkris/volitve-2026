@@ -1,19 +1,15 @@
-import {
-  fetchRezultati,
-  fetchUdelezba,
-  fetchKandidati,
-  fetchVolisca,
-} from "@/lib/data/fetchers"
-import { buildNationalResults } from "@/lib/data/transforms"
+import { fetchVolisca, getNationalResults } from "@/lib/data/fetchers"
+import { toPartyList } from "@/lib/data/transforms"
 import { formatNumber, formatPercent } from "@/lib/data/format"
+import { NUM_ENOTE, MAX_OKRAJI_PER_ENOTA } from "@/lib/data/constants"
 import { PageHeader } from "@/components/layout/page-header"
 import { PartyBarChart } from "@/components/charts/party-bar-chart"
 import { StatCard } from "@/components/cards/stat-card"
 
 export async function generateStaticParams() {
   const params: { enotaId: string; okrajId: string }[] = []
-  for (let e = 1; e <= 8; e++) {
-    for (let o = 1; o <= 11; o++) {
+  for (let e = 1; e <= NUM_ENOTE; e++) {
+    for (let o = 1; o <= MAX_OKRAJI_PER_ENOTA; o++) {
       params.push({ enotaId: String(e), okrajId: String(o) })
     }
   }
@@ -29,14 +25,10 @@ export default async function OkrajPage({
   const enotaSt = Number(enotaId)
   const okrajSt = Number(okrajId)
 
-  const [rezultati, udelezba, kandidati, volisca] = await Promise.all([
-    fetchRezultati(),
-    fetchUdelezba(),
-    fetchKandidati(),
+  const [data, volisca] = await Promise.all([
+    getNationalResults(),
     fetchVolisca(enotaSt, okrajSt),
   ])
-
-  const data = buildNationalResults(rezultati, udelezba, kandidati)
   const enota = data.enote.find((e) => e.st === enotaSt)
   const okraj = enota?.okraji.find((o) => o.st === okrajSt)
 
@@ -48,21 +40,10 @@ export default async function OkrajPage({
   const runnerUpParty = data.partyMap.get(okraj.runnerUpId)
 
   // Build party objects for bar chart
-  const okrajParties = okraj.parties
-    .map((rp) => {
-      const p = data.partyMap.get(rp.partyId)
-      if (!p) return null
-      return {
-        id: rp.partyId,
-        name: p.name,
-        abbrev: p.abbrev,
-        color: p.color,
-        votes: rp.votes,
-        percentage: rp.percentage,
-        seats: rp.seats,
-      }
-    })
-    .filter(Boolean) as any[]
+  const okrajParties = toPartyList({
+    regionParties: okraj.parties,
+    partyMap: data.partyMap,
+  })
 
   // Candidates in this okraj
   const okrajCandidates = data.candidates

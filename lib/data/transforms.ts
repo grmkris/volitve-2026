@@ -1,4 +1,5 @@
 import type {
+  RawPartyResult,
   RawRezultati,
   RawUdelezba,
   RawKandidatiRezultat,
@@ -13,15 +14,7 @@ import type {
 } from "./types"
 import { cleanEnotaName, cleanOkrajName } from "./constants"
 
-function toParty(raw: {
-  naz: string
-  knaz: string
-  hcol: string
-  st: number
-  gl: number
-  prc: number
-  man: number
-}): Party {
+function toParty(raw: RawPartyResult): Party {
   return {
     id: raw.st,
     name: raw.naz,
@@ -55,12 +48,41 @@ function findWinnerAndRunnerUp(rez: RawRegionPartyResult[]) {
   }
 }
 
+/** Build Party[] from region-level results using a party lookup map */
+export function toPartyList({
+  regionParties,
+  partyMap,
+}: {
+  regionParties: RegionPartyResult[]
+  partyMap: Map<number, Party>
+}): Party[] {
+  return regionParties
+    .map((rp) => {
+      const p = partyMap.get(rp.partyId)
+      if (!p) return null
+      return {
+        id: rp.partyId,
+        name: p.name,
+        abbrev: p.abbrev,
+        color: p.color,
+        votes: rp.votes,
+        percentage: rp.percentage,
+        seats: rp.seats,
+      }
+    })
+    .filter((p): p is Party => p !== null)
+}
+
 /** Build the complete NationalResults from raw API data */
-export function buildNationalResults(
-  rezultati: RawRezultati,
-  udelezba: RawUdelezba,
+export function buildNationalResults({
+  rezultati,
+  udelezba,
+  kandidati,
+}: {
+  rezultati: RawRezultati
+  udelezba: RawUdelezba
   kandidati: RawKandidatiRezultat
-): NationalResults {
+}): NationalResults {
   // Build party list
   const parties = rezultati.slovenija
     .map(toParty)
@@ -166,7 +188,7 @@ export function buildNationalResults(
     parties,
     parliamentaryParties,
     enote,
-    turnout: turnoutMap.get("SI")!,
+    turnout: turnoutMap.get("SI") ?? { registered: 0, voted: 0, percentage: 0 },
     totalVotes: rezultati.glas,
     validVotes: rezultati.velj,
     invalidVotes: rezultati.nev,

@@ -1,16 +1,9 @@
-import { fetchRezultati, fetchUdelezba, fetchKandidati } from "@/lib/data/fetchers"
-import { buildNationalResults } from "@/lib/data/transforms"
+import { getNationalResults } from "@/lib/data/fetchers"
 import { PageHeader } from "@/components/layout/page-header"
 import { PartyCard } from "@/components/cards/party-card"
 
 export default async function StrankePage() {
-  const [rezultati, udelezba, kandidati] = await Promise.all([
-    fetchRezultati(),
-    fetchUdelezba(),
-    fetchKandidati(),
-  ])
-
-  const data = buildNationalResults(rezultati, udelezba, kandidati)
+  const data = await getNationalResults()
 
   const parliamentary = data.parties.filter((p) => p.seats > 0)
   const nonParliamentary = data.parties.filter((p) => p.seats === 0)

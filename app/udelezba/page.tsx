@@ -1,18 +1,11 @@
-import { fetchRezultati, fetchUdelezba, fetchKandidati } from "@/lib/data/fetchers"
-import { buildNationalResults } from "@/lib/data/transforms"
+import { getNationalResults } from "@/lib/data/fetchers"
 import { formatNumber, formatPercent } from "@/lib/data/format"
 import { PageHeader } from "@/components/layout/page-header"
 import { TurnoutGauge } from "@/components/charts/turnout-gauge"
 import { StatCard } from "@/components/cards/stat-card"
 
 export default async function UdelezbaPage() {
-  const [rezultati, udelezba, kandidati] = await Promise.all([
-    fetchRezultati(),
-    fetchUdelezba(),
-    fetchKandidati(),
-  ])
-
-  const data = buildNationalResults(rezultati, udelezba, kandidati)
+  const data = await getNationalResults()
 
   // Collect all okraji across all enote for ranking
   const allOkraji = data.enote.flatMap((enota) =>

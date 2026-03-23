@@ -1,8 +1,28 @@
 /** DVK data base URL */
 export const DVK_BASE_URL = "https://volitve.dvk-rs.si/dz2026/data"
 
-/** Party list IDs for parliamentary parties (in display order: left → right) */
+/** Total seats in Državni zbor (88 proportional + 2 minority) */
+export const TOTAL_SEATS = 90
+
+/** Number of electoral units */
+export const NUM_ENOTE = 8
+
+/** Maximum okraji per enota */
+export const MAX_OKRAJI_PER_ENOTA = 11
+
+/** Minimum vote share to enter parliament */
 export const PARLIAMENTARY_THRESHOLD = 0.04 // 4%
+
+/** Political spectrum order for seat assignment in hemicycle (left → right) */
+export const SPECTRUM_ORDER: Record<number, number> = {
+  107760: 1, // LEVICA IN VESNA
+  107753: 2, // SD
+  107754: 3, // SVOBODA
+  107755: 4, // DEMOKRATI
+  107752: 5, // RESNI.CA
+  107749: 6, // NSi, SLS, FOKUS
+  107757: 7, // SDS
+}
 
 /** Clean enota name: "VE 1000 - KRANJ" → "Kranj" */
 export function cleanEnotaName(raw: string): string {
