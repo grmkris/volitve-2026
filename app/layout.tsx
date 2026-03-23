@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Script from "next/script"
-import { Geist_Mono, Inter, Roboto_Slab } from "next/font/google"
+import { Geist_Mono, Source_Serif_4 } from "next/font/google"
 
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
@@ -10,12 +10,10 @@ import { SiteFooter } from "@/components/layout/site-footer"
 import { BottomNav } from "@/components/layout/bottom-nav"
 import { cn } from "@/lib/utils"
 
-const robotoSlabHeading = Roboto_Slab({
-  subsets: ["latin"],
+const sourceSerif = Source_Serif_4({
+  subsets: ["latin", "latin-ext"],
   variable: "--font-heading",
 })
-
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
 
 const fontMono = Geist_Mono({
   subsets: ["latin"],
@@ -41,8 +39,7 @@ export default function RootLayout({
         "antialiased",
         fontMono.variable,
         "font-sans",
-        inter.variable,
-        robotoSlabHeading.variable
+        sourceSerif.variable
       )}
     >
       <body>
@@ -54,12 +51,14 @@ export default function RootLayout({
             <BottomNav />
           </QueryProvider>
         </ThemeProvider>
-        <Script
-          defer
-          src="https://static.cloudflareinsights.com/beacon.min.js"
-          data-cf-beacon='{"token": "4fe38d8733c841ad9cc245011429b409"}'
-          strategy="afterInteractive"
-        />
+        {process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN && (
+          <Script
+            defer
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon={`{"token": "${process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN}"}`}
+            strategy="afterInteractive"
+          />
+        )}
       </body>
     </html>
   )

@@ -151,7 +151,7 @@ export default async function OkrajPage({
                     <td className="py-2 pr-4 font-medium">
                       {c.name}
                       {c.elected && (
-                        <span className="ml-1.5 rounded bg-primary/10 px-1 py-0.5 text-[10px] font-medium text-primary">
+                        <span className="ml-1.5 rounded bg-primary px-1 py-0.5 text-[10px] font-medium text-primary-foreground">
                           izvoljen/a
                         </span>
                       )}

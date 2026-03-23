@@ -6,15 +6,15 @@ import {
   ChartBar,
   MapTrifold,
   Flag,
-  DotsThree,
+  Scales,
 } from "@phosphor-icons/react"
 import { cn } from "@/lib/utils"
 
 const TABS = [
-  { href: "/", label: "Pregled", icon: ChartBar },
-  { href: "/zemljevid", label: "Zemljevid", icon: MapTrifold },
-  { href: "/stranke", label: "Stranke", icon: Flag },
-  { href: "/udelezba", label: "Več", icon: DotsThree },
+  { href: "/", label: "Pregled", icon: ChartBar, ariaLabel: "Pregled rezultatov" },
+  { href: "/zemljevid", label: "Zemljevid", icon: MapTrifold, ariaLabel: "Interaktivni zemljevid" },
+  { href: "/stranke", label: "Stranke", icon: Flag, ariaLabel: "Rezultati po strankah" },
+  { href: "/koalicije", label: "Koalicije", icon: Scales, ariaLabel: "Koalicijski kalkulator" },
 ]
 
 export function BottomNav() {
@@ -33,11 +33,12 @@ export function BottomNav() {
             <Link
               key={tab.href}
               href={tab.href}
+              aria-label={tab.ariaLabel}
               aria-current={isActive ? "page" : undefined}
               className={cn(
                 "flex flex-1 flex-col items-center justify-center gap-0.5 text-[10px]",
                 isActive
-                  ? "text-foreground"
+                  ? "font-semibold text-foreground"
                   : "text-muted-foreground"
               )}
             >

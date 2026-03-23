@@ -112,7 +112,7 @@ export function MapRegionPanel({
       {/* Detail link */}
       <Link
         href={detailHref}
-        className="mt-4 flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+        className="mt-4 flex items-center gap-1 text-xs font-medium text-foreground hover:underline"
       >
         Več podrobnosti
         <ArrowRight className="size-3" />
