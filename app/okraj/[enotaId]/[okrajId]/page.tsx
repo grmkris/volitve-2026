@@ -1,11 +1,17 @@
 import { fetchVolisca, getNationalResults } from "@/lib/data/fetchers"
-import { toPartyList } from "@/lib/data/transforms"
+import { toPartyList, buildSwingAnalysis } from "@/lib/data/transforms"
 import { formatNumber, formatPercent } from "@/lib/data/format"
 import { NUM_ENOTE, MAX_OKRAJI_PER_ENOTA } from "@/lib/data/constants"
 import { enotaSt as toEnotaSt, okrajSt as toOkrajSt } from "@/lib/data/ids"
+import type { RawRezultati } from "@/lib/data/types"
 import { PageHeader } from "@/components/layout/page-header"
 import { PartyBarChart } from "@/components/charts/party-bar-chart"
 import { StatCard } from "@/components/cards/stat-card"
+import { PollingStationMap } from "@/components/map/polling-station-map"
+import { cn } from "@/lib/utils"
+
+import staticRezultati2022 from "@/lib/data/static/rezultati_2022.json"
+import staticRezultati2026 from "@/lib/data/static/rezultati.json"
 
 export async function generateStaticParams() {
   const params: { enotaId: string; okrajId: string }[] = []
@@ -57,8 +63,37 @@ export default async function OkrajPage({
 
   const electedCandidate = okrajCandidates.find((c) => c.elected)
 
+  // 2022 comparison
+  const swingData = buildSwingAnalysis({
+    results2022: staticRezultati2022 as RawRezultati,
+    results2026: staticRezultati2026 as RawRezultati,
+    partyMap2026: data.partyMap,
+  })
+  const okrajSwing = swingData.okraji.find((o) => o.rpeid === okraj.rpeid)
+  const topSwings = okrajSwing?.partySwings
+    .filter((s) => s.pct2026 > 0.01 || s.pct2022 > 0.01)
+    .sort((a, b) => Math.abs(b.swing) - Math.abs(a.swing))
+    .slice(0, 5) ?? []
+
   // Polling station results
   const stations = volisca?.vol ?? []
+
+  // Prepare station map data: find winner per station
+  const stationMapData = stations.map((s) => {
+    const winnerResult = [...(s.rez?.rez ?? [])].sort((a, b) => b.gl - a.gl)[0]
+    return {
+      vdvId: Number(s.rpeid),
+      winnerId: winnerResult?.st ?? 0,
+      name: s.naz,
+    }
+  })
+
+  const partyMapForClient = Object.fromEntries(
+    Array.from(data.partyMap.entries()).map(([id, p]) => [
+      id,
+      { color: p.color, abbrev: p.abbrev },
+    ])
+  )
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 md:py-10">
@@ -124,6 +159,78 @@ export default async function OkrajPage({
         </h2>
         <PartyBarChart parties={okrajParties} />
       </section>
+
+      {/* Polling station map */}
+      {stationMapData.length > 0 && (
+        <section className="mt-8">
+          <h2 className="mb-4 font-heading text-lg font-semibold">
+            Volišča na zemljevidu
+          </h2>
+          <PollingStationMap
+            enotaSt={enotaSt}
+            okrajSt={okrajSt}
+            stations={stationMapData}
+            partyMap={partyMapForClient}
+          />
+        </section>
+      )}
+
+      {/* 2022 comparison */}
+      {topSwings.length > 0 && (
+        <section className="mt-8">
+          <h2 className="mb-4 font-heading text-lg font-semibold">
+            Primerjava z 2022
+          </h2>
+          <div className="space-y-1.5">
+            {topSwings.map((s) => (
+              <div key={s.partyId2026} className="flex items-center gap-3 text-xs">
+                <span
+                  className="size-2.5 shrink-0 rounded-full"
+                  style={{ backgroundColor: s.color }}
+                />
+                <span className="w-24 shrink-0 font-medium md:w-32">
+                  {s.partyLabel}
+                </span>
+                <span className="w-14 shrink-0 text-right font-mono tabular-nums text-muted-foreground">
+                  {(s.pct2022 * 100).toFixed(1)}%
+                </span>
+                <div className="relative h-3 flex-1">
+                  <div className="absolute inset-y-0 left-1/2 w-px bg-border" />
+                  {s.swing !== 0 && (
+                    <div
+                      className="absolute inset-y-0 rounded-sm"
+                      style={{
+                        backgroundColor: s.color,
+                        opacity: 0.6,
+                        left: s.swing > 0 ? "50%" : `${50 + s.swing * 300}%`,
+                        width: `${Math.min(Math.abs(s.swing) * 300, 50)}%`,
+                      }}
+                    />
+                  )}
+                </div>
+                <span className="w-14 shrink-0 font-mono tabular-nums">
+                  {(s.pct2026 * 100).toFixed(1)}%
+                </span>
+                <span
+                  className={cn(
+                    "w-14 shrink-0 text-right font-mono tabular-nums font-medium",
+                    s.swing > 0
+                      ? "text-green-600 dark:text-green-400"
+                      : s.swing < 0
+                        ? "text-red-600 dark:text-red-400"
+                        : "text-muted-foreground"
+                  )}
+                >
+                  {s.swing > 0 ? "+" : ""}{(s.swing * 100).toFixed(1)}
+                </span>
+              </div>
+            ))}
+          </div>
+          <p className="mt-2 text-[10px] text-muted-foreground">
+            Sprememba v odstotnih točkah glede na volitve 2022.
+          </p>
+        </section>
+      )}
 
       {/* All candidates */}
       <section className="mt-8">
