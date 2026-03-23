@@ -290,6 +290,18 @@ export interface SwingAnalysis {
   wastedVotes2026: number
 }
 
+// =============================================================================
+// Demographics types (SURS data aggregated to okraj level)
+// =============================================================================
+
+export interface OkrajDemographics {
+  rpeid: string
+  vdvId: number
+  avgWage: number | null
+  obcineCount: number
+  obcineNames: string[]
+}
+
 export interface NationalResults {
   timestamp: Date
   parties: Party[]

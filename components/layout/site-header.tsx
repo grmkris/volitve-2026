@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { href: "/stranke", label: "Stranke" },
   { href: "/koalicije", label: "Koalicije" },
   { href: "/primerjava", label: "Primerjava" },
+  { href: "/analiza", label: "Analiza" },
   { href: "/udelezba", label: "Udeležba" },
   { href: "/o-projektu", label: "O projektu" },
 ]

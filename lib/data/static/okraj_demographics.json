@@ -1,0 +1,900 @@
+[
+  {
+    "rpeid": "1001",
+    "vdvId": 1001,
+    "avgWage": 2073,
+    "obcineCount": 3,
+    "obcineNames": [
+      "Jesenice",
+      "Kranjska Gora",
+      "Žirovnica"
+    ]
+  },
+  {
+    "rpeid": "1002",
+    "vdvId": 1002,
+    "avgWage": 1864,
+    "obcineCount": 3,
+    "obcineNames": [
+      "Bled",
+      "Bohinj",
+      "Gorje"
+    ]
+  },
+  {
+    "rpeid": "1003",
+    "vdvId": 1003,
+    "avgWage": 2024,
+    "obcineCount": 1,
+    "obcineNames": [
+      "Radovljica"
+    ]
+  },
+  {
+    "rpeid": "1004",
+    "vdvId": 1004,
+    "avgWage": null,
+    "obcineCount": 0,
+    "obcineNames": []
+  },
+  {
+    "rpeid": "1005",
+    "vdvId": 1005,
+    "avgWage": null,
+    "obcineCount": 0,
+    "obcineNames": []
+  },
+  {
+    "rpeid": "1006",
+    "vdvId": 1006,
+    "avgWage": 2160,
+    "obcineCount": 6,
+    "obcineNames": [
+      "Cerklje na Gorenjskem",
+      "Preddvor",
+      "Šenčur",
+      "Kranj",
+      "Naklo",
+      "Jezersko"
+    ]
+  },
+  {
+    "rpeid": "1007",
+    "vdvId": 1007,
+    "avgWage": 1925,
+    "obcineCount": 1,
+    "obcineNames": [
+      "Tržič"
+    ]
+  },
+  {
+    "rpeid": "1008",
+    "vdvId": 1008,
+    "avgWage": 2191,
+    "obcineCount": 1,
+    "obcineNames": [
+      "Škofja Loka"
+    ]
+  },
+  {
+    "rpeid": "1009",
+    "vdvId": 1009,
+    "avgWage": 2054,
+    "obcineCount": 3,
+    "obcineNames": [
+      "Gorenja vas-Poljane",
+      "Žiri",
+      "Železniki"
+    ]
+  },
+  {
+    "rpeid": "1010",
+    "vdvId": 1010,
+    "avgWage": 1996,
+    "obcineCount": 2,
+    "obcineNames": [
+      "Kamnik",
+      "Komenda"
+    ]
+  },
+  {
+    "rpeid": "1011",
+    "vdvId": 1011,
+    "avgWage": 2097,
+    "obcineCount": 2,
+    "obcineNames": [
+      "Cerkno",
+      "Idrija"
+    ]
+  },
+  {
+    "rpeid": "2001",
+    "vdvId": 2001,
+    "avgWage": 1978,
+    "obcineCount": 3,
+    "obcineNames": [
+      "Bovec",
+      "Kobarid",
+      "Tolmin"
+    ]
+  },
+  {
+    "rpeid": "2002",
+    "vdvId": 2002,
+    "avgWage": 1895,
+    "obcineCount": 1,
+    "obcineNames": [
+      "Piran"
+    ]
+  },
+  {
+    "rpeid": "2003",
+    "vdvId": 2003,
+    "avgWage": 2093,
+    "obcineCount": 1,
+    "obcineNames": [
+      "Izola"
+    ]
+  },
+  {
+    "rpeid": "2004",
+    "vdvId": 2004,
+    "avgWage": null,
+    "obcineCount": 0,
+    "obcineNames": []
+  },
+  {
+    "rpeid": "2005",
+    "vdvId": 2005,
+    "avgWage": 2262,
+    "obcineCount": 2,
+    "obcineNames": [
+      "Koper",
+      "Ankaran"
+    ]
+  },
+  {
+    "rpeid": "2006",
+    "vdvId": 2006,
+    "avgWage": 1930,
+    "obcineCount": 4,
+    "obcineNames": [
+      "Divača",
+      "Sežana",
+      "Hrpelje-Kozina",
+      "Komen"
+    ]
+  },
+  {
+    "rpeid": "2007",
+    "vdvId": 2007,
+    "avgWage": 2035,
+    "obcineCount": 1,
+    "obcineNames": [
+      "Ilirska Bistrica"
+    ]
+  },
+  {
+    "rpeid": "2008",
+    "vdvId": 2008,
+    "avgWage": 2001,
+    "obcineCount": 2,
+    "obcineNames": [
+      "Postojna",
+      "Pivka"
+    ]
+  },
+  {
+    "rpeid": "2009",
+    "vdvId": 2009,
+    "avgWage": 2092,
+    "obcineCount": 4,
+    "obcineNames": [
+      "Brda",
+      "Kanal",
+      "Nova Gorica",
+      "Miren-Kostanjevica"
+    ]
+  },
+  {
+    "rpeid": "2010",
+    "vdvId": 2010,
+    "avgWage": 2080,
+    "obcineCount": 2,
+    "obcineNames": [
+      "Šempeter-Vrtojba",
+      "Renče-Vogrsko"
+    ]
+  },
+  {
+    "rpeid": "2011",
+    "vdvId": 2011,
+    "avgWage": 2018,
+    "obcineCount": 2,
+    "obcineNames": [
+      "Ajdovščina",
+      "Vipava"
+    ]
+  },
+  {
+    "rpeid": "3001",
+    "vdvId": 3001,
+    "avgWage": 1879,
+    "obcineCount": 4,
+    "obcineNames": [
+      "Cerknica",
+      "Logatec",
+      "Loška dolina",
+      "Bloke"
+    ]
+  },
+  {
+    "rpeid": "3002",
+    "vdvId": 3002,
+    "avgWage": 1993,
+    "obcineCount": 3,
+    "obcineNames": [
+      "Borovnica",
+      "Vrhnika",
+      "Log-Dragomer"
+    ]
+  },
+  {
+    "rpeid": "3003",
+    "vdvId": 3003,
+    "avgWage": 1927,
+    "obcineCount": 4,
+    "obcineNames": [
+      "Brezovica",
+      "Ig",
+      "Škofljica",
+      "Velike Lašče"
+    ]
+  },
+  {
+    "rpeid": "3004",
+    "vdvId": 3004,
+    "avgWage": null,
+    "obcineCount": 0,
+    "obcineNames": []
+  },
+  {
+    "rpeid": "3005",
+    "vdvId": 3005,
+    "avgWage": null,
+    "obcineCount": 0,
+    "obcineNames": []
+  },
+  {
+    "rpeid": "3006",
+    "vdvId": 3006,
+    "avgWage": 2007,
+    "obcineCount": 2,
+    "obcineNames": [
+      "Dobrova-Polhov Gradec",
+      "Horjul"
+    ]
+  },
+  {
+    "rpeid": "3007",
+    "vdvId": 3007,
+    "avgWage": null,
+    "obcineCount": 0,
+    "obcineNames": []
+  },
+  {
+    "rpeid": "3008",
+    "vdvId": 3008,
+    "avgWage": null,
+    "obcineCount": 0,
+    "obcineNames": []
+  },
+  {
+    "rpeid": "3009",
+    "vdvId": 3009,
+    "avgWage": null,
+    "obcineCount": 0,
+    "obcineNames": []
+  },
+  {
+    "rpeid": "3010",
+    "vdvId": 3010,
+    "avgWage": null,
+    "obcineCount": 0,
+    "obcineNames": []
+  },
+  {
+    "rpeid": "3011",
+    "vdvId": 3011,
+    "avgWage": 1983,
+    "obcineCount": 2,
+    "obcineNames": [
+      "Vodice",
+      "Medvode"
+    ]
+  },
+  {
+    "rpeid": "4001",
+    "vdvId": 4001,
+    "avgWage": 1965,
+    "obcineCount": 3,
+    "obcineNames": [
+      "Kočevje",
+      "Osilnica",
+      "Kostel"
+    ]
+  },
+  {
+    "rpeid": "4002",
+    "vdvId": 4002,
+    "avgWage": 1952,
+    "obcineCount": 4,
+    "obcineNames": [
+      "Dobrepolje",
+      "Loški Potok",
+      "Ribnica",
+      "Sodražica"
+    ]
+  },
+  {
+    "rpeid": "4003",
+    "vdvId": 4003,
+    "avgWage": 2022,
+    "obcineCount": 1,
+    "obcineNames": [
+      "Grosuplje"
+    ]
+  },
+  {
+    "rpeid": "4004",
+    "vdvId": 4004,
+    "avgWage": 1955,
+    "obcineCount": 1,
+    "obcineNames": [
+      "Ivančna Gorica"
+    ]
+  },
+  {
+    "rpeid": "4005",
+    "vdvId": 4005,
+    "avgWage": 2544,
+    "obcineCount": 2,
+    "obcineNames": [
+      "Dol pri Ljubljani",
+      "Ljubljana"
+    ]
+  },
+  {
+    "rpeid": "4006",
+    "vdvId": 4006,
+    "avgWage": null,
+    "obcineCount": 0,
+    "obcineNames": []
+  },
+  {
+    "rpeid": "4007",
+    "vdvId": 4007,
+    "avgWage": null,
+    "obcineCount": 0,
+    "obcineNames": []
+  },
+  {
+    "rpeid": "4008",
+    "vdvId": 4008,
+    "avgWage": null,
+    "obcineCount": 0,
+    "obcineNames": []
+  },
+  {
+    "rpeid": "4009",
+    "vdvId": 4009,
+    "avgWage": null,
+    "obcineCount": 0,
+    "obcineNames": []
+  },
+  {
+    "rpeid": "4010",
+    "vdvId": 4010,
+    "avgWage": 2074,
+    "obcineCount": 3,
+    "obcineNames": [
+      "Domžale",
+      "Moravče",
+      "Lukovica"
+    ]
+  },
+  {
+    "rpeid": "4011",
+    "vdvId": 4011,
+    "avgWage": 2137,
+    "obcineCount": 2,
+    "obcineNames": [
+      "Mengeš",
+      "Trzin"
+    ]
+  },
+  {
+    "rpeid": "5001",
+    "vdvId": 5001,
+    "avgWage": 1883,
+    "obcineCount": 2,
+    "obcineNames": [
+      "Šentjur",
+      "Dobje"
+    ]
+  },
+  {
+    "rpeid": "5002",
+    "vdvId": 5002,
+    "avgWage": 2040,
+    "obcineCount": 4,
+    "obcineNames": [
+      "Celje",
+      "Štore",
+      "Vojnik",
+      "Dobrna"
+    ]
+  },
+  {
+    "rpeid": "5003",
+    "vdvId": 5003,
+    "avgWage": null,
+    "obcineCount": 0,
+    "obcineNames": []
+  },
+  {
+    "rpeid": "5004",
+    "vdvId": 5004,
+    "avgWage": 1988,
+    "obcineCount": 2,
+    "obcineNames": [
+      "Polzela",
+      "Žalec"
+    ]
+  },
+  {
+    "rpeid": "5005",
+    "vdvId": 5005,
+    "avgWage": 1867,
+    "obcineCount": 4,
+    "obcineNames": [
+      "Braslovče",
+      "Prebold",
+      "Tabor",
+      "Vransko"
+    ]
+  },
+  {
+    "rpeid": "5006",
+    "vdvId": 5006,
+    "avgWage": 1837,
+    "obcineCount": 7,
+    "obcineNames": [
+      "Gornji Grad",
+      "Ljubno",
+      "Luče",
+      "Mozirje",
+      "Nazarje",
+      "Solčava",
+      "Rečica ob Savinji"
+    ]
+  },
+  {
+    "rpeid": "5007",
+    "vdvId": 5007,
+    "avgWage": 2039,
+    "obcineCount": 1,
+    "obcineNames": [
+      "Velenje"
+    ]
+  },
+  {
+    "rpeid": "5008",
+    "vdvId": 5008,
+    "avgWage": 2011,
+    "obcineCount": 2,
+    "obcineNames": [
+      "Šmartno ob Paki",
+      "Šoštanj"
+    ]
+  },
+  {
+    "rpeid": "5009",
+    "vdvId": 5009,
+    "avgWage": 1920,
+    "obcineCount": 2,
+    "obcineNames": [
+      "Mislinja",
+      "Slovenj Gradec"
+    ]
+  },
+  {
+    "rpeid": "5010",
+    "vdvId": 5010,
+    "avgWage": 2122,
+    "obcineCount": 4,
+    "obcineNames": [
+      "Črna na Koroškem",
+      "Mežica",
+      "Ravne na Koroškem",
+      "Prevalje"
+    ]
+  },
+  {
+    "rpeid": "5011",
+    "vdvId": 5011,
+    "avgWage": 1980,
+    "obcineCount": 6,
+    "obcineNames": [
+      "Dravograd",
+      "Radlje ob Dravi",
+      "Muta",
+      "Podvelka",
+      "Vuzenica",
+      "Ribnica na Pohorju"
+    ]
+  },
+  {
+    "rpeid": "6001",
+    "vdvId": 6001,
+    "avgWage": 1874,
+    "obcineCount": 3,
+    "obcineNames": [
+      "Črnomelj",
+      "Semič",
+      "Metlika"
+    ]
+  },
+  {
+    "rpeid": "6002",
+    "vdvId": 6002,
+    "avgWage": 2203,
+    "obcineCount": 6,
+    "obcineNames": [
+      "Šentjernej",
+      "Novo mesto",
+      "Dolenjske Toplice",
+      "Mirna Peč",
+      "Žužemberk",
+      "Šmarješke Toplice"
+    ]
+  },
+  {
+    "rpeid": "6003",
+    "vdvId": 6003,
+    "avgWage": 1799,
+    "obcineCount": 1,
+    "obcineNames": [
+      "Straža"
+    ]
+  },
+  {
+    "rpeid": "6004",
+    "vdvId": 6004,
+    "avgWage": 2034,
+    "obcineCount": 4,
+    "obcineNames": [
+      "Trebnje",
+      "Mokronog-Trebelno",
+      "Šentrupert",
+      "Mirna"
+    ]
+  },
+  {
+    "rpeid": "6005",
+    "vdvId": 6005,
+    "avgWage": 2025,
+    "obcineCount": 1,
+    "obcineNames": [
+      "Brežice"
+    ]
+  },
+  {
+    "rpeid": "6006",
+    "vdvId": 6006,
+    "avgWage": 2198,
+    "obcineCount": 2,
+    "obcineNames": [
+      "Krško",
+      "Kostanjevica na Krki"
+    ]
+  },
+  {
+    "rpeid": "6007",
+    "vdvId": 6007,
+    "avgWage": 2003,
+    "obcineCount": 2,
+    "obcineNames": [
+      "Sevnica",
+      "Škocjan"
+    ]
+  },
+  {
+    "rpeid": "6008",
+    "vdvId": 6008,
+    "avgWage": 1862,
+    "obcineCount": 2,
+    "obcineNames": [
+      "Laško",
+      "Radeče"
+    ]
+  },
+  {
+    "rpeid": "6009",
+    "vdvId": 6009,
+    "avgWage": 1860,
+    "obcineCount": 2,
+    "obcineNames": [
+      "Litija",
+      "Šmartno pri Litiji"
+    ]
+  },
+  {
+    "rpeid": "6010",
+    "vdvId": 6010,
+    "avgWage": 2135,
+    "obcineCount": 2,
+    "obcineNames": [
+      "Hrastnik",
+      "Trbovlje"
+    ]
+  },
+  {
+    "rpeid": "6011",
+    "vdvId": 6011,
+    "avgWage": 1951,
+    "obcineCount": 1,
+    "obcineNames": [
+      "Zagorje ob Savi"
+    ]
+  },
+  {
+    "rpeid": "7001",
+    "vdvId": 7001,
+    "avgWage": 1872,
+    "obcineCount": 6,
+    "obcineNames": [
+      "Kozje",
+      "Podčetrtek",
+      "Rogatec",
+      "Rogaška Slatina",
+      "Šmarje pri Jelšah",
+      "Bistrica ob Sotli"
+    ]
+  },
+  {
+    "rpeid": "7002",
+    "vdvId": 7002,
+    "avgWage": 2009,
+    "obcineCount": 4,
+    "obcineNames": [
+      "Slovenska Bistrica",
+      "Oplotnica",
+      "Makole",
+      "Poljčane"
+    ]
+  },
+  {
+    "rpeid": "7003",
+    "vdvId": 7003,
+    "avgWage": 1914,
+    "obcineCount": 3,
+    "obcineNames": [
+      "Slovenske Konjice",
+      "Zreče",
+      "Vitanje"
+    ]
+  },
+  {
+    "rpeid": "7004",
+    "vdvId": 7004,
+    "avgWage": 1861,
+    "obcineCount": 3,
+    "obcineNames": [
+      "Ruše",
+      "Lovrenc na Pohorju",
+      "Selnica ob Dravi"
+    ]
+  },
+  {
+    "rpeid": "7005",
+    "vdvId": 7005,
+    "avgWage": 2046,
+    "obcineCount": 2,
+    "obcineNames": [
+      "Rače-Fram",
+      "Maribor"
+    ]
+  },
+  {
+    "rpeid": "7006",
+    "vdvId": 7006,
+    "avgWage": 1963,
+    "obcineCount": 3,
+    "obcineNames": [
+      "Starše",
+      "Hoče-Slivnica",
+      "Miklavž na Dravskem polju"
+    ]
+  },
+  {
+    "rpeid": "7007",
+    "vdvId": 7007,
+    "avgWage": 1752,
+    "obcineCount": 1,
+    "obcineNames": [
+      "Duplek"
+    ]
+  },
+  {
+    "rpeid": "7008",
+    "vdvId": 7008,
+    "avgWage": null,
+    "obcineCount": 0,
+    "obcineNames": []
+  },
+  {
+    "rpeid": "7009",
+    "vdvId": 7009,
+    "avgWage": null,
+    "obcineCount": 0,
+    "obcineNames": []
+  },
+  {
+    "rpeid": "7010",
+    "vdvId": 7010,
+    "avgWage": null,
+    "obcineCount": 0,
+    "obcineNames": []
+  },
+  {
+    "rpeid": "7011",
+    "vdvId": 7011,
+    "avgWage": null,
+    "obcineCount": 0,
+    "obcineNames": []
+  },
+  {
+    "rpeid": "8001",
+    "vdvId": 8001,
+    "avgWage": 1930,
+    "obcineCount": 7,
+    "obcineNames": [
+      "Črenšovci",
+      "Odranci",
+      "Turnišče",
+      "Kobilje",
+      "Lendava",
+      "Dobrovnik",
+      "Velika Polana"
+    ]
+  },
+  {
+    "rpeid": "8002",
+    "vdvId": 8002,
+    "avgWage": 1983,
+    "obcineCount": 3,
+    "obcineNames": [
+      "Ormož",
+      "Središče ob Dravi",
+      "Sveti Tomaž"
+    ]
+  },
+  {
+    "rpeid": "8003",
+    "vdvId": 8003,
+    "avgWage": 2048,
+    "obcineCount": 4,
+    "obcineNames": [
+      "Ljutomer",
+      "Križevci",
+      "Razkrižje",
+      "Veržej"
+    ]
+  },
+  {
+    "rpeid": "8004",
+    "vdvId": 8004,
+    "avgWage": 1850,
+    "obcineCount": 9,
+    "obcineNames": [
+      "Tišina",
+      "Gornji Petrovci",
+      "Šalovci",
+      "Rogašovci",
+      "Kuzma",
+      "Puconci",
+      "Cankova",
+      "Grad",
+      "Hodoš"
+    ]
+  },
+  {
+    "rpeid": "8005",
+    "vdvId": 8005,
+    "avgWage": 1880,
+    "obcineCount": 3,
+    "obcineNames": [
+      "Beltinci",
+      "Moravske Toplice",
+      "Murska Sobota"
+    ]
+  },
+  {
+    "rpeid": "8006",
+    "vdvId": 8006,
+    "avgWage": 1934,
+    "obcineCount": 4,
+    "obcineNames": [
+      "Gornja Radgona",
+      "Radenci",
+      "Sveti Jurij ob Ščavnici",
+      "Apače"
+    ]
+  },
+  {
+    "rpeid": "8007",
+    "vdvId": 8007,
+    "avgWage": 1863,
+    "obcineCount": 6,
+    "obcineNames": [
+      "Lenart",
+      "Benedikt",
+      "Cerkvenjak",
+      "Sveta Ana",
+      "Sveta Trojica v Slovenskih goricah",
+      "Sveti Jurij v Slovenskih goricah"
+    ]
+  },
+  {
+    "rpeid": "8008",
+    "vdvId": 8008,
+    "avgWage": 1923,
+    "obcineCount": 3,
+    "obcineNames": [
+      "Kungota",
+      "Pesnica",
+      "Šentilj"
+    ]
+  },
+  {
+    "rpeid": "8009",
+    "vdvId": 8009,
+    "avgWage": 1875,
+    "obcineCount": 8,
+    "obcineNames": [
+      "Destrnik",
+      "Dornava",
+      "Gorišnica",
+      "Juršinci",
+      "Ptuj",
+      "Trnovska vas",
+      "Markovci",
+      "Sveti Andraž v Slov. goricah"
+    ]
+  },
+  {
+    "rpeid": "8010",
+    "vdvId": 8010,
+    "avgWage": 1908,
+    "obcineCount": 1,
+    "obcineNames": [
+      "Hajdina"
+    ]
+  },
+  {
+    "rpeid": "8011",
+    "vdvId": 8011,
+    "avgWage": 1972,
+    "obcineCount": 7,
+    "obcineNames": [
+      "Majšperk",
+      "Kidričevo",
+      "Videm",
+      "Zavrč",
+      "Podlehnik",
+      "Žetale",
+      "Cirkulane"
+    ]
+  }
+]
