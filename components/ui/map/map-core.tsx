@@ -251,6 +251,14 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
     map.on("load", loadHandler);
     map.on("styledata", styleDataHandler);
     map.on("move", handleMove);
+
+    // If the map already loaded before listeners were attached (race condition),
+    // set the state directly. This commonly happens with cached styles.
+    if (map.loaded()) {
+      setIsLoaded(true);
+      setIsStyleLoaded(true);
+    }
+
     setMapInstance(map);
 
     return () => {
