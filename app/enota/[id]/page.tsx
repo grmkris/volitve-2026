@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { getNationalResults } from "@/lib/data/fetchers"
 import { toPartyList } from "@/lib/data/transforms"
@@ -7,6 +8,21 @@ import { enotaSt as toEnotaSt } from "@/lib/data/ids"
 import { PageHeader } from "@/components/layout/page-header"
 import { PartyBarChart } from "@/components/charts/party-bar-chart"
 import { StatCard } from "@/components/cards/stat-card"
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}): Promise<Metadata> {
+  const { id } = await params
+  const data = await getNationalResults()
+  const enota = data.enote.find((e) => e.st === toEnotaSt(Number(id)))
+  if (!enota) return { title: "Enota ni najdena" }
+  return {
+    title: `Volilna enota ${enota.name} | Volitve 2026`,
+    description: `Rezultati glasovanja v volilni enoti ${enota.name} na parlamentarnih volitvah 2026.`,
+  }
+}
 
 export async function generateStaticParams() {
   return Array.from({ length: NUM_ENOTE }, (_, i) => ({ id: String(i + 1) }))

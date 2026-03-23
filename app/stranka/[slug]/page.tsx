@@ -1,8 +1,27 @@
+import type { Metadata } from "next"
 import { fetchRezultati, getNationalResults } from "@/lib/data/fetchers"
 import { formatNumber, formatPercent } from "@/lib/data/format"
 import { partySlug } from "@/lib/data/constants"
 import { PageHeader } from "@/components/layout/page-header"
 import { StatCard } from "@/components/cards/stat-card"
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+  const { slug } = await params
+  const data = await getNationalResults()
+  const party = data.parties.find((p) => partySlug(p.abbrev) === slug)
+  if (!party) return { title: "Stranka ni najdena" }
+  const desc = party.seats > 0
+    ? `${party.seats} sedežev, ${formatPercent(party.percentage)} glasov`
+    : `${formatPercent(party.percentage)} glasov`
+  return {
+    title: `${party.abbrev} — ${desc} | Volitve 2026`,
+    description: `Rezultati stranke ${party.name} na parlamentarnih volitvah 2026.`,
+  }
+}
 
 export async function generateStaticParams() {
   const rezultati = await fetchRezultati()

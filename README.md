@@ -1,21 +1,50 @@
-# Next.js template
+# Volitve 2026 — Rezultati
 
-This is a Next.js template with shadcn/ui.
+Interaktivna vizualizacija rezultatov parlamentarnih volitev v Državni zbor Republike Slovenije 2026.
 
-## Adding components
+## Funkcionalnosti
 
-To add components to your app, run the following command:
+- **Pregled rezultatov** — parlament (hemicikl), stranke, sedeži, udeležba
+- **Interaktivni zemljevid** — volilne enote in okraji, obarvani po zmagovalcu
+- **Stranke** — podrobni rezultati po strankah z razčlenitvijo po enotah
+- **Koalicijski kalkulator** — interaktivno sestavljanje koalicij
+- **Primerjava z 2022** — analiza premikov po strankah in ideoloških blokih
+- **Udeležba** — rangiranje enot in okrajev po volilni udeležbi
+- **Drill-down** — od nacionalne ravni do posameznega volišča
+
+## Viri podatkov
+
+- **Volilni rezultati:** [Državna volilna komisija (DVK)](https://volitve.dvk-rs.si/dz2026/) — JSON API
+- **Geografske meje:** [Register prostorskih enot (GURS RPE)](https://github.com/stefanb/gurs-rpe) — CC-BY 4.0, Geodetska uprava RS
+
+## Tehnični sklad
+
+- [Next.js](https://nextjs.org/) 16 + [React](https://react.dev/) 19
+- [MapLibre GL JS](https://maplibre.org/) za interaktivne zemljevide
+- [Tailwind CSS](https://tailwindcss.com/) 4 + [shadcn/ui](https://ui.shadcn.com/) komponente
+- [TypeScript](https://www.typescriptlang.org/) z imenovanimi tipi (branded IDs)
+- [Bun](https://bun.sh/) za upravljanje paketov in izvajanje
+
+## Lokalni razvoj
 
 ```bash
-npx shadcn@latest add button
+bun install
+bun dev
 ```
 
-This will place the ui components in the `components` directory.
+Aplikacija bo dostopna na `http://localhost:3000`.
 
-## Using components
+## Struktura projekta
 
-To use the components in your app, import them as follows:
-
-```tsx
-import { Button } from "@/components/ui/button";
 ```
+app/              — Next.js strani (pregled, stranke, enote, okraji, zemljevid, koalicije, primerjava)
+components/       — React komponente (kartice, grafi, zemljevid, parlament, layout)
+lib/data/         — podatkovni tipi, transformacije, pridobivanje podatkov, konstante
+lib/data/static/  — statični JSON (DVK rezultati kot fallback)
+lib/geo/          — nalaganje TopoJSON geografskih podatkov
+public/geo/       — TopoJSON datoteke (enote, okraji, volišča)
+```
+
+## Licenca
+
+Koda: MIT. Podatki DVK in GURS RPE so objavljeni pod [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/).

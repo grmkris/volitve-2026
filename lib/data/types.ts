@@ -248,6 +248,48 @@ export interface PartyInfo {
   abbrev: string
 }
 
+// =============================================================================
+// Swing analysis types (2022 vs 2026 comparison)
+// =============================================================================
+
+export interface PartySwing {
+  partyId2026: PartyId
+  partyLabel: string
+  color: string
+  pct2022: number
+  pct2026: number
+  swing: number // pct2026 - pct2022 (percentage points)
+}
+
+export interface BlocSwing {
+  bloc: string
+  label: string
+  color: string
+  pct2022: number
+  pct2026: number
+  swing: number
+}
+
+export interface OkrajSwing {
+  rpeid: Rpeid
+  name: string
+  enotaSt: EnotaSt
+  partySwings: PartySwing[]
+  blocSwings: BlocSwing[]
+  biggestGainer: { partyId: PartyId; swing: number }
+  turnoutChange: number // 2026 turnout - 2022 turnout
+}
+
+export interface SwingAnalysis {
+  okraji: OkrajSwing[]
+  /** National-level party swings */
+  nationalSwings: PartySwing[]
+  nationalBlocSwings: BlocSwing[]
+  /** Total votes to sub-threshold parties */
+  wastedVotes2022: number
+  wastedVotes2026: number
+}
+
 export interface NationalResults {
   timestamp: Date
   parties: Party[]

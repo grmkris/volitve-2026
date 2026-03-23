@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr"
 import { getNationalResults } from "@/lib/data/fetchers"
 import { formatNumber, formatPercent, formatDate } from "@/lib/data/format"
 import { TOTAL_SEATS } from "@/lib/data/constants"
@@ -16,6 +17,47 @@ export default async function HomePage() {
     <div className="mx-auto max-w-5xl px-4 py-6 md:py-10">
       {/* Winner Banner */}
       <WinnerBanner winner={winner} totalSeats={TOTAL_SEATS} />
+
+      {/* Project info */}
+      <div className="mt-6 rounded-lg border border-border/50 bg-card/50 px-4 py-3">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0">
+            <p className="text-xs font-medium">
+              Odprtokodni projekt za vizualizacijo volilnih rezultatov
+            </p>
+            <p className="mt-0.5 text-[11px] text-muted-foreground">
+              Podatki:{" "}
+              <a
+                href="https://volitve.dvk-rs.si/dz2026/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-2 hover:text-foreground"
+              >
+                DVK
+              </a>
+              {" · "}
+              Meje:{" "}
+              <a
+                href="https://github.com/stefanb/gurs-rpe"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline underline-offset-2 hover:text-foreground"
+              >
+                GURS RPE
+              </a>
+              {" "}
+              (CC-BY 4.0)
+            </p>
+          </div>
+          <Link
+            href="/o-projektu"
+            className="flex shrink-0 items-center gap-1 text-xs font-medium text-primary hover:underline"
+          >
+            Več o projektu
+            <ArrowRight className="size-3" />
+          </Link>
+        </div>
+      </div>
 
       {/* Parliament + Stats */}
       <div className="mt-10 grid gap-8 md:mt-12 md:grid-cols-[1fr_280px]">
@@ -49,7 +91,7 @@ export default async function HomePage() {
           />
           <StatCard
             label="Datum volitev"
-            value="22. 3. 2026"
+            value={formatDate(new Date("2026-03-22"))}
             sublabel={`Podatki: ${formatDate(data.timestamp)}`}
           />
         </aside>
