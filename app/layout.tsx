@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Script from "next/script"
 import { Geist_Mono, Inter, Roboto_Slab } from "next/font/google"
 
 import "./globals.css"
@@ -53,6 +54,12 @@ export default function RootLayout({
             <BottomNav />
           </QueryProvider>
         </ThemeProvider>
+        <Script
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon='{"token": "4fe38d8733c841ad9cc245011429b409"}'
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   )
