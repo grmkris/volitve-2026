@@ -12,11 +12,19 @@ import type {
   CandidateResult,
   NationalResults,
 } from "./types"
+import type { PartyId } from "./ids"
+import {
+  partyId,
+  enotaSt,
+  okrajSt,
+  rpeid,
+  candidateId,
+} from "./ids"
 import { cleanEnotaName, cleanOkrajName } from "./constants"
 
 function toParty(raw: RawPartyResult): Party {
   return {
-    id: raw.st,
+    id: partyId(raw.st),
     name: raw.naz,
     abbrev: raw.knaz,
     color: `#${raw.hcol}`,
@@ -30,7 +38,7 @@ function toRegionPartyResults(
   rez: RawRegionPartyResult[]
 ): RegionPartyResult[] {
   return rez.map((r) => ({
-    partyId: r.st,
+    partyId: partyId(r.st),
     votes: r.gl,
     percentage: r.prc,
     seats: r.man ?? 0,
@@ -42,8 +50,8 @@ function findWinnerAndRunnerUp(rez: RawRegionPartyResult[]) {
   const winner = sorted[0]
   const runnerUp = sorted[1]
   return {
-    winnerId: winner?.st ?? 0,
-    runnerUpId: runnerUp?.st ?? 0,
+    winnerId: partyId(winner?.st ?? 0),
+    runnerUpId: partyId(runnerUp?.st ?? 0),
     margin: (winner?.prc ?? 0) - (runnerUp?.prc ?? 0),
   }
 }
@@ -54,7 +62,7 @@ export function toPartyList({
   partyMap,
 }: {
   regionParties: RegionPartyResult[]
-  partyMap: Map<number, Party>
+  partyMap: Map<PartyId, Party>
 }): Party[] {
   return regionParties
     .map((rp) => {
@@ -88,7 +96,7 @@ export function buildNationalResults({
     .map(toParty)
     .sort((a, b) => b.votes - a.votes)
 
-  const partyMap = new Map<number, Party>()
+  const partyMap = new Map<PartyId, Party>()
   for (const p of parties) {
     partyMap.set(p.id, p)
   }
@@ -135,8 +143,8 @@ export function buildNationalResults({
       }
       const { winnerId, runnerUpId, margin } = findWinnerAndRunnerUp(ro.rez)
       return {
-        st: ro.st,
-        rpeid: ro.rpeid,
+        st: okrajSt(ro.st),
+        rpeid: rpeid(ro.rpeid),
         name: cleanOkrajName(ro.naz),
         parties: toRegionPartyResults(ro.rez),
         winnerId,
@@ -152,8 +160,8 @@ export function buildNationalResults({
     const { winnerId } = findWinnerAndRunnerUp(re.rez)
 
     return {
-      st: re.st,
-      rpeid: re.rpeid,
+      st: enotaSt(re.st),
+      rpeid: rpeid(re.rpeid),
       name: cleanEnotaName(re.naz),
       okraji,
       parties: toRegionPartyResults(re.rez),
@@ -167,16 +175,16 @@ export function buildNationalResults({
 
   // Build candidates
   const candidates: CandidateResult[] = kandidati.kandidati.map((rk) => ({
-    id: rk.id,
+    id: candidateId(rk.id),
     name: rk.naziv,
-    partyId: rk.st,
+    partyId: partyId(rk.st),
     votes: rk.gl,
     percentage: rk.prc,
     elected: rk.man,
-    enotaSt: rk.enota,
-    enotaRpeid: rk.enrpeid,
-    okrajOrdinals: rk.okraji,
-    okrajRpeids: rk.okrpeids,
+    enotaSt: enotaSt(rk.enota),
+    enotaRpeid: rpeid(rk.enrpeid),
+    okrajOrdinals: rk.okraji.map(okrajSt),
+    okrajRpeids: rk.okrpeids.map(rpeid),
   }))
 
   const electedCandidates = candidates

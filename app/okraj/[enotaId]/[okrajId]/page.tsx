@@ -2,6 +2,7 @@ import { fetchVolisca, getNationalResults } from "@/lib/data/fetchers"
 import { toPartyList } from "@/lib/data/transforms"
 import { formatNumber, formatPercent } from "@/lib/data/format"
 import { NUM_ENOTE, MAX_OKRAJI_PER_ENOTA } from "@/lib/data/constants"
+import { enotaSt as toEnotaSt, okrajSt as toOkrajSt } from "@/lib/data/ids"
 import { PageHeader } from "@/components/layout/page-header"
 import { PartyBarChart } from "@/components/charts/party-bar-chart"
 import { StatCard } from "@/components/cards/stat-card"
@@ -22,8 +23,8 @@ export default async function OkrajPage({
   params: Promise<{ enotaId: string; okrajId: string }>
 }) {
   const { enotaId, okrajId } = await params
-  const enotaSt = Number(enotaId)
-  const okrajSt = Number(okrajId)
+  const enotaSt = toEnotaSt(Number(enotaId))
+  const okrajSt = toOkrajSt(Number(okrajId))
 
   const [data, volisca] = await Promise.all([
     getNationalResults(),

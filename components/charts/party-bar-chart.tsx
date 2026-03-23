@@ -1,5 +1,5 @@
 import type { Party } from "@/lib/data/types"
-import { formatPercent, formatNumber } from "@/lib/data/format"
+import { formatPercent } from "@/lib/data/format"
 import { cn } from "@/lib/utils"
 
 interface PartyBarChartProps {

@@ -171,11 +171,19 @@ export interface RawVolisca {
 // Domain types (transformed, ready for rendering)
 // =============================================================================
 
+import type {
+  PartyId,
+  EnotaSt,
+  OkrajSt,
+  Rpeid,
+  CandidateId,
+} from "./ids"
+
 export interface Party {
-  id: number // st
-  name: string // naz
-  abbrev: string // knaz
-  color: string // "#0063a6" (with # prefix)
+  id: PartyId
+  name: string
+  abbrev: string
+  color: string // "#0063a6"
   votes: number
   percentage: number // 0-1
   seats: number
@@ -188,19 +196,19 @@ export interface Turnout {
 }
 
 export interface RegionPartyResult {
-  partyId: number
+  partyId: PartyId
   votes: number
   percentage: number // 0-1
   seats: number
 }
 
 export interface OkrajResult {
-  st: number // ordinal 1-11
-  rpeid: string // "1001"
-  name: string // cleaned name
+  st: OkrajSt
+  rpeid: Rpeid
+  name: string
   parties: RegionPartyResult[]
-  winnerId: number // party ID with most votes
-  runnerUpId: number
+  winnerId: PartyId
+  runnerUpId: PartyId
   margin: number // winner.prc - runnerUp.prc
   turnout: Turnout
   totalVotes: number
@@ -209,12 +217,12 @@ export interface OkrajResult {
 }
 
 export interface EnotaResult {
-  st: number // 1-8
-  rpeid: string // "1000"
-  name: string // cleaned name
+  st: EnotaSt
+  rpeid: Rpeid
+  name: string
   okraji: OkrajResult[]
   parties: RegionPartyResult[]
-  winnerId: number
+  winnerId: PartyId
   turnout: Turnout
   totalVotes: number
   validVotes: number
@@ -222,16 +230,16 @@ export interface EnotaResult {
 }
 
 export interface CandidateResult {
-  id: number
+  id: CandidateId
   name: string
-  partyId: number
+  partyId: PartyId
   votes: number
   percentage: number // 0-1
   elected: boolean
-  enotaSt: number
-  enotaRpeid: string
-  okrajOrdinals: number[]
-  okrajRpeids: string[]
+  enotaSt: EnotaSt
+  enotaRpeid: Rpeid
+  okrajOrdinals: OkrajSt[]
+  okrajRpeids: Rpeid[]
 }
 
 /** Lightweight party reference for map/panel components */
@@ -242,8 +250,8 @@ export interface PartyInfo {
 
 export interface NationalResults {
   timestamp: Date
-  parties: Party[] // sorted by votes desc
-  parliamentaryParties: Party[] // seats > 0
+  parties: Party[]
+  parliamentaryParties: Party[]
   enote: EnotaResult[]
   turnout: Turnout
   totalVotes: number
@@ -251,6 +259,5 @@ export interface NationalResults {
   invalidVotes: number
   candidates: CandidateResult[]
   electedCandidates: CandidateResult[]
-  /** Map of party ID → Party for fast lookups */
-  partyMap: Map<number, Party>
+  partyMap: Map<PartyId, Party>
 }

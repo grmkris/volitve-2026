@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useCallback } from "react"
+import { useEffect, useRef } from "react"
 import type { ExpressionSpecification } from "maplibre-gl"
 import type { FeatureCollection, Geometry } from "geojson"
 import { useMap } from "@/components/ui/map"

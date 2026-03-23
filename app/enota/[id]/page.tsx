@@ -3,6 +3,7 @@ import { getNationalResults } from "@/lib/data/fetchers"
 import { toPartyList } from "@/lib/data/transforms"
 import { formatNumber, formatPercent } from "@/lib/data/format"
 import { NUM_ENOTE } from "@/lib/data/constants"
+import { enotaSt as toEnotaSt } from "@/lib/data/ids"
 import { PageHeader } from "@/components/layout/page-header"
 import { PartyBarChart } from "@/components/charts/party-bar-chart"
 import { StatCard } from "@/components/cards/stat-card"
@@ -17,7 +18,7 @@ export default async function EnotaPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const enotaSt = Number(id)
+  const enotaSt = toEnotaSt(Number(id))
 
   const data = await getNationalResults()
   const enota = data.enote.find((e) => e.st === enotaSt)
