@@ -252,16 +252,20 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
     map.on("styledata", styleDataHandler);
     map.on("move", handleMove);
 
-    // If the map already loaded before listeners were attached (race condition),
-    // set the state directly. This commonly happens with cached styles.
-    if (map.loaded()) {
-      setIsLoaded(true);
-      setIsStyleLoaded(true);
-    }
+    // Handle race condition: if map/style already loaded before listeners attached.
+    // Also poll as fallback — MapLibre load event can fire synchronously during
+    // construction and React may not have committed the listener yet.
+    const checkLoaded = () => {
+      if (map.loaded()) setIsLoaded(true);
+      if (map.isStyleLoaded()) setIsStyleLoaded(true);
+    };
+    checkLoaded();
+    const fallbackTimer = setTimeout(checkLoaded, 200);
 
     setMapInstance(map);
 
     return () => {
+      clearTimeout(fallbackTimer);
       clearStyleTimeout();
       map.off("load", loadHandler);
       map.off("styledata", styleDataHandler);
