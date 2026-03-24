@@ -76,8 +76,9 @@ export default function OProjektuPage() {
                 >
                   Statistični urad RS
                 </a>{" "}
-                — povprečne mesečne bruto plače po občinah (2023) za
-                demografsko analizo
+                — povprečne mesečne bruto plače (2023), prebivalstvo po
+                starosti (2025), stopnja izobrazbe (2025) in zaposlenost
+                po izobrazbi (2025) — vse na ravni 212 občin
               </li>
             </ul>
           </div>
@@ -117,12 +118,16 @@ export default function OProjektuPage() {
                   Demografska analiza
                 </h3>
                 <p className="mt-1">
-                  Podatki SURS o plačah so na ravni občin (212), volilni
-                  rezultati pa na ravni okrajev (88). Občine preslikamo na
-                  okraje tako, da centroid vsake občine uvrstimo v okraj, ki ga
-                  vsebuje (Turf.js point-in-polygon), nato pa povprečne plače
-                  tehtamo po površini občin. Prikazane korelacije so agregatne
-                  in ne odražajo posameznikov (ekološka zmota).
+                  Podatki SURS (plače, starost prebivalstva, izobrazba,
+                  zaposlenost) so na ravni 212 občin, volilni rezultati pa na
+                  ravni 88 okrajev. Občine preslikamo na okraje tako, da
+                  centroid vsake občine uvrstimo v okraj, ki ga vsebuje
+                  (Turf.js point-in-polygon), nato demografske kazalnike
+                  tehtamo po površini občin. Stran prikazuje korelacije med
+                  5 kazalniki (plača, delež starejših 65+, višja izobrazba,
+                  zaposleni z višjo izobrazbo, udeležba) in deležem glasov
+                  za posamezno stranko. Prikazane korelacije so agregatne in
+                  ne odražajo posameznikov (ekološka zmota).
                 </p>
               </div>
             </div>

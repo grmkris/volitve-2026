@@ -9,13 +9,16 @@ Interaktivna vizualizacija rezultatov parlamentarnih volitev v Državni zbor Rep
 - **Stranke** — podrobni rezultati po strankah z razčlenitvijo po enotah
 - **Koalicijski kalkulator** — interaktivno sestavljanje koalicij
 - **Primerjava z 2022** — analiza premikov po strankah in ideoloških blokih
+- **Demografska analiza** — korelacija med plačami, starostjo, izobrazbo, zaposlenostjo in volilnimi rezultati (SURS podatki)
 - **Udeležba** — rangiranje enot in okrajev po volilni udeležbi
-- **Drill-down** — od nacionalne ravni do posameznega volišča
+- **Drill-down** — od nacionalne ravni do posameznega volišča z zemljevidom volišč
 
 ## Viri podatkov
 
-- **Volilni rezultati:** [Državna volilna komisija (DVK)](https://volitve.dvk-rs.si/dz2026/) — JSON API
+- **Volilni rezultati 2026:** [Državna volilna komisija (DVK)](https://volitve.dvk-rs.si/dz2026/) — JSON API
+- **Volilni rezultati 2022:** [Arhiv DVK](https://www.dvk-rs.si/arhivi/dz2022/) — za primerjavo premikov
 - **Geografske meje:** [Register prostorskih enot (GURS RPE)](https://github.com/stefanb/gurs-rpe) — CC-BY 4.0, Geodetska uprava RS
+- **Demografski podatki:** [Statistični urad RS (SURS)](https://pxweb.stat.si/SiStat/sl) — plače (2023), prebivalstvo po starosti (2025), izobrazba (2025), zaposlenost (2025)
 
 ## Tehnični sklad
 
