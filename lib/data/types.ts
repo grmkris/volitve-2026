@@ -298,6 +298,13 @@ export interface OkrajDemographics {
   rpeid: string
   vdvId: number
   avgWage: number | null
+  population: number | null
+  pctYoung: number | null // 0-14 years
+  pctWorking: number | null // 15-64 years
+  pctElderly: number | null // 65+ years
+  pctHigherEd: number | null // tertiary+ education
+  employed: number | null
+  pctEmployedHigherEd: number | null
   obcineCount: number
   obcineNames: string[]
 }

@@ -1,30 +1,61 @@
 "use client"
 
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { buildNationalResults } from "@/lib/data/transforms"
-import { formatPercent } from "@/lib/data/format"
 import type {
   RawRezultati,
   RawUdelezba,
   RawKandidatiRezultat,
   OkrajDemographics,
 } from "@/lib/data/types"
+import type { PartyId } from "@/lib/data/ids"
+import { cn } from "@/lib/utils"
+
 import staticRezultati from "@/lib/data/static/rezultati.json"
 import staticUdelezba from "@/lib/data/static/udelezba.json"
 import staticKandidati from "@/lib/data/static/kandidati_rezultat.json"
 import okrajDemographics from "@/lib/data/static/okraj_demographics.json"
 
-interface ScatterPoint {
+type MetricKey = "wage" | "elderly" | "education" | "employment" | "turnout"
+
+const METRICS: { key: MetricKey; label: string; unit: string; source: string }[] = [
+  { key: "wage", label: "Plača", unit: "€", source: "SURS 2023" },
+  { key: "elderly", label: "Starejši (65+)", unit: "%", source: "SURS 2025" },
+  { key: "education", label: "Višja izobrazba", unit: "%", source: "SURS 2025" },
+  { key: "employment", label: "Zaposleni z VŠ", unit: "%", source: "SURS 2025" },
+  { key: "turnout", label: "Udeležba", unit: "%", source: "DVK 2026" },
+]
+
+interface DataPoint {
   rpeid: string
   name: string
-  x: number // wage
-  y: number // vote share of winner
-  color: string
+  metric: number
+  partyPct: number
+  partyColor: string
   partyAbbrev: string
 }
 
+function pearsonR(points: DataPoint[]): number {
+  const n = points.length
+  if (n < 3) return 0
+  let sx = 0, sy = 0, sxy = 0, sx2 = 0, sy2 = 0
+  for (const p of points) {
+    sx += p.metric
+    sy += p.partyPct
+    sxy += p.metric * p.partyPct
+    sx2 += p.metric * p.metric
+    sy2 += p.partyPct * p.partyPct
+  }
+  const num = n * sxy - sx * sy
+  const den = Math.sqrt((n * sx2 - sx * sx) * (n * sy2 - sy * sy))
+  return den !== 0 ? num / den : 0
+}
+
 export default function AnalizaPage() {
-  const { points, correlationR, minWage, maxWage } = useMemo(() => {
+  const [activeMetric, setActiveMetric] = useState<MetricKey>("wage")
+  const [selectedPartyId, setSelectedPartyId] = useState<PartyId | null>(null)
+
+  const { parliamentaryParties, dataByMetric } = useMemo(() => {
     const results = buildNationalResults({
       rezultati: staticRezultati as RawRezultati,
       udelezba: staticUdelezba as RawUdelezba,
@@ -34,75 +65,92 @@ export default function AnalizaPage() {
     const demographics = okrajDemographics as OkrajDemographics[]
     const demoMap = new Map(demographics.map((d) => [d.rpeid, d]))
 
-    const pts: ScatterPoint[] = []
+    // Build data for each metric × each party
+    const byMetric = new Map<MetricKey, Map<PartyId | null, DataPoint[]>>()
 
-    for (const enota of results.enote) {
-      for (const okraj of enota.okraji) {
-        const demo = demoMap.get(String(okraj.rpeid))
-        if (!demo?.avgWage) continue
+    for (const metricDef of METRICS) {
+      const partyMap = new Map<PartyId | null, DataPoint[]>()
 
-        const winner = results.partyMap.get(okraj.winnerId)
-        if (!winner) continue
+      for (const enota of results.enote) {
+        for (const okraj of enota.okraji) {
+          const demo = demoMap.get(String(okraj.rpeid))
 
-        // Find winner's vote share in this okraj
-        const winnerResult = okraj.parties.find(
-          (p) => p.partyId === okraj.winnerId
-        )
-        if (!winnerResult) continue
+          // Get metric value
+          let metricVal: number | null = null
+          switch (metricDef.key) {
+            case "wage": metricVal = demo?.avgWage ?? null; break
+            case "elderly": metricVal = demo?.pctElderly != null ? demo.pctElderly * 100 : null; break
+            case "education": metricVal = demo?.pctHigherEd != null ? demo.pctHigherEd * 100 : null; break
+            case "employment": metricVal = demo?.pctEmployedHigherEd != null ? demo.pctEmployedHigherEd * 100 : null; break
+            case "turnout": metricVal = okraj.turnout.percentage * 100; break
+          }
+          if (metricVal == null) continue
 
-        pts.push({
-          rpeid: String(okraj.rpeid),
-          name: okraj.name,
-          x: demo.avgWage,
-          y: winnerResult.percentage,
-          color: winner.color,
-          partyAbbrev: winner.abbrev,
-        })
+          // For each party, create a data point
+          for (const rp of okraj.parties) {
+            const party = results.partyMap.get(rp.partyId)
+            if (!party || rp.percentage < 0.01) continue
+
+            const point: DataPoint = {
+              rpeid: String(okraj.rpeid),
+              name: okraj.name,
+              metric: metricVal,
+              partyPct: rp.percentage * 100,
+              partyColor: party.color,
+              partyAbbrev: party.abbrev,
+            }
+
+            // Add to party-specific bucket
+            const existing = partyMap.get(rp.partyId) ?? []
+            existing.push(point)
+            partyMap.set(rp.partyId, existing)
+          }
+
+          // Also add winner for the "null" (all winners) bucket
+          const winner = results.partyMap.get(okraj.winnerId)
+          const winnerResult = okraj.parties.find((p) => p.partyId === okraj.winnerId)
+          if (winner && winnerResult) {
+            const existing = partyMap.get(null) ?? []
+            existing.push({
+              rpeid: String(okraj.rpeid),
+              name: okraj.name,
+              metric: metricVal,
+              partyPct: winnerResult.percentage * 100,
+              partyColor: winner.color,
+              partyAbbrev: winner.abbrev,
+            })
+            partyMap.set(null, existing)
+          }
+        }
       }
-    }
 
-    // Compute Pearson correlation between wage and winner vote share
-    const n = pts.length
-    let sumX = 0,
-      sumY = 0,
-      sumXY = 0,
-      sumX2 = 0,
-      sumY2 = 0
-    for (const p of pts) {
-      sumX += p.x
-      sumY += p.y
-      sumXY += p.x * p.y
-      sumX2 += p.x * p.x
-      sumY2 += p.y * p.y
+      byMetric.set(metricDef.key, partyMap)
     }
-    const numerator = n * sumXY - sumX * sumY
-    const denominator = Math.sqrt(
-      (n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY)
-    )
-    const r = denominator !== 0 ? numerator / denominator : 0
-
-    const wages = pts.map((p) => p.x)
 
     return {
-      points: pts,
-      correlationR: r,
-      minWage: Math.min(...wages),
-      maxWage: Math.max(...wages),
+      parliamentaryParties: results.parliamentaryParties,
+      dataByMetric: byMetric,
     }
   }, [])
 
-  // Scale for scatter plot
-  const plotWidth = 600
-  const plotHeight = 300
-  const padding = { top: 10, right: 20, bottom: 30, left: 50 }
-  const innerW = plotWidth - padding.left - padding.right
-  const innerH = plotHeight - padding.top - padding.bottom
+  // Get current data points
+  const metricData = dataByMetric.get(activeMetric)
+  const points = metricData?.get(selectedPartyId) ?? []
+  const r = pearsonR(points)
+  const metricDef = METRICS.find((m) => m.key === activeMetric)!
 
-  const wageRange = maxWage - minWage || 1
-  const scaleX = (wage: number) =>
-    padding.left + ((wage - minWage) / wageRange) * innerW
-  const scaleY = (pct: number) =>
-    padding.top + innerH - pct * innerH // 0% at bottom, 100% at top
+  // Scales
+  const metricValues = points.map((p) => p.metric)
+  const minX = Math.min(...metricValues)
+  const maxX = Math.max(...metricValues)
+  const rangeX = maxX - minX || 1
+
+  const plotW = 600, plotH = 300
+  const pad = { t: 10, r: 20, b: 30, l: 50 }
+  const innerW = plotW - pad.l - pad.r
+  const innerH = plotH - pad.t - pad.b
+  const scaleX = (v: number) => pad.l + ((v - minX) / rangeX) * innerW
+  const scaleY = (v: number) => pad.t + innerH - (v / 60) * innerH // 0-60% range
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 md:py-10">
@@ -110,30 +158,77 @@ export default function AnalizaPage() {
         Demografska analiza
       </h1>
       <p className="mt-1 text-xs text-muted-foreground">
-        Povezava med povprečnimi plačami po občinah in volilnimi rezultati po
-        okrajih.
+        Korelacija med demografskimi kazalniki in volilnimi rezultati po okrajih.
       </p>
 
       {/* Caveat */}
       <div className="mt-4 rounded-lg border border-amber-500/30 bg-amber-500/5 px-4 py-3 text-xs text-amber-700 dark:text-amber-400">
-        Opozorilo: Podatki na ravni okrajev ne odražajo posameznikov
-        (ekološka zmota). Prikazane korelacije so agregatne in ne
-        izražajo vzročnosti.
+        Agregatni podatki na ravni okrajev ne odražajo posameznikov (ekološka
+        zmota). Korelacije niso vzročnost.
       </div>
 
-      {/* Correlation stat */}
+      {/* Metric toggle */}
+      <div className="mt-6 flex flex-wrap gap-1">
+        {METRICS.map((m) => (
+          <button
+            key={m.key}
+            type="button"
+            onClick={() => setActiveMetric(m.key)}
+            className={cn(
+              "rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
+              activeMetric === m.key
+                ? "bg-primary text-primary-foreground"
+                : "bg-muted text-muted-foreground hover:text-foreground"
+            )}
+          >
+            {m.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Party selector */}
+      <div className="mt-3 flex flex-wrap items-center gap-1.5">
+        <span className="text-xs text-muted-foreground">Stranka:</span>
+        <button
+          type="button"
+          onClick={() => setSelectedPartyId(null)}
+          className={cn(
+            "rounded-full px-2.5 py-1 text-xs font-medium transition-colors",
+            selectedPartyId === null
+              ? "bg-foreground text-background"
+              : "bg-muted text-muted-foreground"
+          )}
+        >
+          Zmagovalec
+        </button>
+        {parliamentaryParties.map((p) => (
+          <button
+            key={p.id}
+            type="button"
+            onClick={() => setSelectedPartyId(p.id)}
+            className={cn(
+              "rounded-full px-2.5 py-1 text-xs font-medium transition-colors",
+              selectedPartyId === p.id
+                ? "text-white"
+                : "bg-muted text-muted-foreground"
+            )}
+            style={selectedPartyId === p.id ? { backgroundColor: p.color } : undefined}
+          >
+            {p.abbrev}
+          </button>
+        ))}
+      </div>
+
+      {/* Stats */}
       <div className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
         <div className="rounded-lg bg-card p-4 ring-1 ring-foreground/10">
           <p className="text-xs text-muted-foreground">Pearsonov r</p>
           <p className="font-heading text-2xl font-bold tabular-nums">
-            {correlationR.toFixed(3)}
+            {r.toFixed(3)}
           </p>
           <p className="text-[10px] text-muted-foreground">
-            {Math.abs(correlationR) < 0.2
-              ? "Šibka korelacija"
-              : Math.abs(correlationR) < 0.5
-                ? "Zmerna korelacija"
-                : "Močna korelacija"}
+            {Math.abs(r) < 0.2 ? "Šibka" : Math.abs(r) < 0.5 ? "Zmerna" : "Močna"}{" "}
+            {r > 0 ? "pozitivna" : "negativna"}
           </p>
         </div>
         <div className="rounded-lg bg-card p-4 ring-1 ring-foreground/10">
@@ -141,18 +236,17 @@ export default function AnalizaPage() {
           <p className="font-heading text-2xl font-bold tabular-nums">
             {points.length}
           </p>
-          <p className="text-[10px] text-muted-foreground">od 88 z podatki</p>
         </div>
         <div className="rounded-lg bg-card p-4 ring-1 ring-foreground/10">
-          <p className="text-xs text-muted-foreground">Min plača</p>
+          <p className="text-xs text-muted-foreground">Min {metricDef.label.toLowerCase()}</p>
           <p className="font-heading text-2xl font-bold tabular-nums">
-            {minWage.toLocaleString("sl-SI")} €
+            {minX.toLocaleString("sl-SI")} {metricDef.unit}
           </p>
         </div>
         <div className="rounded-lg bg-card p-4 ring-1 ring-foreground/10">
-          <p className="text-xs text-muted-foreground">Max plača</p>
+          <p className="text-xs text-muted-foreground">Max {metricDef.label.toLowerCase()}</p>
           <p className="font-heading text-2xl font-bold tabular-nums">
-            {maxWage.toLocaleString("sl-SI")} €
+            {maxX.toLocaleString("sl-SI")} {metricDef.unit}
           </p>
         </div>
       </div>
@@ -160,107 +254,33 @@ export default function AnalizaPage() {
       {/* Scatter plot */}
       <section className="mt-8">
         <h2 className="mb-4 font-heading text-lg font-semibold">
-          Plača vs. delež zmagovalca
+          {metricDef.label} vs. glasovi ({selectedPartyId ? points[0]?.partyAbbrev : "zmagovalec"})
         </h2>
         <div className="overflow-x-auto">
-          <svg
-            viewBox={`0 0 ${plotWidth} ${plotHeight}`}
-            className="w-full max-w-2xl"
-          >
-            {/* Grid lines */}
-            {[0.1, 0.2, 0.3, 0.4, 0.5].map((pct) => (
-              <line
-                key={pct}
-                x1={padding.left}
-                x2={plotWidth - padding.right}
-                y1={scaleY(pct)}
-                y2={scaleY(pct)}
-                className="stroke-border/30"
-                strokeDasharray="2 4"
-              />
+          <svg viewBox={`0 0 ${plotW} ${plotH}`} className="w-full max-w-2xl">
+            {[10, 20, 30, 40, 50].map((pct) => (
+              <line key={pct} x1={pad.l} x2={plotW - pad.r} y1={scaleY(pct)} y2={scaleY(pct)} className="stroke-border/30" strokeDasharray="2 4" />
             ))}
-
-            {/* X axis */}
-            <line
-              x1={padding.left}
-              x2={plotWidth - padding.right}
-              y1={padding.top + innerH}
-              y2={padding.top + innerH}
-              className="stroke-border"
-            />
-
-            {/* Y axis */}
-            <line
-              x1={padding.left}
-              x2={padding.left}
-              y1={padding.top}
-              y2={padding.top + innerH}
-              className="stroke-border"
-            />
-
-            {/* Y axis labels */}
-            {[0.1, 0.2, 0.3, 0.4, 0.5].map((pct) => (
-              <text
-                key={pct}
-                x={padding.left - 5}
-                y={scaleY(pct) + 3}
-                textAnchor="end"
-                className="fill-muted-foreground text-[8px]"
-              >
-                {(pct * 100).toFixed(0)}%
+            <line x1={pad.l} x2={plotW - pad.r} y1={pad.t + innerH} y2={pad.t + innerH} className="stroke-border" />
+            <line x1={pad.l} x2={pad.l} y1={pad.t} y2={pad.t + innerH} className="stroke-border" />
+            {[10, 20, 30, 40, 50].map((pct) => (
+              <text key={pct} x={pad.l - 5} y={scaleY(pct) + 3} textAnchor="end" className="fill-muted-foreground text-[8px]">{pct}%</text>
+            ))}
+            {Array.from({ length: 5 }, (_, i) => minX + (i * rangeX) / 4).map((v) => (
+              <text key={v} x={scaleX(v)} y={pad.t + innerH + 15} textAnchor="middle" className="fill-muted-foreground text-[8px]">
+                {metricDef.unit === "€" ? `${Math.round(v)} €` : `${v.toFixed(1)}%`}
               </text>
             ))}
-
-            {/* X axis labels */}
-            {Array.from(
-              { length: 5 },
-              (_, i) => minWage + (i * wageRange) / 4
-            ).map((wage) => (
-              <text
-                key={wage}
-                x={scaleX(wage)}
-                y={padding.top + innerH + 15}
-                textAnchor="middle"
-                className="fill-muted-foreground text-[8px]"
-              >
-                {Math.round(wage)} €
-              </text>
-            ))}
-
-            {/* Dots */}
             {points.map((p) => (
-              <circle
-                key={p.rpeid}
-                cx={scaleX(p.x)}
-                cy={scaleY(p.y)}
-                r={4}
-                fill={p.color}
-                opacity={0.7}
-                className="transition-opacity hover:opacity-100"
-              >
-                <title>
-                  {p.name}: {p.x.toLocaleString("sl-SI")} € / {formatPercent(p.y)} ({p.partyAbbrev})
-                </title>
+              <circle key={p.rpeid} cx={scaleX(p.metric)} cy={scaleY(p.partyPct)} r={4} fill={p.partyColor} opacity={0.7} className="transition-opacity hover:opacity-100">
+                <title>{p.name}: {p.metric.toLocaleString("sl-SI")} {metricDef.unit} / {p.partyPct.toFixed(1)}% {p.partyAbbrev}</title>
               </circle>
             ))}
-
-            {/* Axis labels */}
-            <text
-              x={plotWidth / 2}
-              y={plotHeight - 2}
-              textAnchor="middle"
-              className="fill-muted-foreground text-[9px]"
-            >
-              Povprečna bruto plača (€)
+            <text x={plotW / 2} y={plotH - 2} textAnchor="middle" className="fill-muted-foreground text-[9px]">
+              {metricDef.label} ({metricDef.source})
             </text>
-            <text
-              x={12}
-              y={plotHeight / 2}
-              textAnchor="middle"
-              transform={`rotate(-90, 12, ${plotHeight / 2})`}
-              className="fill-muted-foreground text-[9px]"
-            >
-              Delež zmagovalca (%)
+            <text x={12} y={plotH / 2} textAnchor="middle" transform={`rotate(-90, 12, ${plotH / 2})`} className="fill-muted-foreground text-[9px]">
+              Delež glasov (%)
             </text>
           </svg>
         </div>
@@ -268,64 +288,52 @@ export default function AnalizaPage() {
 
       {/* Data table */}
       <section className="mt-8">
-        <h2 className="mb-4 font-heading text-lg font-semibold">
-          Podatki po okrajih
-        </h2>
+        <h2 className="mb-4 font-heading text-lg font-semibold">Podatki po okrajih</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-xs">
             <thead>
               <tr className="border-b border-border/50 text-left text-muted-foreground">
                 <th className="pb-2 pr-4 font-medium">Okraj</th>
-                <th className="pb-2 pr-4 text-right font-medium">Plača (€)</th>
-                <th className="pb-2 pr-4 font-medium">Zmagovalec</th>
+                <th className="pb-2 pr-4 text-right font-medium">{metricDef.label}</th>
+                <th className="pb-2 pr-4 font-medium">Stranka</th>
                 <th className="pb-2 text-right font-medium">Delež</th>
               </tr>
             </thead>
             <tbody>
-              {points
-                .sort((a, b) => b.x - a.x)
-                .map((p) => (
-                  <tr
-                    key={p.rpeid}
-                    className="border-b border-border/30 transition-colors last:border-0 hover:bg-muted/30"
-                  >
-                    <td className="py-1.5 pr-4 font-medium">{p.name}</td>
-                    <td className="py-1.5 pr-4 text-right font-mono tabular-nums">
-                      {p.x.toLocaleString("sl-SI")}
-                    </td>
-                    <td className="py-1.5 pr-4">
-                      <span className="flex items-center gap-1.5">
-                        <span
-                          className="inline-block size-2 rounded-full"
-                          style={{ backgroundColor: p.color }}
-                        />
-                        {p.partyAbbrev}
-                      </span>
-                    </td>
-                    <td className="py-1.5 text-right font-mono tabular-nums">
-                      {formatPercent(p.y)}
-                    </td>
-                  </tr>
-                ))}
+              {[...points].sort((a, b) => b.metric - a.metric).map((p) => (
+                <tr key={p.rpeid} className="border-b border-border/30 transition-colors last:border-0 hover:bg-muted/30">
+                  <td className="py-1.5 pr-4 font-medium">{p.name}</td>
+                  <td className="py-1.5 pr-4 text-right font-mono tabular-nums">
+                    {metricDef.unit === "€" ? p.metric.toLocaleString("sl-SI") : `${p.metric.toFixed(1)}%`}
+                  </td>
+                  <td className="py-1.5 pr-4">
+                    <span className="flex items-center gap-1.5">
+                      <span className="inline-block size-2 rounded-full" style={{ backgroundColor: p.partyColor }} />
+                      {p.partyAbbrev}
+                    </span>
+                  </td>
+                  <td className="py-1.5 text-right font-mono tabular-nums">{p.partyPct.toFixed(1)}%</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
       </section>
 
-      {/* Data sources */}
-      <p className="mt-6 text-[10px] text-muted-foreground">
-        Vir plač:{" "}
-        <a
-          href="https://pxweb.stat.si/SiStat/sl"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="underline underline-offset-2"
-        >
-          SURS
-        </a>{" "}
-        (2023, povprečne mesečne bruto plače po občinah). Občine agregirane na
-        okraje prek geografskega prekrivanja (GURS RPE).
-      </p>
+      {/* Methodology */}
+      <section className="mt-10 rounded-lg bg-card/50 p-5 ring-1 ring-foreground/10">
+        <h2 className="font-heading text-sm font-semibold">Kako deluje?</h2>
+        <ol className="mt-2 list-decimal space-y-1 pl-5 text-xs text-muted-foreground">
+          <li>Podatki o plačah, starosti, izobrazbi in zaposlitvi so pridobljeni iz <strong className="text-foreground">SURS</strong> (Statistični urad RS) na ravni 212 občin.</li>
+          <li>Meje 212 občin (GURS RPE) preslikamo na 88 volilnih okrajev z uporabo centroida vsake občine in prostorskega ujemanja (point-in-polygon).</li>
+          <li>Demografske kazalnike tehtamo po površini občin znotraj vsakega okraja.</li>
+          <li>Volilne rezultate pridobimo iz DVK (Državna volilna komisija) na ravni okrajev.</li>
+          <li>Pearsonov koeficient korelacije (r) meri linearno povezanost med kazalnikom in deležem glasov.</li>
+        </ol>
+        <p className="mt-2 text-[10px] text-muted-foreground">
+          Viri: SURS (plače 2023, prebivalstvo 2025 H2, izobrazba 2025, zaposlenost 2025), GURS RPE (meje občin), DVK (volilni rezultati 2026).
+        </p>
+      </section>
     </div>
   )
 }
