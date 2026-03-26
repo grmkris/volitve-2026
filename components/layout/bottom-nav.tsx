@@ -6,13 +6,17 @@ import {
   Flag,
   ArrowsClockwise,
   Scales,
+  Scroll,
   ChartLineUp,
   UsersThree,
   Info,
+  Moon,
+  Sun,
   X,
 } from "@phosphor-icons/react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { useTheme } from "next-themes"
 import { useCallback, useEffect, useState } from "react"
 
 import { cn } from "@/lib/utils"
@@ -52,6 +56,12 @@ const MORE_ITEMS = [
     desc: "Sestavite koalicijo in preverite večino",
   },
   {
+    href: "/obveze",
+    label: "Obveze strank",
+    icon: Scroll,
+    desc: "Predvolilne obveze in obljube strank",
+  },
+  {
     href: "/analiza",
     label: "Demografska analiza",
     icon: ChartLineUp,
@@ -73,6 +83,7 @@ const MORE_ITEMS = [
 
 export function BottomNav() {
   const pathname = usePathname()
+  const { resolvedTheme, setTheme } = useTheme()
   const [sheetOpen, setSheetOpen] = useState(false)
 
   const isMoreActive = MORE_ITEMS.some((item) =>
@@ -166,6 +177,21 @@ export function BottomNav() {
                     </Link>
                   )
                 })}
+
+                {/* Theme toggle */}
+                <button
+                  type="button"
+                  onClick={() =>
+                    setTheme(resolvedTheme === "dark" ? "light" : "dark")
+                  }
+                  className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
+                >
+                  <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+                    <Sun className="size-4.5 dark:hidden" />
+                    <Moon className="hidden size-4.5 dark:block" />
+                  </div>
+                  <p className="text-sm">Preklopi temo</p>
+                </button>
               </div>
             </div>
           </div>
