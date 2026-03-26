@@ -1,13 +1,14 @@
 "use client"
 
 import { useMemo, useState } from "react"
+
+import { SPECTRUM_ORDER, TOTAL_SEATS } from "@/lib/data/constants"
+import type { Party } from "@/lib/data/types"
 import {
   computeHemicycleLayout,
   assignSeats,
   type AssignedSeat,
 } from "@/lib/parliament-layout"
-import type { Party } from "@/lib/data/types"
-import { SPECTRUM_ORDER, TOTAL_SEATS } from "@/lib/data/constants"
 
 interface ParliamentChartProps {
   parties: Party[]
@@ -83,9 +84,7 @@ export function ParliamentChart({
               onMouseEnter={() => setHoveredParty(party.id)}
               onMouseLeave={() => setHoveredParty(null)}
               onTouchStart={() =>
-                setHoveredParty((prev) =>
-                  prev === party.id ? null : party.id
-                )
+                setHoveredParty((prev) => (prev === party.id ? null : party.id))
               }
             >
               <span
@@ -129,9 +128,7 @@ function SeatDot({
       onMouseEnter={() => onHover(seat.partyId)}
       onMouseLeave={() => onHover(null)}
     >
-      <title>
-        {seat.partyAbbrev}
-      </title>
+      <title>{seat.partyAbbrev}</title>
     </circle>
   )
 }

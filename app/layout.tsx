@@ -1,13 +1,13 @@
 import type { Metadata } from "next"
-import Script from "next/script"
 import { Geist_Mono, Source_Serif_4 } from "next/font/google"
+import Script from "next/script"
 
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
-import { QueryProvider } from "@/components/query-provider"
-import { SiteHeader } from "@/components/layout/site-header"
-import { SiteFooter } from "@/components/layout/site-footer"
 import { BottomNav } from "@/components/layout/bottom-nav"
+import { SiteFooter } from "@/components/layout/site-footer"
+import { SiteHeader } from "@/components/layout/site-header"
+import { QueryProvider } from "@/components/query-provider"
+import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils"
 
 const sourceSerif = Source_Serif_4({

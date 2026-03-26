@@ -1,0 +1,140 @@
+{
+  "lastUpdated": "2026-03-25T10:00:00Z",
+  "categories": [
+    { "id": "zdravstvo", "name": "Zdravstvo", "slug": "zdravstvo" },
+    { "id": "gospodarstvo", "name": "Gospodarstvo", "slug": "gospodarstvo" },
+    { "id": "okolje", "name": "Okolje in energetika", "slug": "okolje" },
+    { "id": "izobrazevanje", "name": "Izobraževanje", "slug": "izobrazevanje" },
+    { "id": "sociala", "name": "Socialna politika", "slug": "sociala" },
+    { "id": "obramba", "name": "Obramba in varnost", "slug": "obramba" },
+    {
+      "id": "digitalizacija",
+      "name": "Digitalizacija",
+      "slug": "digitalizacija"
+    },
+    { "id": "pravosodje", "name": "Pravosodje", "slug": "pravosodje" }
+  ],
+  "promises": [
+    {
+      "id": "svoboda-cakalne-dobe",
+      "partyId": 107754,
+      "categoryId": "zdravstvo",
+      "source": "party",
+      "title": "Skrajšanje čakalnih dob v zdravstvu za 50 %",
+      "description": "Bistveno skrajšanje čakalnih dob pri specialističnih pregledih in operacijah z digitalizacijo napotitev in dodatnimi ambulantami.",
+      "currentStatus": "not_started",
+      "history": [{ "status": "not_started", "date": "2026-03-22" }],
+      "programRef": "Volilni program SVOBODA, str. 14"
+    },
+    {
+      "id": "svoboda-min-placa",
+      "partyId": 107754,
+      "categoryId": "gospodarstvo",
+      "source": "party",
+      "title": "Dvig minimalne plače na 1.500 € bruto",
+      "description": "Postopno zvišanje minimalne plače na 1.500 € bruto do konca mandata.",
+      "currentStatus": "not_started",
+      "history": [{ "status": "not_started", "date": "2026-03-22" }],
+      "programRef": "Volilni program SVOBODA, str. 8"
+    },
+    {
+      "id": "svoboda-soncne",
+      "partyId": 107754,
+      "categoryId": "okolje",
+      "source": "party",
+      "title": "100.000 novih sončnih elektrarn do 2030",
+      "description": "Subvencioniranje namestitve sončnih elektrarn na stanovanjskih in poslovnih objektih.",
+      "currentStatus": "not_started",
+      "history": [{ "status": "not_started", "date": "2026-03-22" }],
+      "programRef": "Volilni program SVOBODA, str. 22"
+    },
+    {
+      "id": "sds-davki",
+      "partyId": 107757,
+      "categoryId": "gospodarstvo",
+      "source": "party",
+      "title": "Znižanje dohodnine za srednji razred",
+      "description": "Razbremenitev srednjega razreda z znižanjem dohodninske stopnje v tretjem razredu.",
+      "currentStatus": "not_started",
+      "history": [{ "status": "not_started", "date": "2026-03-22" }],
+      "programRef": "Volilni program SDS, str. 6"
+    },
+    {
+      "id": "sds-vojska",
+      "partyId": 107757,
+      "categoryId": "obramba",
+      "source": "party",
+      "title": "Dvig obrambnih izdatkov na 2 % BDP",
+      "description": "Postopen dvig obrambnih izdatkov na 2 % BDP v skladu z zavezami NATO.",
+      "currentStatus": "not_started",
+      "history": [{ "status": "not_started", "date": "2026-03-22" }],
+      "programRef": "Volilni program SDS, str. 18"
+    },
+    {
+      "id": "sds-zdravstvo",
+      "partyId": 107757,
+      "categoryId": "zdravstvo",
+      "source": "party",
+      "title": "Ukinitev dopolnilnega zdravstvenega zavarovanja",
+      "description": "Odprava dopolnilnega zdravstvenega zavarovanja in prehod na enoten sistem.",
+      "currentStatus": "not_started",
+      "history": [{ "status": "not_started", "date": "2026-03-22" }],
+      "programRef": "Volilni program SDS, str. 12"
+    },
+    {
+      "id": "nsi-druzina",
+      "partyId": 107749,
+      "categoryId": "sociala",
+      "source": "party",
+      "title": "Podvojitev otroškega dodatka",
+      "description": "Podvojitev otroškega dodatka za družine z dvema ali več otroki.",
+      "currentStatus": "not_started",
+      "history": [{ "status": "not_started", "date": "2026-03-22" }],
+      "programRef": "Volilni program NSi, SLS, FOKUS, str. 10"
+    },
+    {
+      "id": "sd-stanovanja",
+      "partyId": 107753,
+      "categoryId": "sociala",
+      "source": "party",
+      "title": "10.000 novih javnih najemnih stanovanj",
+      "description": "Izgradnja 10.000 javnih najemnih stanovanj v mandatnem obdobju prek Stanovanjskega sklada RS.",
+      "currentStatus": "not_started",
+      "history": [{ "status": "not_started", "date": "2026-03-22" }],
+      "programRef": "Volilni program SD, str. 15"
+    },
+    {
+      "id": "levica-digitalizacija",
+      "partyId": 107760,
+      "categoryId": "digitalizacija",
+      "source": "party",
+      "title": "Brezplačen internet za vse šolarje",
+      "description": "Zagotovitev brezplačnega dostopa do interneta za vse učence in dijake.",
+      "currentStatus": "not_started",
+      "history": [{ "status": "not_started", "date": "2026-03-22" }],
+      "programRef": "Volilni program LEVICA IN VESNA, str. 20"
+    },
+    {
+      "id": "demokrati-pravosodje",
+      "partyId": 107755,
+      "categoryId": "pravosodje",
+      "source": "party",
+      "title": "Reforma sodnega sistema za hitrejše postopke",
+      "description": "Korenita reforma pravosodja za skrajšanje sodnih postopkov in uvedba elektronskega poslovanja sodišč.",
+      "currentStatus": "not_started",
+      "history": [{ "status": "not_started", "date": "2026-03-22" }],
+      "programRef": "Volilni program DEMOKRATI, str. 9"
+    },
+    {
+      "id": "resnica-zdravstvo",
+      "partyId": 107752,
+      "categoryId": "zdravstvo",
+      "source": "party",
+      "title": "Odprava čakalnih vrst z javno-zasebnim partnerstvom",
+      "description": "Vključitev zasebnih izvajalcev v mrežo javnega zdravstva za takojšnje skrajšanje čakalnih dob.",
+      "currentStatus": "not_started",
+      "history": [{ "status": "not_started", "date": "2026-03-22" }],
+      "programRef": "Volilni program RESNI.CA, str. 7"
+    }
+  ]
+}

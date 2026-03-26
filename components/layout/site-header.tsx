@@ -2,14 +2,17 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { ThemeToggle } from "./theme-toggle"
+
 import { cn } from "@/lib/utils"
+
+import { ThemeToggle } from "./theme-toggle"
 
 const NAV_ITEMS = [
   { href: "/", label: "Pregled" },
   { href: "/zemljevid", label: "Zemljevid" },
   { href: "/stranke", label: "Stranke" },
   { href: "/koalicije", label: "Koalicije" },
+  { href: "/obveze", label: "Obveze" },
   { href: "/primerjava", label: "Primerjava" },
   { href: "/analiza", label: "Analiza" },
   { href: "/udelezba", label: "Udeležba" },
@@ -26,7 +29,10 @@ export function SiteHeader() {
           href="/"
           className="flex items-center gap-2 font-heading text-sm font-bold tracking-tight"
         >
-          <span className="inline-block h-4 w-8 -skew-x-12 rounded-sm bg-cgp-green" aria-hidden="true" />
+          <span
+            className="inline-block h-4 w-8 -skew-x-12 rounded-sm bg-cgp-green"
+            aria-hidden="true"
+          />
           <span>Volitve 2026</span>
         </Link>
 
@@ -42,7 +48,7 @@ export function SiteHeader() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "rounded-md px-3 py-1.5 text-xs transition-colors hover:text-foreground",
+                  "rounded-md px-2 py-1.5 text-xs transition-colors hover:text-foreground",
                   isActive
                     ? "font-semibold text-foreground"
                     : "text-muted-foreground"

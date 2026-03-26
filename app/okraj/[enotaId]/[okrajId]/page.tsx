@@ -1,17 +1,16 @@
-import { fetchVolisca, getNationalResults } from "@/lib/data/fetchers"
-import { toPartyList, buildSwingAnalysis } from "@/lib/data/transforms"
-import { formatNumber, formatPercent } from "@/lib/data/format"
-import { NUM_ENOTE, MAX_OKRAJI_PER_ENOTA } from "@/lib/data/constants"
-import { enotaSt as toEnotaSt, okrajSt as toOkrajSt } from "@/lib/data/ids"
-import type { RawRezultati } from "@/lib/data/types"
-import { PageHeader } from "@/components/layout/page-header"
-import { PartyBarChart } from "@/components/charts/party-bar-chart"
 import { StatCard } from "@/components/cards/stat-card"
+import { PartyBarChart } from "@/components/charts/party-bar-chart"
+import { PageHeader } from "@/components/layout/page-header"
 import { PollingStationMap } from "@/components/map/polling-station-map"
-import { cn } from "@/lib/utils"
-
-import staticRezultati2022 from "@/lib/data/static/rezultati_2022.json"
+import { NUM_ENOTE, MAX_OKRAJI_PER_ENOTA } from "@/lib/data/constants"
+import { fetchVolisca, getNationalResults } from "@/lib/data/fetchers"
+import { formatNumber, formatPercent } from "@/lib/data/format"
+import { enotaSt as toEnotaSt, okrajSt as toOkrajSt } from "@/lib/data/ids"
 import staticRezultati2026 from "@/lib/data/static/rezultati.json"
+import staticRezultati2022 from "@/lib/data/static/rezultati_2022.json"
+import { toPartyList, buildSwingAnalysis } from "@/lib/data/transforms"
+import type { RawRezultati } from "@/lib/data/types"
+import { cn } from "@/lib/utils"
 
 export async function generateStaticParams() {
   const params: { enotaId: string; okrajId: string }[] = []
@@ -54,11 +53,7 @@ export default async function OkrajPage({
 
   // Candidates in this okraj
   const okrajCandidates = data.candidates
-    .filter(
-      (c) =>
-        c.enotaSt === enotaSt &&
-        c.okrajOrdinals.includes(okrajSt)
-    )
+    .filter((c) => c.enotaSt === enotaSt && c.okrajOrdinals.includes(okrajSt))
     .sort((a, b) => b.votes - a.votes)
 
   const electedCandidate = okrajCandidates.find((c) => c.elected)
@@ -70,10 +65,11 @@ export default async function OkrajPage({
     partyMap2026: data.partyMap,
   })
   const okrajSwing = swingData.okraji.find((o) => o.rpeid === okraj.rpeid)
-  const topSwings = okrajSwing?.partySwings
-    .filter((s) => s.pct2026 > 0.01 || s.pct2022 > 0.01)
-    .sort((a, b) => Math.abs(b.swing) - Math.abs(a.swing))
-    .slice(0, 5) ?? []
+  const topSwings =
+    okrajSwing?.partySwings
+      .filter((s) => s.pct2026 > 0.01 || s.pct2022 > 0.01)
+      .sort((a, b) => Math.abs(b.swing) - Math.abs(a.swing))
+      .slice(0, 5) ?? []
 
   // Polling station results
   const stations = volisca?.vol ?? []
@@ -107,7 +103,11 @@ export default async function OkrajPage({
 
       {/* Summary */}
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-        <StatCard label="Zmagovalec" value={winnerParty?.abbrev ?? "–"} accentColor={winnerParty?.color} />
+        <StatCard
+          label="Zmagovalec"
+          value={winnerParty?.abbrev ?? "–"}
+          accentColor={winnerParty?.color}
+        />
         <StatCard
           label="Razlika"
           value={`+${formatPercent(okraj.margin)}`}
@@ -118,10 +118,7 @@ export default async function OkrajPage({
           value={formatPercent(okraj.turnout.percentage)}
           sublabel={`${formatNumber(okraj.turnout.voted)} glasovalcev`}
         />
-        <StatCard
-          label="Glasovnice"
-          value={formatNumber(okraj.totalVotes)}
-        />
+        <StatCard label="Glasovnice" value={formatNumber(okraj.totalVotes)} />
       </div>
 
       {/* Elected candidate highlight */}
@@ -183,7 +180,10 @@ export default async function OkrajPage({
           </h2>
           <div className="space-y-1.5">
             {topSwings.map((s) => (
-              <div key={s.partyId2026} className="flex items-center gap-3 text-xs">
+              <div
+                key={s.partyId2026}
+                className="flex items-center gap-3 text-xs"
+              >
                 <span
                   className="size-2.5 shrink-0 rounded-full"
                   style={{ backgroundColor: s.color }}
@@ -221,7 +221,8 @@ export default async function OkrajPage({
                         : "text-muted-foreground"
                   )}
                 >
-                  {s.swing > 0 ? "+" : ""}{(s.swing * 100).toFixed(1)}
+                  {s.swing > 0 ? "+" : ""}
+                  {(s.swing * 100).toFixed(1)}
                 </span>
               </div>
             ))}
@@ -302,9 +303,7 @@ export default async function OkrajPage({
                 <tr className="border-b border-border/50 text-left text-muted-foreground">
                   <th className="pb-2 pr-4 font-medium">#</th>
                   <th className="pb-2 pr-4 font-medium">Volišče</th>
-                  <th className="pb-2 pr-4 text-right font-medium">
-                    Glasovi
-                  </th>
+                  <th className="pb-2 pr-4 text-right font-medium">Glasovi</th>
                   <th className="pb-2 text-right font-medium">Udeležba</th>
                 </tr>
               </thead>
@@ -320,9 +319,7 @@ export default async function OkrajPage({
                       {formatNumber(s.rez?.glas ?? 0)}
                     </td>
                     <td className="py-2 text-right font-mono tabular-nums">
-                      {s.udel?.prc != null
-                        ? formatPercent(s.udel.prc)
-                        : "–"}
+                      {s.udel?.prc != null ? formatPercent(s.udel.prc) : "–"}
                     </td>
                   </tr>
                 ))}

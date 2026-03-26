@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next"
-import { fetchRezultati } from "@/lib/data/fetchers"
+
 import { partySlug } from "@/lib/data/constants"
 import { NUM_ENOTE, MAX_OKRAJI_PER_ENOTA } from "@/lib/data/constants"
+import { fetchRezultati } from "@/lib/data/fetchers"
 
 const BASE_URL = "https://volitve2026.si"
 
@@ -15,7 +16,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/primerjava`, changeFrequency: "weekly", priority: 0.7 },
     { url: `${BASE_URL}/udelezba`, changeFrequency: "daily", priority: 0.7 },
     { url: `${BASE_URL}/zemljevid`, changeFrequency: "daily", priority: 0.8 },
-    { url: `${BASE_URL}/o-projektu`, changeFrequency: "monthly", priority: 0.3 },
+    {
+      url: `${BASE_URL}/o-projektu`,
+      changeFrequency: "monthly",
+      priority: 0.3,
+    },
   ]
 
   const partyPages: MetadataRoute.Sitemap = rezultati.slovenija.map((p) => ({

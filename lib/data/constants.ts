@@ -1,3 +1,5 @@
+import type { PromiseStatus } from "./types"
+
 /** DVK data base URL */
 export const DVK_BASE_URL = "https://volitve.dvk-rs.si/dz2026/data"
 
@@ -26,17 +28,17 @@ export const SPECTRUM_ORDER: Record<number, number> = {
 
 /** Clean enota name: "VE 1000 - KRANJ" → "Kranj" */
 export function cleanEnotaName(raw: string): string {
-  const match = raw.match(/- (.+)$/)
-  if (!match) return raw
-  return match[1].charAt(0) + match[1].slice(1).toLowerCase()
+  const captured = raw.match(/- (.+)$/)?.[1]
+  if (!captured) return raw
+  return captured.charAt(0) + captured.slice(1).toLowerCase()
 }
 
 /** Clean okraj name: "VO 1001 - JESENICE" → "Jesenice" */
 export function cleanOkrajName(raw: string): string {
-  const match = raw.match(/- (.+)$/)
-  if (!match) return raw
+  const captured = raw.match(/- (.+)$/)?.[1]
+  if (!captured) return raw
   // Title case: "JESENICE" → "Jesenice", "LJUBLJANA CENTER" → "Ljubljana Center"
-  return match[1]
+  return captured
     .split(" ")
     .map((w) => w.charAt(0) + w.slice(1).toLowerCase())
     .join(" ")
@@ -101,6 +103,31 @@ export const BLOCS = {
     parties2026: [107752, 107751],
   },
 } as const
+
+// =============================================================================
+// Promise tracker constants
+// =============================================================================
+
+export const PROMISE_STATUS_ORDER: PromiseStatus[] = [
+  "fulfilled",
+  "in_progress",
+  "not_started",
+  "broken",
+]
+
+export const PROMISE_STATUS_LABELS: Record<PromiseStatus, string> = {
+  not_started: "Ni začeto",
+  in_progress: "V izvajanju",
+  fulfilled: "Izpolnjeno",
+  broken: "Prelomljeno",
+}
+
+export const PROMISE_STATUS_COLORS: Record<PromiseStatus, string> = {
+  not_started: "var(--color-muted-foreground)",
+  in_progress: "oklch(0.75 0.15 230)",
+  fulfilled: "oklch(0.72 0.17 150)",
+  broken: "oklch(0.65 0.2 25)",
+}
 
 /** Generate a URL-safe slug from party abbreviation */
 export function partySlug(knaz: string): string {

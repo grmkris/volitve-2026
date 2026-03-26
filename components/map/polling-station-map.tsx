@@ -1,12 +1,14 @@
 "use client"
 
-import { useMemo } from "react"
 import { useQuery } from "@tanstack/react-query"
-import type { ExpressionSpecification } from "maplibre-gl"
 import type { FeatureCollection, Geometry } from "geojson"
+import type { ExpressionSpecification } from "maplibre-gl"
+import { useMemo } from "react"
+
 import { Map, MapControls } from "@/components/ui/map"
-import { MapGeoJSONLayer } from "./map-geojson-layer"
 import { loadTopoJSON } from "@/lib/geo/loader"
+
+import { MapGeoJSONLayer } from "./map-geojson-layer"
 
 interface StationInfo {
   vdvId: number
@@ -78,9 +80,13 @@ export function PollingStationMap({
         f.geometry.type === "Polygon"
           ? f.geometry.coordinates[0]
           : f.geometry.type === "MultiPolygon"
-            ? f.geometry.coordinates[0][0]
-            : []
-      for (const [lng, lat] of coords) {
+            ? f.geometry.coordinates[0]?.[0]
+            : undefined
+      if (!coords) return acc
+      for (const coord of coords) {
+        const lng = coord[0]
+        const lat = coord[1]
+        if (lng === undefined || lat === undefined) continue
         acc.minLng = Math.min(acc.minLng, lng)
         acc.maxLng = Math.max(acc.maxLng, lng)
         acc.minLat = Math.min(acc.minLat, lat)

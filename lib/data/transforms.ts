@@ -1,3 +1,6 @@
+import { cleanEnotaName, cleanOkrajName } from "./constants"
+import type { PartyId } from "./ids"
+import { partyId, enotaSt, okrajSt, rpeid, candidateId } from "./ids"
 import type {
   RawPartyResult,
   RawRezultati,
@@ -15,16 +18,25 @@ import type {
   BlocSwing,
   OkrajSwing,
   SwingAnalysis,
+  TrackedPromise,
+  PromiseStatus,
 } from "./types"
-import type { PartyId } from "./ids"
-import {
-  partyId,
-  enotaSt,
-  okrajSt,
-  rpeid,
-  candidateId,
-} from "./ids"
-import { cleanEnotaName, cleanOkrajName } from "./constants"
+
+/** Count promises by status */
+export function countByStatus(
+  promises: TrackedPromise[]
+): Record<PromiseStatus, number> {
+  const counts: Record<PromiseStatus, number> = {
+    not_started: 0,
+    in_progress: 0,
+    fulfilled: 0,
+    broken: 0,
+  }
+  for (const p of promises) {
+    counts[p.currentStatus]++
+  }
+  return counts
+}
 
 function toParty(raw: RawPartyResult): Party {
   return {
@@ -214,11 +226,7 @@ export function buildNationalResults({
 // Swing analysis: 2022 vs 2026
 // =============================================================================
 
-import {
-  PARTY_MAP_2022,
-  PARTY_MERGERS_2022,
-  BLOCS,
-} from "./constants"
+import { PARTY_MAP_2022, PARTY_MERGERS_2022, BLOCS } from "./constants"
 
 /** Build per-okraj swing data comparing 2022 and 2026 results */
 export function buildSwingAnalysis({
@@ -290,9 +298,7 @@ export function buildSwingAnalysis({
           (sum, st) => sum + (pct2022Map.get(st) ?? 0),
           0
         )
-        const okrajResult = okraj.rez.find(
-          (r) => r.st === Number(st2026Str)
-        )
+        const okrajResult = okraj.rez.find((r) => r.st === Number(st2026Str))
         const pct26 = okrajResult?.prc ?? 0
 
         partySwings.push({
@@ -396,9 +402,7 @@ export function buildSwingAnalysis({
       (sum, st) => sum + (natPct2022.get(st) ?? 0),
       0
     )
-    const p2026 = results2026.slovenija.find(
-      (p) => p.st === Number(st2026Str)
-    )
+    const p2026 = results2026.slovenija.find((p) => p.st === Number(st2026Str))
     nationalSwings.push({
       partyId2026: pid,
       partyLabel: party.abbrev,

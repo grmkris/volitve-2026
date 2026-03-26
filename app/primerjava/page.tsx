@@ -1,8 +1,14 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { buildNationalResults, buildSwingAnalysis } from "@/lib/data/transforms"
+
 import { formatPercent } from "@/lib/data/format"
+import type { PartyId } from "@/lib/data/ids"
+import staticKandidati2026 from "@/lib/data/static/kandidati_rezultat.json"
+import staticRezultati2026 from "@/lib/data/static/rezultati.json"
+import staticRezultati2022 from "@/lib/data/static/rezultati_2022.json"
+import staticUdelezba2026 from "@/lib/data/static/udelezba.json"
+import { buildNationalResults, buildSwingAnalysis } from "@/lib/data/transforms"
 import type {
   RawRezultati,
   RawUdelezba,
@@ -10,13 +16,7 @@ import type {
   PartySwing,
   OkrajSwing,
 } from "@/lib/data/types"
-import type { PartyId } from "@/lib/data/ids"
 import { cn } from "@/lib/utils"
-
-import staticRezultati2026 from "@/lib/data/static/rezultati.json"
-import staticUdelezba2026 from "@/lib/data/static/udelezba.json"
-import staticKandidati2026 from "@/lib/data/static/kandidati_rezultat.json"
-import staticRezultati2022 from "@/lib/data/static/rezultati_2022.json"
 
 type ViewMode = "parties" | "blocs"
 
@@ -45,9 +45,7 @@ export default function PrimerjavaPage() {
     if (!selectedPartyId) return null
     return swing.okraji
       .map((o) => {
-        const ps = o.partySwings.find(
-          (s) => s.partyId2026 === selectedPartyId
-        )
+        const ps = o.partySwings.find((s) => s.partyId2026 === selectedPartyId)
         return ps ? { ...o, selectedSwing: ps } : null
       })
       .filter(Boolean)
@@ -112,9 +110,7 @@ export default function PrimerjavaPage() {
                   type="button"
                   onClick={() =>
                     setSelectedPartyId(
-                      selectedPartyId === ps.partyId2026
-                        ? null
-                        : ps.partyId2026
+                      selectedPartyId === ps.partyId2026 ? null : ps.partyId2026
                     )
                   }
                   className={cn(
@@ -146,9 +142,7 @@ export default function PrimerjavaPage() {
                             backgroundColor: ps.color,
                             opacity: 0.7,
                             left:
-                              ps.swing > 0
-                                ? "50%"
-                                : `${50 + ps.swing * 200}%`,
+                              ps.swing > 0 ? "50%" : `${50 + ps.swing * 200}%`,
                             width: `${Math.abs(ps.swing) * 200}%`,
                           }}
                         />

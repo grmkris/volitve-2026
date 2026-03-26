@@ -21,6 +21,12 @@ export type Rpeid = Brand<string, "Rpeid">
 /** DVK candidate ID */
 export type CandidateId = Brand<number, "CandidateId">
 
+/** Promise tracker ID (e.g. "svoboda-min-placa") */
+export type PromiseId = Brand<string, "PromiseId">
+
+/** Promise category ID (e.g. "zdravstvo") */
+export type CategoryId = Brand<string, "CategoryId">
+
 // ── Constructors (brand raw API values at the boundary) ──────────────
 
 export const partyId = (n: number) => n as PartyId
@@ -28,3 +34,5 @@ export const enotaSt = (n: number) => n as EnotaSt
 export const okrajSt = (n: number) => n as OkrajSt
 export const rpeid = (s: string) => s as Rpeid
 export const candidateId = (n: number) => n as CandidateId
+export const promiseId = (s: string) => s as PromiseId
+export const categoryId = (s: string) => s as CategoryId

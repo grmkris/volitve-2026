@@ -1,6 +1,6 @@
+import type { FeatureCollection, Geometry } from "geojson"
 import { feature } from "topojson-client"
 import type { Topology, Objects } from "topojson-specification"
-import type { FeatureCollection, Geometry } from "geojson"
 
 const cache = new Map<string, FeatureCollection>()
 
@@ -19,10 +19,12 @@ export async function loadTopoJSON(
 
   const topology = (await res.json()) as Topology<Objects>
   const objectName = Object.keys(topology.objects)[0]
+  const topoObject = objectName ? topology.objects[objectName] : undefined
+  if (!topoObject) throw new Error(`TopoJSON has no objects: ${url}`)
   const geojson = feature(
     topology,
-    topology.objects[objectName]
-  ) as FeatureCollection<Geometry>
+    topoObject
+  ) as unknown as FeatureCollection<Geometry>
 
   cache.set(url, geojson)
   return geojson

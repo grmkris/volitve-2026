@@ -1,29 +1,31 @@
-"use client";
+"use client"
 
 import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { Minus, Plus, Crosshair, CornersOut, CircleNotch } from "@phosphor-icons/react";
+  Minus,
+  Plus,
+  Crosshair,
+  CornersOut,
+  CircleNotch,
+} from "@phosphor-icons/react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
-import { cn } from "@/lib/utils";
-import { useMap } from "./map-core";
+import { cn } from "@/lib/utils"
+
+import { useMap } from "./map-core"
 
 const positionClasses = {
   "top-left": "top-2 left-2",
   "top-right": "top-2 right-2",
   "bottom-left": "bottom-2 left-2",
   "bottom-right": "bottom-10 right-2",
-};
+}
 
 function ControlGroup({ children }: { children: React.ReactNode }) {
   return (
     <div className="border-border bg-background [&>button:not(:last-child)]:border-border flex flex-col overflow-hidden rounded-md border shadow-sm [&>button:not(:last-child)]:border-b">
       {children}
     </div>
-  );
+  )
 }
 
 function ControlButton({
@@ -32,10 +34,10 @@ function ControlButton({
   children,
   disabled = false,
 }: {
-  onClick: () => void;
-  label: string;
-  children: React.ReactNode;
-  disabled?: boolean;
+  onClick: () => void
+  label: string
+  children: React.ReactNode
+  disabled?: boolean
 }) {
   return (
     <button
@@ -44,31 +46,31 @@ function ControlButton({
       type="button"
       className={cn(
         "hover:bg-accent dark:hover:bg-accent/40 flex size-8 items-center justify-center transition-colors",
-        disabled && "pointer-events-none cursor-not-allowed opacity-50",
+        disabled && "pointer-events-none cursor-not-allowed opacity-50"
       )}
       disabled={disabled}
     >
       {children}
     </button>
-  );
+  )
 }
 
 type MapControlsProps = {
   /** Position of the controls on the map (default: "bottom-right") */
-  position?: "top-left" | "top-right" | "bottom-left" | "bottom-right";
+  position?: "top-left" | "top-right" | "bottom-left" | "bottom-right"
   /** Show zoom in/out buttons (default: true) */
-  showZoom?: boolean;
+  showZoom?: boolean
   /** Show compass button to reset bearing (default: false) */
-  showCompass?: boolean;
+  showCompass?: boolean
   /** Show locate button to find user's location (default: false) */
-  showLocate?: boolean;
+  showLocate?: boolean
   /** Show fullscreen toggle button (default: false) */
-  showFullscreen?: boolean;
+  showFullscreen?: boolean
   /** Additional CSS classes for the controls container */
-  className?: string;
+  className?: string
   /** Callback with user coordinates when located */
-  onLocate?: (coords: { longitude: number; latitude: number }) => void;
-};
+  onLocate?: (coords: { longitude: number; latitude: number }) => void
+}
 
 function MapControls({
   position = "bottom-right",
@@ -79,62 +81,62 @@ function MapControls({
   className,
   onLocate,
 }: MapControlsProps) {
-  const { map } = useMap();
-  const [waitingForLocation, setWaitingForLocation] = useState(false);
+  const { map } = useMap()
+  const [waitingForLocation, setWaitingForLocation] = useState(false)
 
   const handleZoomIn = useCallback(() => {
-    map?.zoomTo(map.getZoom() + 1, { duration: 300 });
-  }, [map]);
+    map?.zoomTo(map.getZoom() + 1, { duration: 300 })
+  }, [map])
 
   const handleZoomOut = useCallback(() => {
-    map?.zoomTo(map.getZoom() - 1, { duration: 300 });
-  }, [map]);
+    map?.zoomTo(map.getZoom() - 1, { duration: 300 })
+  }, [map])
 
   const handleResetBearing = useCallback(() => {
-    map?.resetNorthPitch({ duration: 300 });
-  }, [map]);
+    map?.resetNorthPitch({ duration: 300 })
+  }, [map])
 
   const handleLocate = useCallback(() => {
-    setWaitingForLocation(true);
+    setWaitingForLocation(true)
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           const coords = {
             longitude: pos.coords.longitude,
             latitude: pos.coords.latitude,
-          };
+          }
           map?.flyTo({
             center: [coords.longitude, coords.latitude],
             zoom: 14,
             duration: 1500,
-          });
-          onLocate?.(coords);
-          setWaitingForLocation(false);
+          })
+          onLocate?.(coords)
+          setWaitingForLocation(false)
         },
         (error) => {
-          console.error("Error getting location:", error);
-          setWaitingForLocation(false);
-        },
-      );
+          console.error("Error getting location:", error)
+          setWaitingForLocation(false)
+        }
+      )
     }
-  }, [map, onLocate]);
+  }, [map, onLocate])
 
   const handleFullscreen = useCallback(() => {
-    const container = map?.getContainer();
-    if (!container) return;
+    const container = map?.getContainer()
+    if (!container) return
     if (document.fullscreenElement) {
-      document.exitFullscreen();
+      document.exitFullscreen()
     } else {
-      container.requestFullscreen();
+      container.requestFullscreen()
     }
-  }, [map]);
+  }, [map])
 
   return (
     <div
       className={cn(
         "absolute z-10 flex flex-col gap-1.5",
         positionClasses[position],
-        className,
+        className
       )}
     >
       {showZoom && (
@@ -175,33 +177,33 @@ function MapControls({
         </ControlGroup>
       )}
     </div>
-  );
+  )
 }
 
 function CompassButton({ onClick }: { onClick: () => void }) {
-  const { map } = useMap();
-  const compassRef = useRef<SVGSVGElement>(null);
+  const { map } = useMap()
+  const compassRef = useRef<SVGSVGElement>(null)
 
   useEffect(() => {
-    if (!map || !compassRef.current) return;
+    if (!map || !compassRef.current) return
 
-    const compass = compassRef.current;
+    const compass = compassRef.current
 
     const updateRotation = () => {
-      const bearing = map.getBearing();
-      const pitch = map.getPitch();
-      compass.style.transform = `rotateX(${pitch}deg) rotateZ(${-bearing}deg)`;
-    };
+      const bearing = map.getBearing()
+      const pitch = map.getPitch()
+      compass.style.transform = `rotateX(${pitch}deg) rotateZ(${-bearing}deg)`
+    }
 
-    map.on("rotate", updateRotation);
-    map.on("pitch", updateRotation);
-    updateRotation();
+    map.on("rotate", updateRotation)
+    map.on("pitch", updateRotation)
+    updateRotation()
 
     return () => {
-      map.off("rotate", updateRotation);
-      map.off("pitch", updateRotation);
-    };
-  }, [map]);
+      map.off("rotate", updateRotation)
+      map.off("pitch", updateRotation)
+    }
+  }, [map])
 
   return (
     <ControlButton onClick={onClick} label="Ponastavi sever">
@@ -217,7 +219,7 @@ function CompassButton({ onClick }: { onClick: () => void }) {
         <path d="M12 22L8 12H12V22Z" className="fill-muted-foreground/30" />
       </svg>
     </ControlButton>
-  );
+  )
 }
 
-export { MapControls };
+export { MapControls }

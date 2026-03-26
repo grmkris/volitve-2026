@@ -1,9 +1,9 @@
+import { StatCard } from "@/components/cards/stat-card"
+import { TurnoutGauge } from "@/components/charts/turnout-gauge"
+import { PageHeader } from "@/components/layout/page-header"
+import { OkrajiTurnoutTable } from "@/components/tables/okraji-turnout-table"
 import { getNationalResults } from "@/lib/data/fetchers"
 import { formatNumber, formatPercent } from "@/lib/data/format"
-import { PageHeader } from "@/components/layout/page-header"
-import { TurnoutGauge } from "@/components/charts/turnout-gauge"
-import { OkrajiTurnoutTable } from "@/components/tables/okraji-turnout-table"
-import { StatCard } from "@/components/cards/stat-card"
 
 export default async function UdelezbaPage() {
   const data = await getNationalResults()
@@ -31,10 +31,7 @@ export default async function UdelezbaPage() {
 
       {/* Hero */}
       <div className="flex flex-col items-center gap-6 md:flex-row md:items-start md:gap-10">
-        <TurnoutGauge
-          percentage={data.turnout.percentage}
-          size={180}
-        />
+        <TurnoutGauge percentage={data.turnout.percentage} size={180} />
         <div className="grid flex-1 grid-cols-2 gap-3">
           <StatCard
             label="Glasovalo"
@@ -44,18 +41,25 @@ export default async function UdelezbaPage() {
             label="Vpisanih"
             value={formatNumber(data.turnout.registered)}
           />
-          <StatCard
-            label="Najvišja (enota)"
-            value={formatPercent(enoteByTurnout[0].turnout.percentage)}
-            sublabel={enoteByTurnout[0].name}
-          />
-          <StatCard
-            label="Najnižja (enota)"
-            value={formatPercent(
-              enoteByTurnout[enoteByTurnout.length - 1].turnout.percentage
-            )}
-            sublabel={enoteByTurnout[enoteByTurnout.length - 1].name}
-          />
+          {(() => {
+            const highest = enoteByTurnout[0]
+            const lowest = enoteByTurnout.at(-1)
+            if (!highest || !lowest) return null
+            return (
+              <>
+                <StatCard
+                  label="Najvišja (enota)"
+                  value={formatPercent(highest.turnout.percentage)}
+                  sublabel={highest.name}
+                />
+                <StatCard
+                  label="Najnižja (enota)"
+                  value={formatPercent(lowest.turnout.percentage)}
+                  sublabel={lowest.name}
+                />
+              </>
+            )
+          })()}
         </div>
       </div>
 
@@ -67,7 +71,9 @@ export default async function UdelezbaPage() {
         <div className="space-y-2">
           {enoteByTurnout.map((enota, i) => {
             const pct = enota.turnout.percentage
-            const barHue = Math.round(Math.min(140, Math.max(40, 40 + (pct - 0.60) * 600)))
+            const barHue = Math.round(
+              Math.min(140, Math.max(40, 40 + (pct - 0.6) * 600))
+            )
             return (
               <div key={enota.rpeid} className="flex items-center gap-3">
                 <span className="w-6 shrink-0 text-right text-xs text-muted-foreground">
@@ -79,7 +85,10 @@ export default async function UdelezbaPage() {
                 <div className="relative h-5 flex-1">
                   <div
                     className="absolute inset-y-0 left-0 rounded-r-sm"
-                    style={{ width: `${pct * 100}%`, backgroundColor: `hsl(${barHue}, 60%, 45%)` }}
+                    style={{
+                      width: `${pct * 100}%`,
+                      backgroundColor: `hsl(${barHue}, 60%, 45%)`,
+                    }}
                   />
                 </div>
                 <span className="w-16 shrink-0 text-right font-mono text-xs tabular-nums">

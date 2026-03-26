@@ -1,6 +1,12 @@
 export { Map, useMap } from "./map-core"
 export type { MapRef, MapViewport } from "./map-core"
-export { MapMarker, MarkerContent, MarkerPopup, MarkerTooltip, MarkerLabel } from "./map-marker"
+export {
+  MapMarker,
+  MarkerContent,
+  MarkerPopup,
+  MarkerTooltip,
+  MarkerLabel,
+} from "./map-marker"
 export { MapControls } from "./map-controls"
 export { MapPopup } from "./map-popup"
 export { MapRoute } from "./map-route"

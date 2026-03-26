@@ -25,7 +25,7 @@ function distributeSeats(totalSeats: number, numRows: number): number[] {
   let diff = totalSeats - rows.reduce((a, b) => a + b, 0)
   let i = numRows - 1
   while (diff !== 0) {
-    rows[i] += diff > 0 ? 1 : -1
+    rows[i] = (rows[i] ?? 0) + (diff > 0 ? 1 : -1)
     diff += diff > 0 ? -1 : 1
     i = (i - 1 + numRows) % numRows
   }
@@ -42,7 +42,7 @@ interface HemicycleOptions {
 /** Generate seat positions for a hemicycle (semicircle) layout. */
 export function computeHemicycleLayout(
   totalSeats: number,
-  options?: HemicycleOptions,
+  options?: HemicycleOptions
 ): SeatPosition[] {
   const { numRows = 5, innerRadius = 100, outerRadius = 200 } = options ?? {}
   const seats: SeatPosition[] = []
@@ -52,13 +52,13 @@ export function computeHemicycleLayout(
 
   for (let row = 0; row < numRows; row++) {
     const numSeatsInRow = rowDistribution[row]
+    if (!numSeatsInRow) continue
     const radius = innerRadius + row * radiusStep
 
     for (let i = 0; i < numSeatsInRow; i++) {
       // Distribute seats evenly along the semicircle (π radians)
       // Add padding at edges so seats don't sit at exact 0° and 180°
-      const angle =
-        Math.PI * ((i + 0.5) / numSeatsInRow)
+      const angle = Math.PI * ((i + 0.5) / numSeatsInRow)
 
       seats.push({
         x: radius * Math.cos(Math.PI - angle), // flip so left-to-right
@@ -97,8 +97,8 @@ export function assignSeats(
 
   for (const party of parties) {
     for (let i = 0; i < party.seats; i++) {
-      if (seatIdx >= sortedSeats.length) break
       const pos = sortedSeats[seatIdx]
+      if (!pos) break
       assigned.push({
         ...pos,
         partyId: party.id,

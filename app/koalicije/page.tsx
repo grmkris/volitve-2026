@@ -1,18 +1,23 @@
 "use client"
 
-import { useMemo, useCallback } from "react"
-import { useSearchParams, useRouter } from "next/navigation"
 import { ShareNetwork, Check } from "@phosphor-icons/react"
-import { buildNationalResults } from "@/lib/data/transforms"
-import { formatPercent, formatNumber } from "@/lib/data/format"
-import { TOTAL_SEATS } from "@/lib/data/constants"
-import type { Party, RawRezultati, RawUdelezba, RawKandidatiRezultat } from "@/lib/data/types"
-import type { PartyId } from "@/lib/data/ids"
-import { cn } from "@/lib/utils"
+import { useSearchParams, useRouter } from "next/navigation"
+import { useMemo, useCallback } from "react"
 
+import { TOTAL_SEATS } from "@/lib/data/constants"
+import { formatPercent, formatNumber } from "@/lib/data/format"
+import type { PartyId } from "@/lib/data/ids"
+import staticKandidati from "@/lib/data/static/kandidati_rezultat.json"
 import staticRezultati from "@/lib/data/static/rezultati.json"
 import staticUdelezba from "@/lib/data/static/udelezba.json"
-import staticKandidati from "@/lib/data/static/kandidati_rezultat.json"
+import { buildNationalResults } from "@/lib/data/transforms"
+import type {
+  Party,
+  RawRezultati,
+  RawUdelezba,
+  RawKandidatiRezultat,
+} from "@/lib/data/types"
+import { cn } from "@/lib/utils"
 
 const MAJORITY = Math.ceil(TOTAL_SEATS / 2)
 
@@ -56,19 +61,13 @@ export default function KoalicijePage() {
 
   const totalSeats = useMemo(
     () =>
-      parties.reduce(
-        (sum, p) => (selected.has(p.id) ? sum + p.seats : sum),
-        0
-      ),
+      parties.reduce((sum, p) => (selected.has(p.id) ? sum + p.seats : sum), 0),
     [parties, selected]
   )
 
   const totalVotes = useMemo(
     () =>
-      parties.reduce(
-        (sum, p) => (selected.has(p.id) ? sum + p.votes : sum),
-        0
-      ),
+      parties.reduce((sum, p) => (selected.has(p.id) ? sum + p.votes : sum), 0),
     [parties, selected]
   )
 
@@ -88,8 +87,8 @@ export default function KoalicijePage() {
         Koalicijski kalkulator
       </h1>
       <p className="mt-1 text-xs text-muted-foreground">
-        Izberite stranke in preverite ali dosežejo parlamentarno večino ({MAJORITY}{" "}
-        sedežev).
+        Izberite stranke in preverite ali dosežejo parlamentarno večino (
+        {MAJORITY} sedežev).
       </p>
 
       {/* Seat counter */}
@@ -132,7 +131,9 @@ export default function KoalicijePage() {
         <div className="mt-3 h-3 overflow-hidden rounded-full bg-muted">
           <div
             className="h-full rounded-full bg-primary transition-all duration-500"
-            style={{ width: `${Math.min((totalSeats / TOTAL_SEATS) * 100, 100)}%` }}
+            style={{
+              width: `${Math.min((totalSeats / TOTAL_SEATS) * 100, 100)}%`,
+            }}
           />
           {/* Majority line */}
           <div

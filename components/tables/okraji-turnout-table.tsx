@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
 import Link from "next/link"
+import { useState } from "react"
+
 import { formatNumber, formatPercent } from "@/lib/data/format"
 
 interface OkrajData {
@@ -78,9 +79,7 @@ export function OkrajiTurnoutTable({
           onClick={() => setShowAll((v) => !v)}
           className="mt-3 text-xs text-muted-foreground transition-colors hover:text-foreground"
         >
-          {showAll
-            ? "Pokaži manj"
-            : `Pokaži vse okraje (${okraji.length})`}
+          {showAll ? "Pokaži manj" : `Pokaži vse okraje (${okraji.length})`}
         </button>
       )}
     </div>

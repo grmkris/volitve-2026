@@ -1,6 +1,6 @@
-import { getNationalResults } from "@/lib/data/fetchers"
-import { PageHeader } from "@/components/layout/page-header"
 import { PartyCard } from "@/components/cards/party-card"
+import { PageHeader } from "@/components/layout/page-header"
+import { getNationalResults } from "@/lib/data/fetchers"
 
 export default async function StrankePage() {
   const data = await getNationalResults()

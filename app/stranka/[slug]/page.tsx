@@ -1,9 +1,10 @@
 import type { Metadata } from "next"
+
+import { StatCard } from "@/components/cards/stat-card"
+import { PageHeader } from "@/components/layout/page-header"
+import { partySlug } from "@/lib/data/constants"
 import { fetchRezultati, getNationalResults } from "@/lib/data/fetchers"
 import { formatNumber, formatPercent } from "@/lib/data/format"
-import { partySlug } from "@/lib/data/constants"
-import { PageHeader } from "@/components/layout/page-header"
-import { StatCard } from "@/components/cards/stat-card"
 
 export async function generateMetadata({
   params,
@@ -14,9 +15,10 @@ export async function generateMetadata({
   const data = await getNationalResults()
   const party = data.parties.find((p) => partySlug(p.abbrev) === slug)
   if (!party) return { title: "Stranka ni najdena" }
-  const desc = party.seats > 0
-    ? `${party.seats} sedežev, ${formatPercent(party.percentage)} glasov`
-    : `${formatPercent(party.percentage)} glasov`
+  const desc =
+    party.seats > 0
+      ? `${party.seats} sedežev, ${formatPercent(party.percentage)} glasov`
+      : `${formatPercent(party.percentage)} glasov`
   return {
     title: `${party.abbrev} — ${desc} | Volitve 2026`,
     description: `Rezultati stranke ${party.name} na parlamentarnih volitvah 2026.`,
@@ -95,9 +97,7 @@ export default async function StrankaPage({
         <StatCard
           label="Najboljša enota"
           value={bestEnota?.enotaName ?? "–"}
-          sublabel={
-            bestEnota ? formatPercent(bestEnota.percentage) : undefined
-          }
+          sublabel={bestEnota ? formatPercent(bestEnota.percentage) : undefined}
         />
         <StatCard
           label="Najslabša enota"
@@ -171,9 +171,7 @@ export default async function StrankaPage({
                 <tr className="border-b border-border/50 text-left text-muted-foreground">
                   <th className="pb-2 pr-4 font-medium">Poslanec</th>
                   <th className="pb-2 pr-4 font-medium">Enota</th>
-                  <th className="pb-2 pr-4 text-right font-medium">
-                    Glasovi
-                  </th>
+                  <th className="pb-2 pr-4 text-right font-medium">Glasovi</th>
                   <th className="pb-2 text-right font-medium">Delež</th>
                 </tr>
               </thead>

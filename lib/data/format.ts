@@ -33,3 +33,12 @@ export function formatDate(date: Date): string {
     year: "numeric",
   })
 }
+
+/** Format ISO date string as short Slovenian: "23. mar. 2026" */
+export function formatDateShort(iso: string): string {
+  return new Date(iso).toLocaleDateString("sl-SI", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  })
+}

@@ -1,8 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import type { Party } from "@/lib/data/types"
+
 import { formatPercent } from "@/lib/data/format"
+import type { Party } from "@/lib/data/types"
 import { cn } from "@/lib/utils"
 
 /** Returns dark or light text class based on background color luminance */

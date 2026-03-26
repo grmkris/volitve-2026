@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+
 import { formatNumber, formatPercent } from "@/lib/data/format"
 
 interface CandidateData {
@@ -83,9 +84,7 @@ export function CandidatesPreview({
           onClick={() => setShowAll((v) => !v)}
           className="mt-3 text-xs text-muted-foreground transition-colors hover:text-foreground"
         >
-          {showAll
-            ? "Pokaži manj"
-            : `Pokaži vse (${candidates.length})`}
+          {showAll ? "Pokaži manj" : `Pokaži vse (${candidates.length})`}
         </button>
       )}
     </div>

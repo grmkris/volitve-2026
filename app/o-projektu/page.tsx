@@ -1,4 +1,5 @@
 import Link from "next/link"
+
 import { PageHeader } from "@/components/layout/page-header"
 
 export default function OProjektuPage() {
@@ -9,15 +10,13 @@ export default function OProjektuPage() {
       <div className="space-y-6 text-sm leading-relaxed">
         <section>
           <div className="rounded-lg bg-card p-5 ring-1 ring-foreground/10">
-            <h2 className="font-heading text-base font-semibold">
-              Kaj je to?
-            </h2>
+            <h2 className="font-heading text-base font-semibold">Kaj je to?</h2>
             <p className="mt-2 text-muted-foreground">
               Odprtokodni projekt za interaktivno vizualizacijo rezultatov
               volitev v Državni zbor Republike Slovenije 2026. Omogoča pregled
               rezultatov po volilnih enotah, okrajih in posameznih voliščih,
-              sestavljanje koalicij, primerjavo z volitvami 2022 ter
-              demografsko analizo na ravni okrajev.
+              sestavljanje koalicij, primerjavo z volitvami 2022 ter demografsko
+              analizo na ravni okrajev.
             </p>
           </div>
         </section>
@@ -76,9 +75,9 @@ export default function OProjektuPage() {
                 >
                   Statistični urad RS
                 </a>{" "}
-                — povprečne mesečne bruto plače (2023), prebivalstvo po
-                starosti (2025), stopnja izobrazbe (2025) in zaposlenost
-                po izobrazbi (2025) — vse na ravni 212 občin
+                — povprečne mesečne bruto plače (2023), prebivalstvo po starosti
+                (2025), stopnja izobrazbe (2025) in zaposlenost po izobrazbi
+                (2025) — vse na ravni 212 občin
               </li>
             </ul>
           </div>
@@ -98,8 +97,8 @@ export default function OProjektuPage() {
                   Stranke med volitvama se razlikujejo. Neposredni nasledniki
                   (SVOBODA, SDS, SD, Resni.ca, SNS, Pirati) se primerjajo
                   neposredno. Združene liste (LEVICA IN VESNA = Levica + Vesna;
-                  NSi, SLS, FOKUS ≈ NSi) primerjamo s seštevkom predhodnic.
-                  Nove stranke (DEMOKRATI, PREROD) nimajo izhodišča 2022.
+                  NSi, SLS, FOKUS ≈ NSi) primerjamo s seštevkom predhodnic. Nove
+                  stranke (DEMOKRATI, PREROD) nimajo izhodišča 2022.
                 </p>
               </div>
               <div>
@@ -109,8 +108,8 @@ export default function OProjektuPage() {
                 <p className="mt-1">
                   Za agregatno analizo premikov uporabljamo 4 bloke: levi
                   (Levica in Vesna, SD), center-levi (Svoboda, Demokrati,
-                  Prerod), desni (SDS, NSi/SLS/Fokus) in populistični
-                  (Resni.ca, SNS).
+                  Prerod), desni (SDS, NSi/SLS/Fokus) in populistični (Resni.ca,
+                  SNS).
                 </p>
               </div>
               <div>
@@ -121,13 +120,13 @@ export default function OProjektuPage() {
                   Podatki SURS (plače, starost prebivalstva, izobrazba,
                   zaposlenost) so na ravni 212 občin, volilni rezultati pa na
                   ravni 88 okrajev. Občine preslikamo na okraje tako, da
-                  centroid vsake občine uvrstimo v okraj, ki ga vsebuje
-                  (Turf.js point-in-polygon), nato demografske kazalnike
-                  tehtamo po površini občin. Stran prikazuje korelacije med
-                  5 kazalniki (plača, delež starejših 65+, višja izobrazba,
-                  zaposleni z višjo izobrazbo, udeležba) in deležem glasov
-                  za posamezno stranko. Prikazane korelacije so agregatne in
-                  ne odražajo posameznikov (ekološka zmota).
+                  centroid vsake občine uvrstimo v okraj, ki ga vsebuje (Turf.js
+                  point-in-polygon), nato demografske kazalnike tehtamo po
+                  površini občin. Stran prikazuje korelacije med 5 kazalniki
+                  (plača, delež starejših 65+, višja izobrazba, zaposleni z
+                  višjo izobrazbo, udeležba) in deležem glasov za posamezno
+                  stranko. Prikazane korelacije so agregatne in ne odražajo
+                  posameznikov (ekološka zmota).
                 </p>
               </div>
             </div>

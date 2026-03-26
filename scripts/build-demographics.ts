@@ -14,11 +14,12 @@
 
 import { readFileSync, writeFileSync } from "fs"
 import { resolve } from "path"
-import { feature } from "topojson-client"
-import type { Topology, Objects } from "topojson-specification"
-import type { FeatureCollection, Feature, Polygon, MultiPolygon } from "geojson"
+
 import booleanPointInPolygon from "@turf/boolean-point-in-polygon"
 import centroid from "@turf/centroid"
+import type { FeatureCollection, Feature, Polygon, MultiPolygon } from "geojson"
+import { feature } from "topojson-client"
+import type { Topology, Objects } from "topojson-specification"
 
 const ROOT = resolve(import.meta.dir, "..")
 const OUTPUT_PATH = resolve(ROOT, "lib/data/static/okraj_demographics.json")
@@ -66,23 +67,37 @@ async function getSursMetadata(tableId: string) {
 // ── Step 1: Load okraji boundaries ────────────────────────────────────
 
 console.log("1. Loading okraji TopoJSON...")
-const okrajiTopoRaw = readFileSync(resolve(ROOT, "public/geo/okraji.topojson"), "utf-8")
+const okrajiTopoRaw = readFileSync(
+  resolve(ROOT, "public/geo/okraji.topojson"),
+  "utf-8"
+)
 const okrajiTopo = JSON.parse(okrajiTopoRaw) as Topology<Objects>
 const objectName = Object.keys(okrajiTopo.objects)[0]
-const okrajiGeo = feature(okrajiTopo, okrajiTopo.objects[objectName]) as FeatureCollection<Polygon | MultiPolygon>
+const okrajiGeo = feature(
+  okrajiTopo,
+  okrajiTopo.objects[objectName]
+) as FeatureCollection<Polygon | MultiPolygon>
 console.log(`   ${okrajiGeo.features.length} okraji`)
 
 // ── Step 2: Download and map občine to okraji ─────────────────────────
 
 console.log("2. Downloading občina GeoJSON...")
-const obcinaRes = await fetch("https://raw.githubusercontent.com/stefanb/gurs-rpe/master/data/OB.geojson")
+const obcinaRes = await fetch(
+  "https://raw.githubusercontent.com/stefanb/gurs-rpe/master/data/OB.geojson"
+)
 if (!obcinaRes.ok) throw new Error(`Failed: ${obcinaRes.status}`)
 const obcinaGeo = (await obcinaRes.json()) as FeatureCollection
 console.log(`   ${obcinaGeo.features.length} občine`)
 
 console.log("   Mapping občine → okraji via centroids...")
-const obcinaToOkraj = new Map<number, { okrajVdvId: number; area: number; name: string }>()
-const okrajObcine = new Map<number, { obcinaId: number; name: string; area: number }[]>()
+const obcinaToOkraj = new Map<
+  number,
+  { okrajVdvId: number; area: number; name: string }
+>()
+const okrajObcine = new Map<
+  number,
+  { obcinaId: number; name: string; area: number }[]
+>()
 
 for (const ob of obcinaGeo.features) {
   const obId = ob.properties?.OB_ID as number
@@ -91,7 +106,12 @@ for (const ob of obcinaGeo.features) {
   const center = centroid(ob as Feature<Polygon | MultiPolygon>)
 
   for (const okraj of okrajiGeo.features) {
-    if (booleanPointInPolygon(center.geometry.coordinates, okraj as Feature<Polygon | MultiPolygon>)) {
+    if (
+      booleanPointInPolygon(
+        center.geometry.coordinates,
+        okraj as Feature<Polygon | MultiPolygon>
+      )
+    ) {
       const vdvId = okraj.properties?.VDV_ID as number
       obcinaToOkraj.set(obId, { okrajVdvId: vdvId, area: obArea, name: obName })
       const existing = okrajObcine.get(vdvId) ?? []
@@ -107,8 +127,12 @@ console.log(`   ${obcinaToOkraj.size} občine mapped`)
 
 console.log("3. Fetching SURS wages (0772615S)...")
 const wageMeta = await getSursMetadata("0772615S.PX")
-const wageObcine = wageMeta.variables.find((v: { code: string }) => v.code === "OBČINE")?.values as string[]
-const wageYears = wageMeta.variables.find((v: { code: string }) => v.code === "LETO")?.values as string[]
+const wageObcine = wageMeta.variables.find(
+  (v: { code: string }) => v.code === "OBČINE"
+)?.values as string[]
+const wageYears = wageMeta.variables.find(
+  (v: { code: string }) => v.code === "LETO"
+)?.values as string[]
 const latestWageYear = wageYears[wageYears.length - 1]
 
 const wageRows = await querySurs("0772615S.PX", [
@@ -127,8 +151,12 @@ console.log(`   ${wageMap.size} občine with wages (${latestWageYear})`)
 
 console.log("4. Fetching SURS population age (05C4003S)...")
 const popMeta = await getSursMetadata("05C4003S.PX")
-const popObcine = popMeta.variables.find((v: { code: string }) => v.code === "OBČINE")?.values as string[]
-const popPolletja = popMeta.variables.find((v: { code: string }) => v.code === "POLLETJE")?.values as string[]
+const popObcine = popMeta.variables.find(
+  (v: { code: string }) => v.code === "OBČINE"
+)?.values as string[]
+const popPolletja = popMeta.variables.find(
+  (v: { code: string }) => v.code === "POLLETJE"
+)?.values as string[]
 const latestPolletje = popPolletja[popPolletja.length - 1]
 
 // Fetch total, 0-14, 15-64, 65+ age groups
@@ -139,11 +167,55 @@ const latestPolletje = popPolletja[popPolletja.length - 1]
 const popRows = await querySurs("05C4003S.PX", [
   { code: "OBČINE", values: popObcine.filter((c: string) => c !== "0") },
   { code: "POLLETJE", values: [latestPolletje] },
-  { code: "STAROST", values: ["999", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "65", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85"] },
+  {
+    code: "STAROST",
+    values: [
+      "999",
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "65",
+      "66",
+      "67",
+      "68",
+      "69",
+      "70",
+      "71",
+      "72",
+      "73",
+      "74",
+      "75",
+      "76",
+      "77",
+      "78",
+      "79",
+      "80",
+      "81",
+      "82",
+      "83",
+      "84",
+      "85",
+    ],
+  },
 ])
 
 // Parse into per-občina aggregates
-const popData = new Map<string, { total: number; young: number; elderly: number }>()
+const popData = new Map<
+  string,
+  { total: number; young: number; elderly: number }
+>()
 for (const row of popRows) {
   const obCode = row.key[0]
   const ageCode = row.key[2]
@@ -160,14 +232,20 @@ for (const row of popRows) {
   }
   popData.set(obCode, existing)
 }
-console.log(`   ${popData.size} občine with population data (${latestPolletje})`)
+console.log(
+  `   ${popData.size} občine with population data (${latestPolletje})`
+)
 
 // ── Step 5: Fetch SURS education ──────────────────────────────────────
 
 console.log("5. Fetching SURS education (05G2014S)...")
 const eduMeta = await getSursMetadata("05G2014S.PX")
-const eduObcine = eduMeta.variables.find((v: { code: string }) => v.code === "OBČINE")?.values as string[]
-const eduYears = eduMeta.variables.find((v: { code: string }) => v.code === "LETO")?.values as string[]
+const eduObcine = eduMeta.variables.find(
+  (v: { code: string }) => v.code === "OBČINE"
+)?.values as string[]
+const eduYears = eduMeta.variables.find(
+  (v: { code: string }) => v.code === "LETO"
+)?.values as string[]
 const latestEduYear = eduYears[eduYears.length - 1]
 
 // Fetch total (code "0") and higher ed (code "23" = Višješolska, visokošolska - Skupaj)
@@ -196,8 +274,12 @@ console.log(`   ${eduData.size} občine with education data (${latestEduYear})`)
 
 console.log("6. Fetching SURS employment (0764721S)...")
 const empMeta = await getSursMetadata("0764721S.PX")
-const empObcine = empMeta.variables.find((v: { code: string }) => v.code === "OBČINE")?.values as string[]
-const empYears = empMeta.variables.find((v: { code: string }) => v.code === "LETO")?.values as string[]
+const empObcine = empMeta.variables.find(
+  (v: { code: string }) => v.code === "OBČINE"
+)?.values as string[]
+const empYears = empMeta.variables.find(
+  (v: { code: string }) => v.code === "LETO"
+)?.values as string[]
 const latestEmpYear = empYears[empYears.length - 1]
 
 const empRows = await querySurs("0764721S.PX", [
@@ -247,10 +329,15 @@ for (const okraj of okrajiGeo.features) {
   const rpeid = String(vdvId)
   const obcine = okrajObcine.get(vdvId) ?? []
 
-  let wageWeightedSum = 0, wageWeightTotal = 0
-  let popTotal = 0, popYoung = 0, popElderly = 0
-  let eduTotal = 0, eduHigher = 0
-  let empTotal = 0, empHigher = 0
+  let wageWeightedSum = 0,
+    wageWeightTotal = 0
+  let popTotal = 0,
+    popYoung = 0,
+    popElderly = 0
+  let eduTotal = 0,
+    eduHigher = 0
+  let empTotal = 0,
+    empHigher = 0
 
   for (const ob of obcine) {
     const obCode = String(ob.obcinaId).padStart(3, "0")
@@ -288,14 +375,25 @@ for (const okraj of okrajiGeo.features) {
   results.push({
     rpeid,
     vdvId,
-    avgWage: wageWeightTotal > 0 ? Math.round(wageWeightedSum / wageWeightTotal) : null,
+    avgWage:
+      wageWeightTotal > 0
+        ? Math.round(wageWeightedSum / wageWeightTotal)
+        : null,
     population: popTotal > 0 ? popTotal : null,
-    pctYoung: popTotal > 0 ? Math.round((popYoung / popTotal) * 1000) / 1000 : null,
-    pctWorking: popTotal > 0 ? Math.round(((popTotal - popYoung - popElderly) / popTotal) * 1000) / 1000 : null,
-    pctElderly: popTotal > 0 ? Math.round((popElderly / popTotal) * 1000) / 1000 : null,
-    pctHigherEd: eduTotal > 0 ? Math.round((eduHigher / eduTotal) * 1000) / 1000 : null,
+    pctYoung:
+      popTotal > 0 ? Math.round((popYoung / popTotal) * 1000) / 1000 : null,
+    pctWorking:
+      popTotal > 0
+        ? Math.round(((popTotal - popYoung - popElderly) / popTotal) * 1000) /
+          1000
+        : null,
+    pctElderly:
+      popTotal > 0 ? Math.round((popElderly / popTotal) * 1000) / 1000 : null,
+    pctHigherEd:
+      eduTotal > 0 ? Math.round((eduHigher / eduTotal) * 1000) / 1000 : null,
     employed: empTotal > 0 ? empTotal : null,
-    pctEmployedHigherEd: empTotal > 0 ? Math.round((empHigher / empTotal) * 1000) / 1000 : null,
+    pctEmployedHigherEd:
+      empTotal > 0 ? Math.round((empHigher / empTotal) * 1000) / 1000 : null,
     obcineCount: obcine.length,
     obcineNames: obcine.map((o) => o.name),
   })

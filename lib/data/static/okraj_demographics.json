@@ -11,11 +11,7 @@
     "employed": 13689,
     "pctEmployedHigherEd": 0.287,
     "obcineCount": 3,
-    "obcineNames": [
-      "Jesenice",
-      "Kranjska Gora",
-      "Žirovnica"
-    ]
+    "obcineNames": ["Jesenice", "Kranjska Gora", "Žirovnica"]
   },
   {
     "rpeid": "1002",
@@ -29,11 +25,7 @@
     "employed": 6916,
     "pctEmployedHigherEd": 0.414,
     "obcineCount": 3,
-    "obcineNames": [
-      "Bled",
-      "Bohinj",
-      "Gorje"
-    ]
+    "obcineNames": ["Bled", "Bohinj", "Gorje"]
   },
   {
     "rpeid": "1003",
@@ -47,9 +39,7 @@
     "employed": 8389,
     "pctEmployedHigherEd": 0.434,
     "obcineCount": 1,
-    "obcineNames": [
-      "Radovljica"
-    ]
+    "obcineNames": ["Radovljica"]
   },
   {
     "rpeid": "1004",
@@ -112,9 +102,7 @@
     "employed": 6590,
     "pctEmployedHigherEd": 0.32,
     "obcineCount": 1,
-    "obcineNames": [
-      "Tržič"
-    ]
+    "obcineNames": ["Tržič"]
   },
   {
     "rpeid": "1008",
@@ -128,9 +116,7 @@
     "employed": 10864,
     "pctEmployedHigherEd": 0.402,
     "obcineCount": 1,
-    "obcineNames": [
-      "Škofja Loka"
-    ]
+    "obcineNames": ["Škofja Loka"]
   },
   {
     "rpeid": "1009",
@@ -144,11 +130,7 @@
     "employed": 8969,
     "pctEmployedHigherEd": 0.355,
     "obcineCount": 3,
-    "obcineNames": [
-      "Gorenja vas-Poljane",
-      "Žiri",
-      "Železniki"
-    ]
+    "obcineNames": ["Gorenja vas-Poljane", "Žiri", "Železniki"]
   },
   {
     "rpeid": "1010",
@@ -162,10 +144,7 @@
     "employed": 17126,
     "pctEmployedHigherEd": 0.367,
     "obcineCount": 2,
-    "obcineNames": [
-      "Kamnik",
-      "Komenda"
-    ]
+    "obcineNames": ["Kamnik", "Komenda"]
   },
   {
     "rpeid": "1011",
@@ -179,10 +158,7 @@
     "employed": 7068,
     "pctEmployedHigherEd": 0.353,
     "obcineCount": 2,
-    "obcineNames": [
-      "Cerkno",
-      "Idrija"
-    ]
+    "obcineNames": ["Cerkno", "Idrija"]
   },
   {
     "rpeid": "2001",
@@ -196,11 +172,7 @@
     "employed": 7156,
     "pctEmployedHigherEd": 0.375,
     "obcineCount": 3,
-    "obcineNames": [
-      "Bovec",
-      "Kobarid",
-      "Tolmin"
-    ]
+    "obcineNames": ["Bovec", "Kobarid", "Tolmin"]
   },
   {
     "rpeid": "2002",
@@ -214,9 +186,7 @@
     "employed": 7505,
     "pctEmployedHigherEd": 0.366,
     "obcineCount": 1,
-    "obcineNames": [
-      "Piran"
-    ]
+    "obcineNames": ["Piran"]
   },
   {
     "rpeid": "2003",
@@ -230,9 +200,7 @@
     "employed": 7021,
     "pctEmployedHigherEd": 0.368,
     "obcineCount": 1,
-    "obcineNames": [
-      "Izola"
-    ]
+    "obcineNames": ["Izola"]
   },
   {
     "rpeid": "2004",
@@ -260,10 +228,7 @@
     "employed": 26057,
     "pctEmployedHigherEd": 0.364,
     "obcineCount": 2,
-    "obcineNames": [
-      "Koper",
-      "Ankaran"
-    ]
+    "obcineNames": ["Koper", "Ankaran"]
   },
   {
     "rpeid": "2006",
@@ -277,12 +242,7 @@
     "employed": 11940,
     "pctEmployedHigherEd": 0.356,
     "obcineCount": 4,
-    "obcineNames": [
-      "Divača",
-      "Sežana",
-      "Hrpelje-Kozina",
-      "Komen"
-    ]
+    "obcineNames": ["Divača", "Sežana", "Hrpelje-Kozina", "Komen"]
   },
   {
     "rpeid": "2007",
@@ -296,9 +256,7 @@
     "employed": 5881,
     "pctEmployedHigherEd": 0.325,
     "obcineCount": 1,
-    "obcineNames": [
-      "Ilirska Bistrica"
-    ]
+    "obcineNames": ["Ilirska Bistrica"]
   },
   {
     "rpeid": "2008",
@@ -312,10 +270,7 @@
     "employed": 10650,
     "pctEmployedHigherEd": 0.345,
     "obcineCount": 2,
-    "obcineNames": [
-      "Postojna",
-      "Pivka"
-    ]
+    "obcineNames": ["Postojna", "Pivka"]
   },
   {
     "rpeid": "2009",
@@ -329,12 +284,7 @@
     "employed": 20703,
     "pctEmployedHigherEd": 0.376,
     "obcineCount": 4,
-    "obcineNames": [
-      "Brda",
-      "Kanal",
-      "Nova Gorica",
-      "Miren-Kostanjevica"
-    ]
+    "obcineNames": ["Brda", "Kanal", "Nova Gorica", "Miren-Kostanjevica"]
   },
   {
     "rpeid": "2010",
@@ -348,10 +298,7 @@
     "employed": 4683,
     "pctEmployedHigherEd": 0.376,
     "obcineCount": 2,
-    "obcineNames": [
-      "Šempeter-Vrtojba",
-      "Renče-Vogrsko"
-    ]
+    "obcineNames": ["Šempeter-Vrtojba", "Renče-Vogrsko"]
   },
   {
     "rpeid": "2011",
@@ -365,10 +312,7 @@
     "employed": 11801,
     "pctEmployedHigherEd": 0.391,
     "obcineCount": 2,
-    "obcineNames": [
-      "Ajdovščina",
-      "Vipava"
-    ]
+    "obcineNames": ["Ajdovščina", "Vipava"]
   },
   {
     "rpeid": "3001",
@@ -382,12 +326,7 @@
     "employed": 14867,
     "pctEmployedHigherEd": 0.372,
     "obcineCount": 4,
-    "obcineNames": [
-      "Cerknica",
-      "Logatec",
-      "Loška dolina",
-      "Bloke"
-    ]
+    "obcineNames": ["Cerknica", "Logatec", "Loška dolina", "Bloke"]
   },
   {
     "rpeid": "3002",
@@ -401,11 +340,7 @@
     "employed": 12318,
     "pctEmployedHigherEd": 0.399,
     "obcineCount": 3,
-    "obcineNames": [
-      "Borovnica",
-      "Vrhnika",
-      "Log-Dragomer"
-    ]
+    "obcineNames": ["Borovnica", "Vrhnika", "Log-Dragomer"]
   },
   {
     "rpeid": "3003",
@@ -419,12 +354,7 @@
     "employed": 17277,
     "pctEmployedHigherEd": 0.43,
     "obcineCount": 4,
-    "obcineNames": [
-      "Brezovica",
-      "Ig",
-      "Škofljica",
-      "Velike Lašče"
-    ]
+    "obcineNames": ["Brezovica", "Ig", "Škofljica", "Velike Lašče"]
   },
   {
     "rpeid": "3004",
@@ -466,10 +396,7 @@
     "employed": 5104,
     "pctEmployedHigherEd": 0.405,
     "obcineCount": 2,
-    "obcineNames": [
-      "Dobrova-Polhov Gradec",
-      "Horjul"
-    ]
+    "obcineNames": ["Dobrova-Polhov Gradec", "Horjul"]
   },
   {
     "rpeid": "3007",
@@ -539,10 +466,7 @@
     "employed": 10419,
     "pctEmployedHigherEd": 0.461,
     "obcineCount": 2,
-    "obcineNames": [
-      "Vodice",
-      "Medvode"
-    ]
+    "obcineNames": ["Vodice", "Medvode"]
   },
   {
     "rpeid": "4001",
@@ -556,11 +480,7 @@
     "employed": 6600,
     "pctEmployedHigherEd": 0.288,
     "obcineCount": 3,
-    "obcineNames": [
-      "Kočevje",
-      "Osilnica",
-      "Kostel"
-    ]
+    "obcineNames": ["Kočevje", "Osilnica", "Kostel"]
   },
   {
     "rpeid": "4002",
@@ -574,12 +494,7 @@
     "employed": 7978,
     "pctEmployedHigherEd": 0.335,
     "obcineCount": 4,
-    "obcineNames": [
-      "Dobrepolje",
-      "Loški Potok",
-      "Ribnica",
-      "Sodražica"
-    ]
+    "obcineNames": ["Dobrepolje", "Loški Potok", "Ribnica", "Sodražica"]
   },
   {
     "rpeid": "4003",
@@ -593,9 +508,7 @@
     "employed": 10583,
     "pctEmployedHigherEd": 0.387,
     "obcineCount": 1,
-    "obcineNames": [
-      "Grosuplje"
-    ]
+    "obcineNames": ["Grosuplje"]
   },
   {
     "rpeid": "4004",
@@ -609,9 +522,7 @@
     "employed": 9168,
     "pctEmployedHigherEd": 0.361,
     "obcineCount": 1,
-    "obcineNames": [
-      "Ivančna Gorica"
-    ]
+    "obcineNames": ["Ivančna Gorica"]
   },
   {
     "rpeid": "4005",
@@ -625,10 +536,7 @@
     "employed": 139789,
     "pctEmployedHigherEd": 0.495,
     "obcineCount": 2,
-    "obcineNames": [
-      "Dol pri Ljubljani",
-      "Ljubljana"
-    ]
+    "obcineNames": ["Dol pri Ljubljani", "Ljubljana"]
   },
   {
     "rpeid": "4006",
@@ -698,11 +606,7 @@
     "employed": 23498,
     "pctEmployedHigherEd": 0.399,
     "obcineCount": 3,
-    "obcineNames": [
-      "Domžale",
-      "Moravče",
-      "Lukovica"
-    ]
+    "obcineNames": ["Domžale", "Moravče", "Lukovica"]
   },
   {
     "rpeid": "4011",
@@ -716,10 +620,7 @@
     "employed": 5918,
     "pctEmployedHigherEd": 0.439,
     "obcineCount": 2,
-    "obcineNames": [
-      "Mengeš",
-      "Trzin"
-    ]
+    "obcineNames": ["Mengeš", "Trzin"]
   },
   {
     "rpeid": "5001",
@@ -733,10 +634,7 @@
     "employed": 9311,
     "pctEmployedHigherEd": 0.368,
     "obcineCount": 2,
-    "obcineNames": [
-      "Šentjur",
-      "Dobje"
-    ]
+    "obcineNames": ["Šentjur", "Dobje"]
   },
   {
     "rpeid": "5002",
@@ -750,12 +648,7 @@
     "employed": 30289,
     "pctEmployedHigherEd": 0.36,
     "obcineCount": 4,
-    "obcineNames": [
-      "Celje",
-      "Štore",
-      "Vojnik",
-      "Dobrna"
-    ]
+    "obcineNames": ["Celje", "Štore", "Vojnik", "Dobrna"]
   },
   {
     "rpeid": "5003",
@@ -783,10 +676,7 @@
     "employed": 12669,
     "pctEmployedHigherEd": 0.359,
     "obcineCount": 2,
-    "obcineNames": [
-      "Polzela",
-      "Žalec"
-    ]
+    "obcineNames": ["Polzela", "Žalec"]
   },
   {
     "rpeid": "5005",
@@ -800,12 +690,7 @@
     "employed": 7238,
     "pctEmployedHigherEd": 0.404,
     "obcineCount": 4,
-    "obcineNames": [
-      "Braslovče",
-      "Prebold",
-      "Tabor",
-      "Vransko"
-    ]
+    "obcineNames": ["Braslovče", "Prebold", "Tabor", "Vransko"]
   },
   {
     "rpeid": "5006",
@@ -841,9 +726,7 @@
     "employed": 14845,
     "pctEmployedHigherEd": 0.314,
     "obcineCount": 1,
-    "obcineNames": [
-      "Velenje"
-    ]
+    "obcineNames": ["Velenje"]
   },
   {
     "rpeid": "5008",
@@ -857,10 +740,7 @@
     "employed": 5614,
     "pctEmployedHigherEd": 0.324,
     "obcineCount": 2,
-    "obcineNames": [
-      "Šmartno ob Paki",
-      "Šoštanj"
-    ]
+    "obcineNames": ["Šmartno ob Paki", "Šoštanj"]
   },
   {
     "rpeid": "5009",
@@ -874,10 +754,7 @@
     "employed": 9542,
     "pctEmployedHigherEd": 0.379,
     "obcineCount": 2,
-    "obcineNames": [
-      "Mislinja",
-      "Slovenj Gradec"
-    ]
+    "obcineNames": ["Mislinja", "Slovenj Gradec"]
   },
   {
     "rpeid": "5010",
@@ -931,11 +808,7 @@
     "employed": 11562,
     "pctEmployedHigherEd": 0.298,
     "obcineCount": 3,
-    "obcineNames": [
-      "Črnomelj",
-      "Semič",
-      "Metlika"
-    ]
+    "obcineNames": ["Črnomelj", "Semič", "Metlika"]
   },
   {
     "rpeid": "6002",
@@ -970,9 +843,7 @@
     "employed": 1857,
     "pctEmployedHigherEd": 0.358,
     "obcineCount": 1,
-    "obcineNames": [
-      "Straža"
-    ]
+    "obcineNames": ["Straža"]
   },
   {
     "rpeid": "6004",
@@ -986,12 +857,7 @@
     "employed": 10855,
     "pctEmployedHigherEd": 0.347,
     "obcineCount": 4,
-    "obcineNames": [
-      "Trebnje",
-      "Mokronog-Trebelno",
-      "Šentrupert",
-      "Mirna"
-    ]
+    "obcineNames": ["Trebnje", "Mokronog-Trebelno", "Šentrupert", "Mirna"]
   },
   {
     "rpeid": "6005",
@@ -1005,9 +871,7 @@
     "employed": 10860,
     "pctEmployedHigherEd": 0.339,
     "obcineCount": 1,
-    "obcineNames": [
-      "Brežice"
-    ]
+    "obcineNames": ["Brežice"]
   },
   {
     "rpeid": "6006",
@@ -1021,10 +885,7 @@
     "employed": 12842,
     "pctEmployedHigherEd": 0.333,
     "obcineCount": 2,
-    "obcineNames": [
-      "Krško",
-      "Kostanjevica na Krki"
-    ]
+    "obcineNames": ["Krško", "Kostanjevica na Krki"]
   },
   {
     "rpeid": "6007",
@@ -1038,10 +899,7 @@
     "employed": 9353,
     "pctEmployedHigherEd": 0.299,
     "obcineCount": 2,
-    "obcineNames": [
-      "Sevnica",
-      "Škocjan"
-    ]
+    "obcineNames": ["Sevnica", "Škocjan"]
   },
   {
     "rpeid": "6008",
@@ -1055,10 +913,7 @@
     "employed": 7405,
     "pctEmployedHigherEd": 0.326,
     "obcineCount": 2,
-    "obcineNames": [
-      "Laško",
-      "Radeče"
-    ]
+    "obcineNames": ["Laško", "Radeče"]
   },
   {
     "rpeid": "6009",
@@ -1072,10 +927,7 @@
     "employed": 9968,
     "pctEmployedHigherEd": 0.324,
     "obcineCount": 2,
-    "obcineNames": [
-      "Litija",
-      "Šmartno pri Litiji"
-    ]
+    "obcineNames": ["Litija", "Šmartno pri Litiji"]
   },
   {
     "rpeid": "6010",
@@ -1089,10 +941,7 @@
     "employed": 10169,
     "pctEmployedHigherEd": 0.312,
     "obcineCount": 2,
-    "obcineNames": [
-      "Hrastnik",
-      "Trbovlje"
-    ]
+    "obcineNames": ["Hrastnik", "Trbovlje"]
   },
   {
     "rpeid": "6011",
@@ -1106,9 +955,7 @@
     "employed": 7277,
     "pctEmployedHigherEd": 0.346,
     "obcineCount": 1,
-    "obcineNames": [
-      "Zagorje ob Savi"
-    ]
+    "obcineNames": ["Zagorje ob Savi"]
   },
   {
     "rpeid": "7001",
@@ -1143,12 +990,7 @@
     "employed": 16161,
     "pctEmployedHigherEd": 0.357,
     "obcineCount": 4,
-    "obcineNames": [
-      "Slovenska Bistrica",
-      "Oplotnica",
-      "Makole",
-      "Poljčane"
-    ]
+    "obcineNames": ["Slovenska Bistrica", "Oplotnica", "Makole", "Poljčane"]
   },
   {
     "rpeid": "7003",
@@ -1162,11 +1004,7 @@
     "employed": 11497,
     "pctEmployedHigherEd": 0.311,
     "obcineCount": 3,
-    "obcineNames": [
-      "Slovenske Konjice",
-      "Zreče",
-      "Vitanje"
-    ]
+    "obcineNames": ["Slovenske Konjice", "Zreče", "Vitanje"]
   },
   {
     "rpeid": "7004",
@@ -1180,11 +1018,7 @@
     "employed": 6106,
     "pctEmployedHigherEd": 0.33,
     "obcineCount": 3,
-    "obcineNames": [
-      "Ruše",
-      "Lovrenc na Pohorju",
-      "Selnica ob Dravi"
-    ]
+    "obcineNames": ["Ruše", "Lovrenc na Pohorju", "Selnica ob Dravi"]
   },
   {
     "rpeid": "7005",
@@ -1198,10 +1032,7 @@
     "employed": 49166,
     "pctEmployedHigherEd": 0.4,
     "obcineCount": 2,
-    "obcineNames": [
-      "Rače-Fram",
-      "Maribor"
-    ]
+    "obcineNames": ["Rače-Fram", "Maribor"]
   },
   {
     "rpeid": "7006",
@@ -1215,11 +1046,7 @@
     "employed": 10042,
     "pctEmployedHigherEd": 0.361,
     "obcineCount": 3,
-    "obcineNames": [
-      "Starše",
-      "Hoče-Slivnica",
-      "Miklavž na Dravskem polju"
-    ]
+    "obcineNames": ["Starše", "Hoče-Slivnica", "Miklavž na Dravskem polju"]
   },
   {
     "rpeid": "7007",
@@ -1233,9 +1060,7 @@
     "employed": 2956,
     "pctEmployedHigherEd": 0.318,
     "obcineCount": 1,
-    "obcineNames": [
-      "Duplek"
-    ]
+    "obcineNames": ["Duplek"]
   },
   {
     "rpeid": "7008",
@@ -1327,11 +1152,7 @@
     "employed": 6839,
     "pctEmployedHigherEd": 0.271,
     "obcineCount": 3,
-    "obcineNames": [
-      "Ormož",
-      "Središče ob Dravi",
-      "Sveti Tomaž"
-    ]
+    "obcineNames": ["Ormož", "Središče ob Dravi", "Sveti Tomaž"]
   },
   {
     "rpeid": "8003",
@@ -1345,12 +1166,7 @@
     "employed": 7063,
     "pctEmployedHigherEd": 0.293,
     "obcineCount": 4,
-    "obcineNames": [
-      "Ljutomer",
-      "Križevci",
-      "Razkrižje",
-      "Veržej"
-    ]
+    "obcineNames": ["Ljutomer", "Križevci", "Razkrižje", "Veržej"]
   },
   {
     "rpeid": "8004",
@@ -1388,11 +1204,7 @@
     "employed": 12752,
     "pctEmployedHigherEd": 0.373,
     "obcineCount": 3,
-    "obcineNames": [
-      "Beltinci",
-      "Moravske Toplice",
-      "Murska Sobota"
-    ]
+    "obcineNames": ["Beltinci", "Moravske Toplice", "Murska Sobota"]
   },
   {
     "rpeid": "8006",
@@ -1446,11 +1258,7 @@
     "employed": 7872,
     "pctEmployedHigherEd": 0.301,
     "obcineCount": 3,
-    "obcineNames": [
-      "Kungota",
-      "Pesnica",
-      "Šentilj"
-    ]
+    "obcineNames": ["Kungota", "Pesnica", "Šentilj"]
   },
   {
     "rpeid": "8009",
@@ -1487,9 +1295,7 @@
     "employed": 1947,
     "pctEmployedHigherEd": 0.307,
     "obcineCount": 1,
-    "obcineNames": [
-      "Hajdina"
-    ]
+    "obcineNames": ["Hajdina"]
   },
   {
     "rpeid": "8011",

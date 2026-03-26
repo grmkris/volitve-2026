@@ -1,7 +1,8 @@
 import Link from "next/link"
-import type { Party } from "@/lib/data/types"
-import { formatNumber, formatPercent } from "@/lib/data/format"
+
 import { partySlug } from "@/lib/data/constants"
+import { formatNumber, formatPercent } from "@/lib/data/format"
+import type { Party } from "@/lib/data/types"
 
 interface PartyCardProps {
   party: Party

@@ -1,11 +1,13 @@
 "use client"
 
-import Link from "next/link"
 import { X, ArrowRight } from "@phosphor-icons/react"
-import type { SelectedRegion } from "./election-map"
+import Link from "next/link"
+
+import { formatPercent, formatPercentShort } from "@/lib/data/format"
 import type { PartyInfo } from "@/lib/data/types"
-import { formatPercent } from "@/lib/data/format"
 import { cn } from "@/lib/utils"
+
+import type { SelectedRegion } from "./election-map"
 
 interface MapRegionPanelProps {
   region: SelectedRegion | null
@@ -49,7 +51,9 @@ export function MapRegionPanel({
           <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
             {region.type === "enota" ? "Volilna enota" : "Volilni okraj"}
           </p>
-          <h3 className="font-heading text-base font-semibold">{region.name}</h3>
+          <h3 className="font-heading text-base font-semibold">
+            {region.name}
+          </h3>
         </div>
         <button
           type="button"
@@ -61,8 +65,8 @@ export function MapRegionPanel({
         </button>
       </div>
 
-      {/* Winner + turnout */}
-      <div className="mt-3 flex items-center gap-4 text-xs">
+      {/* Winner + margin + turnout */}
+      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
         {winner && (
           <span className="flex items-center gap-1.5">
             <span
@@ -70,6 +74,14 @@ export function MapRegionPanel({
               style={{ backgroundColor: winner.color }}
             />
             <span className="font-medium">{winner.abbrev}</span>
+          </span>
+        )}
+        {region.margin != null && (
+          <span className="text-muted-foreground">
+            Razlika:{" "}
+            <span className="font-mono tabular-nums font-medium text-foreground">
+              {formatPercentShort(region.margin)}
+            </span>
           </span>
         )}
         <span className="text-muted-foreground">

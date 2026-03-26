@@ -1,5 +1,5 @@
-import Link from "next/link"
 import { CaretRight } from "@phosphor-icons/react/dist/ssr"
+import Link from "next/link"
 
 interface Breadcrumb {
   label: string
@@ -43,9 +43,7 @@ export function PageHeader({ title, breadcrumbs }: PageHeaderProps) {
         <div className="mb-2 md:hidden">
           <Link
             href={
-              breadcrumbs.length > 1
-                ? (breadcrumbs[breadcrumbs.length - 2].href ?? "/")
-                : "/"
+              breadcrumbs.length > 1 ? (breadcrumbs.at(-2)?.href ?? "/") : "/"
             }
             className="text-xs text-muted-foreground hover:text-foreground"
           >

@@ -3,9 +3,7 @@ import Link from "next/link"
 export default function NotFound() {
   return (
     <div className="flex min-h-[50svh] flex-col items-center justify-center gap-4 px-4 text-center">
-      <h2 className="font-heading text-lg font-semibold">
-        Stran ni najdena
-      </h2>
+      <h2 className="font-heading text-lg font-semibold">Stran ni najdena</h2>
       <p className="max-w-md text-xs text-muted-foreground">
         Iskana stran ne obstaja ali je bila odstranjena.
       </p>

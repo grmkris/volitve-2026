@@ -1,8 +1,9 @@
 "use client"
 
-import { useEffect, useRef } from "react"
-import type { ExpressionSpecification } from "maplibre-gl"
 import type { FeatureCollection, Geometry } from "geojson"
+import type { ExpressionSpecification } from "maplibre-gl"
+import { useEffect, useRef } from "react"
+
 import { useMap } from "@/components/ui/map"
 
 interface MapGeoJSONLayerProps {
@@ -93,19 +94,37 @@ export function MapGeoJSONLayer({
           })
         }
 
-        const handleClick = (e: maplibregl.MapMouseEvent & { features?: maplibregl.MapGeoJSONFeature[] }) => {
+        const handleClick = (
+          e: maplibregl.MapMouseEvent & {
+            features?: maplibregl.MapGeoJSONFeature[]
+          }
+        ) => {
           const feat = e.features?.[0]
           if (feat) onClickRef.current?.(feat as unknown as GeoJSON.Feature)
         }
-        const handleMouseMove = (e: maplibregl.MapMouseEvent & { features?: maplibregl.MapGeoJSONFeature[] }) => {
+        const handleMouseMove = (
+          e: maplibregl.MapMouseEvent & {
+            features?: maplibregl.MapGeoJSONFeature[]
+          }
+        ) => {
           const feat = e.features?.[0]
           if (feat) {
             try {
               map.getCanvas().style.cursor = "pointer"
-              if (hoveredId !== null) map.setFeatureState({ source: sourceId, id: hoveredId }, { hover: false })
+              if (hoveredId !== null)
+                map.setFeatureState(
+                  { source: sourceId, id: hoveredId },
+                  { hover: false }
+                )
               hoveredId = feat.id ?? null
-              if (hoveredId !== null) map.setFeatureState({ source: sourceId, id: hoveredId }, { hover: true })
-            } catch { /* map destroyed */ }
+              if (hoveredId !== null)
+                map.setFeatureState(
+                  { source: sourceId, id: hoveredId },
+                  { hover: true }
+                )
+            } catch {
+              /* map destroyed */
+            }
             onHoverRef.current?.(feat as unknown as GeoJSON.Feature)
           }
         }
@@ -113,10 +132,15 @@ export function MapGeoJSONLayer({
           try {
             map.getCanvas().style.cursor = ""
             if (hoveredId !== null) {
-              map.setFeatureState({ source: sourceId, id: hoveredId }, { hover: false })
+              map.setFeatureState(
+                { source: sourceId, id: hoveredId },
+                { hover: false }
+              )
               hoveredId = null
             }
-          } catch { /* map destroyed */ }
+          } catch {
+            /* map destroyed */
+          }
           onHoverRef.current?.(null)
         }
 
@@ -134,17 +158,23 @@ export function MapGeoJSONLayer({
             if (map.getLayer(lineLayerId)) map.removeLayer(lineLayerId)
             if (map.getLayer(fillLayerId)) map.removeLayer(fillLayerId)
             if (map.getSource(sourceId)) map.removeSource(sourceId)
-          } catch { /* map destroyed */ }
+          } catch {
+            /* map destroyed */
+          }
           addedRef.current = false
         })
-      } catch { /* style not ready yet */ }
+      } catch {
+        /* style not ready yet */
+      }
     }
 
     // Try immediately if style is ready, otherwise wait for styledata event
     if (map.isStyleLoaded()) {
       addLayers()
     } else {
-      const onStyleReady = () => { if (!addedRef.current) addLayers() }
+      const onStyleReady = () => {
+        if (!addedRef.current) addLayers()
+      }
       map.once("styledata", onStyleReady)
       // Fallback: retry after delay
       const timer = setTimeout(() => {
@@ -156,7 +186,9 @@ export function MapGeoJSONLayer({
       })
     }
 
-    return () => { cleanupFns.forEach((fn) => fn()) }
+    return () => {
+      cleanupFns.forEach((fn) => fn())
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map])
 
@@ -164,9 +196,13 @@ export function MapGeoJSONLayer({
   useEffect(() => {
     if (!map || !addedRef.current) return
     try {
-      const source = map.getSource(sourceId) as maplibregl.GeoJSONSource | undefined
+      const source = map.getSource(sourceId) as
+        | maplibregl.GeoJSONSource
+        | undefined
       if (source) source.setData(data)
-    } catch { /* map destroyed */ }
+    } catch {
+      /* map destroyed */
+    }
   }, [map, data, sourceId])
 
   // Update fill color
@@ -176,7 +212,9 @@ export function MapGeoJSONLayer({
       if (map.getLayer(fillLayerId)) {
         map.setPaintProperty(fillLayerId, "fill-color", fillColor)
       }
-    } catch { /* map destroyed */ }
+    } catch {
+      /* map destroyed */
+    }
   }, [map, fillColor, fillLayerId])
 
   // Update visibility
@@ -190,7 +228,9 @@ export function MapGeoJSONLayer({
       if (map.getLayer(lineLayerId)) {
         map.setLayoutProperty(lineLayerId, "visibility", vis)
       }
-    } catch { /* map destroyed */ }
+    } catch {
+      /* map destroyed */
+    }
   }, [map, visible, fillLayerId, lineLayerId])
 
   return null

@@ -1,13 +1,14 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { getNationalResults } from "@/lib/data/fetchers"
-import { toPartyList } from "@/lib/data/transforms"
-import { formatNumber, formatPercent } from "@/lib/data/format"
-import { NUM_ENOTE } from "@/lib/data/constants"
-import { enotaSt as toEnotaSt } from "@/lib/data/ids"
-import { PageHeader } from "@/components/layout/page-header"
-import { PartyBarChart } from "@/components/charts/party-bar-chart"
+
 import { StatCard } from "@/components/cards/stat-card"
+import { PartyBarChart } from "@/components/charts/party-bar-chart"
+import { PageHeader } from "@/components/layout/page-header"
+import { NUM_ENOTE } from "@/lib/data/constants"
+import { getNationalResults } from "@/lib/data/fetchers"
+import { formatNumber, formatPercent } from "@/lib/data/format"
+import { enotaSt as toEnotaSt } from "@/lib/data/ids"
+import { toPartyList } from "@/lib/data/transforms"
 
 export async function generateMetadata({
   params,

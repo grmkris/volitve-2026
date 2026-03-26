@@ -1,17 +1,20 @@
-import Link from "next/link"
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr"
+import Link from "next/link"
+
+import { CandidatesPreview } from "@/components/cards/candidates-preview"
+import { StatCard } from "@/components/cards/stat-card"
+import { WinnerBanner } from "@/components/cards/winner-banner"
+import { PartyBarChart } from "@/components/charts/party-bar-chart"
+import { ParliamentChart } from "@/components/parliament/parliament-chart"
+import { TOTAL_SEATS } from "@/lib/data/constants"
 import { getNationalResults } from "@/lib/data/fetchers"
 import { formatNumber, formatPercent, formatDate } from "@/lib/data/format"
-import { TOTAL_SEATS } from "@/lib/data/constants"
-import { WinnerBanner } from "@/components/cards/winner-banner"
-import { ParliamentChart } from "@/components/parliament/parliament-chart"
-import { PartyBarChart } from "@/components/charts/party-bar-chart"
-import { StatCard } from "@/components/cards/stat-card"
-import { CandidatesPreview } from "@/components/cards/candidates-preview"
 
 export default async function HomePage() {
   const data = await getNationalResults()
   const winner = data.parties[0]
+
+  if (!winner) return <div className="p-8 text-center">Ni rezultatov.</div>
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 md:py-10">
@@ -44,8 +47,7 @@ export default async function HomePage() {
                 className="underline underline-offset-2 hover:text-foreground"
               >
                 GURS RPE
-              </a>
-              {" "}
+              </a>{" "}
               (CC-BY 4.0)
             </p>
           </div>

@@ -1,35 +1,32 @@
-"use client";
+"use client"
 
-import MapLibreGL from "maplibre-gl";
-import {
-  useEffect,
-  useId,
-} from "react";
+import MapLibreGL from "maplibre-gl"
+import { useEffect, useId } from "react"
 
-import { useMap } from "./map-core";
+import { useMap } from "./map-core"
 
 type MapRouteProps = {
   /** Optional unique identifier for the route layer */
-  id?: string;
+  id?: string
   /** Array of [longitude, latitude] coordinate pairs defining the route */
-  coordinates: [number, number][];
+  coordinates: [number, number][]
   /** Line color as CSS color value (default: "#4285F4") */
-  color?: string;
+  color?: string
   /** Line width in pixels (default: 3) */
-  width?: number;
+  width?: number
   /** Line opacity from 0 to 1 (default: 0.8) */
-  opacity?: number;
+  opacity?: number
   /** Dash pattern [dash length, gap length] for dashed lines */
-  dashArray?: [number, number];
+  dashArray?: [number, number]
   /** Callback when the route line is clicked */
-  onClick?: () => void;
+  onClick?: () => void
   /** Callback when mouse enters the route line */
-  onMouseEnter?: () => void;
+  onMouseEnter?: () => void
   /** Callback when mouse leaves the route line */
-  onMouseLeave?: () => void;
+  onMouseLeave?: () => void
   /** Whether the route is interactive - shows pointer cursor on hover (default: true) */
-  interactive?: boolean;
-};
+  interactive?: boolean
+}
 
 function MapRoute({
   id: propId,
@@ -43,15 +40,15 @@ function MapRoute({
   onMouseLeave,
   interactive = true,
 }: MapRouteProps) {
-  const { map, isLoaded } = useMap();
-  const autoId = useId();
-  const id = propId ?? autoId;
-  const sourceId = `route-source-${id}`;
-  const layerId = `route-layer-${id}`;
+  const { map, isLoaded } = useMap()
+  const autoId = useId()
+  const id = propId ?? autoId
+  const sourceId = `route-source-${id}`
+  const layerId = `route-layer-${id}`
 
   // Add source and layer on mount
   useEffect(() => {
-    if (!isLoaded || !map) return;
+    if (!isLoaded || !map) return
 
     map.addSource(sourceId, {
       type: "geojson",
@@ -60,7 +57,7 @@ function MapRoute({
         properties: {},
         geometry: { type: "LineString", coordinates: [] },
       },
-    });
+    })
 
     map.addLayer({
       id: layerId,
@@ -73,80 +70,72 @@ function MapRoute({
         "line-opacity": opacity,
         ...(dashArray && { "line-dasharray": dashArray }),
       },
-    });
+    })
 
     return () => {
       try {
-        if (map.getLayer(layerId)) map.removeLayer(layerId);
-        if (map.getSource(sourceId)) map.removeSource(sourceId);
+        if (map.getLayer(layerId)) map.removeLayer(layerId)
+        if (map.getSource(sourceId)) map.removeSource(sourceId)
       } catch {
         // ignore
       }
-    };
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoaded, map]);
+  }, [isLoaded, map])
 
   // When coordinates change, update the source data
   useEffect(() => {
-    if (!isLoaded || !map || coordinates.length < 2) return;
+    if (!isLoaded || !map || coordinates.length < 2) return
 
-    const source = map.getSource(sourceId) as MapLibreGL.GeoJSONSource;
+    const source = map.getSource(sourceId) as MapLibreGL.GeoJSONSource
     if (source) {
       source.setData({
         type: "Feature",
         properties: {},
         geometry: { type: "LineString", coordinates },
-      });
+      })
     }
-  }, [isLoaded, map, coordinates, sourceId]);
+  }, [isLoaded, map, coordinates, sourceId])
 
   useEffect(() => {
-    if (!isLoaded || !map || !map.getLayer(layerId)) return;
+    if (!isLoaded || !map || !map.getLayer(layerId)) return
 
-    map.setPaintProperty(layerId, "line-color", color);
-    map.setPaintProperty(layerId, "line-width", width);
-    map.setPaintProperty(layerId, "line-opacity", opacity);
+    map.setPaintProperty(layerId, "line-color", color)
+    map.setPaintProperty(layerId, "line-width", width)
+    map.setPaintProperty(layerId, "line-opacity", opacity)
     if (dashArray) {
-      map.setPaintProperty(layerId, "line-dasharray", dashArray);
+      map.setPaintProperty(layerId, "line-dasharray", dashArray)
     }
-  }, [isLoaded, map, layerId, color, width, opacity, dashArray]);
+  }, [isLoaded, map, layerId, color, width, opacity, dashArray])
 
   // Handle click and hover events
   useEffect(() => {
-    if (!isLoaded || !map || !interactive) return;
+    if (!isLoaded || !map || !interactive) return
 
     const handleClick = () => {
-      onClick?.();
-    };
+      onClick?.()
+    }
     const handleMouseEnter = () => {
-      map.getCanvas().style.cursor = "pointer";
-      onMouseEnter?.();
-    };
+      map.getCanvas().style.cursor = "pointer"
+      onMouseEnter?.()
+    }
     const handleMouseLeave = () => {
-      map.getCanvas().style.cursor = "";
-      onMouseLeave?.();
-    };
+      map.getCanvas().style.cursor = ""
+      onMouseLeave?.()
+    }
 
-    map.on("click", layerId, handleClick);
-    map.on("mouseenter", layerId, handleMouseEnter);
-    map.on("mouseleave", layerId, handleMouseLeave);
+    map.on("click", layerId, handleClick)
+    map.on("mouseenter", layerId, handleMouseEnter)
+    map.on("mouseleave", layerId, handleMouseLeave)
 
     return () => {
-      map.off("click", layerId, handleClick);
-      map.off("mouseenter", layerId, handleMouseEnter);
-      map.off("mouseleave", layerId, handleMouseLeave);
-    };
-  }, [
-    isLoaded,
-    map,
-    layerId,
-    onClick,
-    onMouseEnter,
-    onMouseLeave,
-    interactive,
-  ]);
+      map.off("click", layerId, handleClick)
+      map.off("mouseenter", layerId, handleMouseEnter)
+      map.off("mouseleave", layerId, handleMouseLeave)
+    }
+  }, [isLoaded, map, layerId, onClick, onMouseEnter, onMouseLeave, interactive])
 
-  return null;
+  return null
 }
 
-export { MapRoute };
+export { MapRoute }

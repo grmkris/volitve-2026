@@ -1,8 +1,5 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
 import {
   ChartBar,
   MapTrifold,
@@ -14,20 +11,64 @@ import {
   Info,
   X,
 } from "@phosphor-icons/react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { useCallback, useEffect, useState } from "react"
+
 import { cn } from "@/lib/utils"
 
 const PRIMARY_TABS = [
-  { href: "/", label: "Pregled", icon: ChartBar, ariaLabel: "Pregled rezultatov" },
-  { href: "/zemljevid", label: "Zemljevid", icon: MapTrifold, ariaLabel: "Interaktivni zemljevid" },
-  { href: "/stranke", label: "Stranke", icon: Flag, ariaLabel: "Rezultati po strankah" },
-  { href: "/primerjava", label: "Primerjava", icon: ArrowsClockwise, ariaLabel: "Primerjava z 2022" },
+  {
+    href: "/",
+    label: "Pregled",
+    icon: ChartBar,
+    ariaLabel: "Pregled rezultatov",
+  },
+  {
+    href: "/zemljevid",
+    label: "Zemljevid",
+    icon: MapTrifold,
+    ariaLabel: "Interaktivni zemljevid",
+  },
+  {
+    href: "/stranke",
+    label: "Stranke",
+    icon: Flag,
+    ariaLabel: "Rezultati po strankah",
+  },
+  {
+    href: "/primerjava",
+    label: "Primerjava",
+    icon: ArrowsClockwise,
+    ariaLabel: "Primerjava z 2022",
+  },
 ]
 
 const MORE_ITEMS = [
-  { href: "/koalicije", label: "Koalicijski kalkulator", icon: Scales, desc: "Sestavite koalicijo in preverite večino" },
-  { href: "/analiza", label: "Demografska analiza", icon: ChartLineUp, desc: "Plače, izobrazba, starost vs. glasovi" },
-  { href: "/udelezba", label: "Volilna udeležba", icon: UsersThree, desc: "Rangiranje enot in okrajev po udeležbi" },
-  { href: "/o-projektu", label: "O projektu", icon: Info, desc: "Viri podatkov, metodologija, tehnologija" },
+  {
+    href: "/koalicije",
+    label: "Koalicijski kalkulator",
+    icon: Scales,
+    desc: "Sestavite koalicijo in preverite večino",
+  },
+  {
+    href: "/analiza",
+    label: "Demografska analiza",
+    icon: ChartLineUp,
+    desc: "Plače, izobrazba, starost vs. glasovi",
+  },
+  {
+    href: "/udelezba",
+    label: "Volilna udeležba",
+    icon: UsersThree,
+    desc: "Rangiranje enot in okrajev po udeležbi",
+  },
+  {
+    href: "/o-projektu",
+    label: "O projektu",
+    icon: Info,
+    desc: "Viri podatkov, metodologija, tehnologija",
+  },
 ]
 
 export function BottomNav() {
@@ -54,7 +95,11 @@ export function BottomNav() {
     <>
       {/* Bottom sheet */}
       {sheetOpen && (
-        <div className="fixed inset-0 z-40 md:hidden" role="dialog" aria-modal="true">
+        <div
+          className="fixed inset-0 z-40 md:hidden"
+          role="dialog"
+          aria-modal="true"
+        >
           {/* Scrim */}
           <div
             className="absolute inset-0 bg-black/40 backdrop-blur-[2px] transition-opacity"
@@ -103,10 +148,15 @@ export function BottomNav() {
                             : "bg-muted text-muted-foreground"
                         )}
                       >
-                        <item.icon className="size-4.5" weight={isActive ? "fill" : "regular"} />
+                        <item.icon
+                          className="size-4.5"
+                          weight={isActive ? "fill" : "regular"}
+                        />
                       </div>
                       <div className="min-w-0">
-                        <p className={cn("text-sm", isActive && "font-semibold")}>
+                        <p
+                          className={cn("text-sm", isActive && "font-semibold")}
+                        >
                           {item.label}
                         </p>
                         <p className="truncate text-[11px] text-muted-foreground">

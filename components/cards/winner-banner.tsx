@@ -1,5 +1,5 @@
-import type { Party } from "@/lib/data/types"
 import { formatPercent, formatNumber } from "@/lib/data/format"
+import type { Party } from "@/lib/data/types"
 
 interface WinnerBannerProps {
   winner: Party
