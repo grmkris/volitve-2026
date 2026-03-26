@@ -1,8 +1,5 @@
 import type { PromiseStatus } from "./types"
 
-/** DVK data base URL */
-export const DVK_BASE_URL = "https://volitve.dvk-rs.si/dz2026/data"
-
 /** Total seats in Državni zbor (88 proportional + 2 minority) */
 export const TOTAL_SEATS = 90
 
